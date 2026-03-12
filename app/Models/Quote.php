@@ -18,6 +18,11 @@ class Quote extends Model
     protected $fillable = [
         'user_id',
         'content',
+        'is_private',
+    ];
+
+    protected $attributes = [
+        'is_private' => false,
     ];
 
     //The Relationship Law
@@ -80,5 +85,12 @@ class Quote extends Model
     {
         // If timestamps no longer match exactly, the stone has been altered.
         return $this->updated_at->notEqualTo($this->created_at);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_private' => 'boolean',
+        ];
     }
 }

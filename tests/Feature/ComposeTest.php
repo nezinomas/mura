@@ -40,19 +40,39 @@ test('compose page contains required html form elements', function () {
     $response->assertSee('<textarea', false);
     $response->assertSee('name="content"', false);
     $response->assertSee('<button type="submit"', false);
+
+    $response->assertSee('x-data="{ isPrivate: false }"', false); // The Alpine state engine
+    $response->assertSee('name="is_private"', false);             // The hidden checkbox for the server
 });
 
 
-test('user can save valid thought', function() {
+test('user can save valid public thought', function() {
     $response = $this->actingAs($this->user)->post('/compose', [
         'content' => 'This is a brand new thought for the mura feed.'
     ]);
 
-    $response->assertRedirect('/home');
+    $response->assertRedirect('/dashboard');
 
     $this->assertDatabaseHas('quotes', [
         'user_id' => $this->user->id,
         'content' => 'This is a brand new thought for the mura feed.',
+        'is_private' => false,
+    ]);
+});
+
+
+test('user can save valid private thought', function () {
+    $response = $this->actingAs($this->user)->post('/compose', [
+        'content' => 'This is a secret thought.',
+        'is_private' => true,
+    ]);
+
+    $response->assertRedirect('/dashboard');
+
+    $this->assertDatabaseHas('quotes', [
+        'user_id' => $this->user->id,
+        'content' => 'This is a secret thought.',
+        'is_private' => true,
     ]);
 });
 
@@ -66,12 +86,21 @@ test('reject invalid thoughts', function ($invalidContent) {
 })->with('invalid_thoughts');
 
 
+test('reject an invalid privacy flag', function () {
+    $response = $this->actingAs($this->user)->post('/compose', [
+        'content' => 'This is a perfectly valid thought.',
+        'is_private' => 'this-is-not-a-boolean',
+    ]);
+    $response->assertSessionHasErrors('is_private');
+});
+
+
 test('rate limits a user to 5 thoughts per minute', function () {
     // A bot successfully posts 5 times in a single second
     for ($i = 0; $i < 5; $i++) {
         $this->actingAs($this->user)->post('/compose', [
             'content' => "This is valid thought number {$i}.",
-        ])->assertRedirect('/home'); 
+        ])->assertRedirect('/dashboard');
     }
 
     // The bot aggressively tries to post a 6th time...

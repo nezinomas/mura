@@ -64,6 +64,25 @@ test('quote securely attaches to its author', function() {
 });
 
 
+test('quote defaults to being public', function () {
+    $quote = Quote::factory()->create([
+        'content' => 'This is a default public thought.',
+    ]);
+
+    expect($quote->is_private)->toBeFalse();
+});
+
+
+test('quote can be completely private', function () {
+    $quote = Quote::factory()->create([
+        'content' => 'This is a secret.',
+        'is_private' => true,
+    ]);
+
+    expect($quote->is_private)->toBeTrue();
+});
+
+
 test('author_display shows user display_name if user is active', function() {
     $this->user->display_name = 'User Name';
 

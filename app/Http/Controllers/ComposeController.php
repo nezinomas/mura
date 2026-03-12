@@ -16,13 +16,15 @@ class ComposeController extends Controller
     {
         $validated = $request->validate([
             'content' => ['required', 'string', 'min:3', 'max:1000'],
+            'is_private' => ['nullable', 'boolean'],
         ]);
 
         Quote::create([
             'user_id' => $request->user()->id,
             'content' => $validated['content'],
+            'is_private' => $validated['is_private'] ?? false,
         ]);
 
-        return redirect('/home');
+        return redirect('/dashboard');
     }
 }
