@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComposeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // GET: Shows the HTML form
+    Route::get('/compose', [ComposeController::class, 'index'])
+        ->name('compose.index');
+
+    // POST: Handles the form submission (with a limit of 5 requests per minute)
+    Route::post('/compose', [ComposeController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('compose.store');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
