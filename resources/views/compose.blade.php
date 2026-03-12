@@ -26,7 +26,7 @@
                     >
                         <span x-text="isPrivate ? 'Private' : 'Public'"></span>
                     </button>
-                    
+
                     <span class="text-xs text-gray-500 italic">
                         <span x-show="!isPrivate">Everyone can see this.</span>
                         <span x-show="isPrivate">Only you can see this.</span>
