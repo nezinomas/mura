@@ -58,13 +58,10 @@ class Quote extends Model
     {
         return Attribute::make(
             get: function () {
-                // Step 1: Parse Markdown and explicitly neutralize any raw HTML (like <script>)
                 $html = Str::markdown($this->content ?? '', [
                     'html_input' => 'escape',
                 ]);
 
-                // Step 2: The Allowlist Filter. 
-                // Violently crush structural tags (<h1>, <img>) and only let quiet typography survive.
                 $allowedTags = '<p><strong><em><a><del>';
 
                 return strip_tags($html, $allowedTags);
