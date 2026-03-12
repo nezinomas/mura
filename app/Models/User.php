@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,9 +21,32 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'display_name',
         'email',
         'password',
     ];
+
+    /**
+     * The Name mutator
+     * Automatically trim spaces and force lowercase.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => strtolower(trim($value)),
+        );
+    }
+
+    /**
+     * The Email mutator
+     * Automatically trim spaces
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => trim($value),
+        );
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,5 +69,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            if (empty($user->display_name)) {
+                $user->display_name = $user->name;
+            }
+        });
     }
 }
