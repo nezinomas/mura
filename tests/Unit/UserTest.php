@@ -1,10 +1,7 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\QueryException;
-
-uses (Tests\TestCase::class, RefreshDatabase::class);
 
 
 test('user has a unique name', function () {

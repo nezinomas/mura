@@ -3,9 +3,6 @@
 use App\Models\User;
 use App\Models\Quote;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(Tests\TestCase::class, RefreshDatabase::class);
 
 
 dataset('empty_quotes', [
