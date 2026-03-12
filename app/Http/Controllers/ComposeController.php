@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quote;
+use App\Policies\QuotePolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ComposeController extends Controller
 {
@@ -24,6 +26,15 @@ class ComposeController extends Controller
             'content' => $validated['content'],
             'is_private' => $validated['is_private'] ?? false,
         ]);
+
+        return redirect('/dashboard');
+    }
+
+    public function destroy(Quote $quote)
+    {
+        Gate::authorize('delete', $quote);
+
+        $quote->delete();
 
         return redirect('/dashboard');
     }

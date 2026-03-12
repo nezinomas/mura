@@ -189,10 +189,14 @@ test('the model knows if a quote has been altered after creation', function () {
 });
 
 
-test('quote can be permanently deleted by its author', function () {
+test('quote can be uses soft deletes to preserver memory', function () {
     $quote = Quote::factory()->create(['user_id' => $this->user->id]);
 
     $quote->delete();
 
-    $this->assertModelMissing($quote);
+    $this->assertSoftDeleted($quote);
+
+    $this->assertDatabaseHas('quotes', [
+        'id' => $quote->id,
+    ]);
 });
