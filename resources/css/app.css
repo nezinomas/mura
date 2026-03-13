@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+@layer utilities {
+    .text-typewriter {
+        @apply text-xs font-mono uppercase tracking-widest;
+    }
+}
