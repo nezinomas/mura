@@ -5,8 +5,8 @@
                 
                 <h2 class="card-title text-2xl font-bold mb-6 font-mono justify-center">mura.</h2>
 
-                <div class="mb-6 text-sm text-base-content/70 font-serif leading-relaxed">
-                    Forgot your password? No problem. Just let us know your email address and we will email you a password reset link.
+                <div class="mb-6 text-sm text-center text-base-content/70 leading-relaxed">
+                    Enter your email to reset your password.
                 </div>
                 
                 @if (session('status'))
@@ -15,19 +15,21 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('password.email') }}">
+                <form method="POST" action="{{ route('password.email') }}" novalidate="">
                     @csrf
 
                     <x-floating-input id="email" name="email" type="email" label="Email" required="true" />
 
                     <div class="form-control mt-4">
-                        <button type="submit" class="btn btn-neutral w-full font-mono rounded-none uppercase tracking-widest">
+                        <button type="submit" class="btn btn-neutral w-full rounded-none text-typewriter">
                             Email Reset Link
                         </button>
                     </div>
 
                     <div class="text-center mt-6">
-                        <a href="{{ route('login') }}" class="link link-hover text-xs font-mono uppercase tracking-wider opacity-70">Back to login</a>
+                        <a href="{{ route('login') }}" class="link link-hover text-typewriter opacity-70">
+                            Back to login
+                        </a>
                     </div>
                 </form>
 
