@@ -3,9 +3,6 @@
 use App\Models\User;
 use App\Models\Quote;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(Tests\TestCase::class, RefreshDatabase::class);
 
 
 dataset('empty_quotes', [
@@ -64,6 +61,25 @@ test('quote securely attaches to its author', function() {
 
     expect($quote->user->id)->toBe($this->user->id);
     expect($quote->content)->toBe($content);
+});
+
+
+test('quote defaults to being public', function () {
+    $quote = Quote::factory()->create([
+        'content' => 'This is a default public thought.',
+    ]);
+
+    expect($quote->is_private)->toBeFalse();
+});
+
+
+test('quote can be completely private', function () {
+    $quote = Quote::factory()->create([
+        'content' => 'This is a secret.',
+        'is_private' => true,
+    ]);
+
+    expect($quote->is_private)->toBeTrue();
 });
 
 
@@ -173,10 +189,33 @@ test('the model knows if a quote has been altered after creation', function () {
 });
 
 
-test('quote can be permanently deleted by its author', function () {
+test('quote can be uses soft deletes to preserver memory', function () {
     $quote = Quote::factory()->create(['user_id' => $this->user->id]);
 
     $quote->delete();
 
-    $this->assertModelMissing($quote);
+    $this->assertSoftDeleted($quote);
+
+    $this->assertDatabaseHas('quotes', [
+        'id' => $quote->id,
+    ]);
+});
+
+
+test('model knows if logged user is a stranger (isGrab is true)', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $stranger->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isGrab())->toBeTrue();
+});
+
+
+test('model knows if logged user is the author (isGrab is false)', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isGrab())->toBeFalse();
 });

@@ -79,4 +79,14 @@ class User extends Authenticatable
             }
         });
     }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
+
+    public function grabs()
+    {
+        return $this->belongsToMany(Quote::class)->withTimestamps();
+    }
 }
