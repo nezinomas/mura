@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quote;
-use App\Policies\QuotePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
