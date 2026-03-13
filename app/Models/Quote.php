@@ -88,6 +88,11 @@ class Quote extends Model
         return $this->updated_at->notEqualTo($this->created_at);
     }
 
+    public function isGrab(): bool
+    {
+        return $this->user_id !== auth()->id();
+    }
+
     protected function casts(): array
     {
         return [

@@ -200,3 +200,22 @@ test('quote can be uses soft deletes to preserver memory', function () {
         'id' => $quote->id,
     ]);
 });
+
+
+test('model knows if logged user is a stranger (isGrab is true)', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $stranger->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isGrab())->toBeTrue();
+});
+
+
+test('model knows if logged user is the author (isGrab is false)', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isGrab())->toBeFalse();
+});
