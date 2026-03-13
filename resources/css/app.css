@@ -1,9 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@layer base {
+    body, input, textarea, button, select {
+        @apply font-mono;
+    }
+}
 
 @layer utilities {
     .text-typewriter {
-        @apply text-xs font-mono uppercase tracking-widest;
+        @apply text-xs uppercase tracking-widest;
     }
 }

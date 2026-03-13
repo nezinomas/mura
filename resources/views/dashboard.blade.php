@@ -10,7 +10,7 @@
 
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <span class="font-bold font-mono">{{ $post->user->display_name ?? 'Anonymous' }}</span>
+                                <span class="font-bold">{{ $post->user->display_name ?? 'Anonymous' }}</span>
 
                                 @if($isGrab)
                                     <span class="badge badge-outline badge-sm ml-2">Grabbed</span>
@@ -25,7 +25,7 @@
                             <span class="text-xs opacity-70">{{ $post->created_at->diffForHumans() }}</span>
                         </div>
 
-                        <div class="prose max-w-none font-serif">
+                        <div class="prose max-w-none">
                             {!! $post->content_html !!} 
                         </div>
 

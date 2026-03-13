@@ -1,9 +1,9 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-base-200 font-serif">
+    <div class="min-h-screen flex items-center justify-center bg-base-200">
         <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
             <div class="card-body p-8">
                 
-                <h2 class="card-title text-2xl font-bold mb-8 font-mono justify-center">mura.</h2>
+                <h2 class="card-title text-2xl font-bold mb-8 justify-center">mura.</h2>
 
                 <form method="POST" action="{{ route('password.store') }}" novalidate="">
                     @csrf
