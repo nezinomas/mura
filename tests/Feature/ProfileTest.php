@@ -52,6 +52,7 @@ test('profile information can be updated', function () {
         ->patch('/profile', [
             'name' => 'TestUser',
             'email' => 'test@example.com',
+            'display_name' => "Test User",
         ]);
 
     $response
@@ -66,12 +67,32 @@ test('profile information can be updated', function () {
 });
 
 
+dataset('invalid_display_names', [
+    'more than 51' => [str_repeat('a', 51)],
+    'less than 3' => ['xz'],
+    'empty' => [''],
+]);
+
+test('profile fails update invalid display_name', function(string $name) {
+    $response = $this
+    ->actingAs($this->user)
+    ->patch('/profile', [
+        'name' => $this->user->name,
+        'email' => $this->user->email,
+        'display_name' => $name,
+    ]);
+
+    $response->assertSessionHasErrors('display_name');
+})->with('invalid_display_names');
+
+
 test('email verification status is unchanged when the email address is unchanged', function () {
     $response = $this
         ->actingAs($this->user)
         ->patch('/profile', [
             'name' => 'Test_User',
             'email' => $this->user->email,
+            'display_name' => $this->user->display_name,
         ]);
 
     $response

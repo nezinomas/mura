@@ -19,6 +19,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', new ValidUsername()],
+            'display_name' => ['required', 'string', 'min:3', 'max:50'],
             'email' => [
                 'required',
                 'string',
