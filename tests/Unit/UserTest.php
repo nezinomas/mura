@@ -61,3 +61,12 @@ test('email address is automatically stripped of whitespace', function () {
 
     expect($user->email)->toBe('padded@mura.test');
 });
+
+
+test('display_name automatically strips html tags', function() {
+    $user = User::factory()->make([
+        'display_name' => '<b>Lukas</b> <script>alert("hack")</script>'
+    ]);
+
+    expect($user->display_name)->toBe('Lukas alert("hack")');
+});

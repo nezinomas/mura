@@ -38,6 +38,17 @@ class User extends Authenticatable
     }
 
     /**
+     * The Name mutator
+     * Automatically trim spaces and strip tags.
+     */
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => $value |> strip_tags(...) |> trim(...),
+        );
+    }
+
+    /**
      * The Email mutator
      * Automatically trim spaces
      */
