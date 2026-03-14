@@ -8,7 +8,6 @@ test('registration screen can be rendered', function () {
 
 
 test('registration uses the custom username rule', function () {
-    // Act: A guest tries to register with a name that has a space
     $response = $this->post('/register', [
         'name' => 'bad name',
         'email' => 'newuser@example.com',
@@ -16,13 +15,34 @@ test('registration uses the custom username rule', function () {
         'password_confirmation' => 'password',
     ]);
 
-    // Assert: The session should have an error specifically for 'name'
     $response->assertSessionHasErrors('name');
     
-    // Assert: The user was not created
     $this->assertDatabaseMissing('users', [
         'email' => 'newuser@example.com'
     ]);
+});
+
+
+test('registration requires name of at least 3 characters', function () {
+    $response = $this->post('/register', [
+        'name' => 'ab',
+        'email' => 'newuser@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+test('registration rejects name longer than 25 characters', function () {
+    $response = $this->post('/register', [
+        'name' => str_repeat('a', 26),
+        'email' => 'newuser@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertSessionHasErrors('name');
 });
 
 

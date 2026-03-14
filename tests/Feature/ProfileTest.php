@@ -46,6 +46,31 @@ test('profile update uses the custom username rule', function () {
 });
 
 
+test('profile update requires a username of at least 3 characters', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => 'ab', 
+            'email' => $this->user->email,
+        ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+test('profile update rejects a username longer than 23 characters', function () {
+    $longName = str_repeat('a', 26);
+    
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => $longName, 
+            'email' => $this->user->email,
+        ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+
 test('profile information can be updated', function () {
     $response = $this
         ->actingAs($this->user)
