@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 beforeEach(function() {
@@ -77,4 +78,65 @@ test('correct password must be provided to delete account', function () {
         ->assertRedirect('/profile');
 
     $this->assertNotNull($this->user->fresh());
+});
+
+
+test('change password page is displayed', function() {
+    $response = $this
+        ->actingAs($this->user)
+        ->get('change-password');
+
+    $response->assertOk();
+});
+
+
+test('change password page contains the correct form inputs', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->get('/change-password');
+
+    $response->assertOk();
+
+    $response->assertSee('name="current_password"', false);
+    $response->assertSee('name="password"', false);
+    $response->assertSee('name="password_confirmation"', false);
+
+    $response->assertSee('name="_method" value="put"', false);
+});
+
+
+test('change password view displays validation errors to the user', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->from('/change-password') 
+        ->put('/password', [
+            'current_password' => '',
+            'password' => '',
+            'password_confirmation' => '',
+        ]);
+
+    $response->assertRedirect('/change-password');
+
+    $this->followRedirects($response)
+        ->assertSeeText('The current password field is required')
+        ->assertSeeText('The password field is required');
+});
+
+
+test('password was succesfully changed', function() {
+    $response = $this
+        ->actingAs($this->user)
+        ->from('/change-password')
+        ->put('/password', [
+            'current_password' => 'password',
+            'password' => '123-password',
+            'password_confirmation' => '123-password'
+        ]);
+
+    $this->user->refresh();
+
+    expect(Hash::check('123-password', $this->user->password))->toBeTrue();
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect('/change-password');
 });

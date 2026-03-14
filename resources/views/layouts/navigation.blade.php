@@ -41,7 +41,7 @@
                     Profile
                 </a>
                 
-                <a href="#" class="px-4 py-3 text-typewriter hover:bg-base-200 w-full text-left">
+                <a href="{{ route('password.change') }}" class="px-4 py-3 text-typewriter hover:bg-base-200 w-full text-left">
                     Change Password
                 </a>
                 
