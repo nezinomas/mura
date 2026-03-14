@@ -57,7 +57,7 @@ test('profile update requires a username of at least 3 characters', function () 
     $response->assertSessionHasErrors('name');
 });
 
-test('profile update rejects a username longer than 23 characters', function () {
+test('profile update rejects a username longer than 25 characters', function () {
     $longName = str_repeat('a', 26);
     
     $response = $this
