@@ -19,35 +19,6 @@ test('user is stored as lower case', function() {
 });
 
 
-dataset('invalid_usernames', [
-    'contains a space' => ['lukas dev'],
-    'contains a dash' => ['lukas-dev'],
-    'contains a symbol' => ['lukas@dev'],
-    'contains a emoji' => ['lukas😊'],
-]);
-
-
-test('user name invalid formats', function(string $name) {
-    $user = User::factory()->make(['name' => $name]);
-
-    expect((bool) preg_match('/^\w+$/', $user->name))->toBeFalse();
-})->with('invalid_usernames');
-
-
-dataset('valid_usernames', [
-    'only letters' => ['lukas'],
-    'with undescore' => ['lukas_dev'],
-    'with numbers' => ['lukas123'],
-]);
-
-
-test('a user name valid formats', function(string $name) {
-    $user = User::factory()->make(['name' => $name]);
-
-    expect((bool) preg_match('/^\w+$/', $user->name))->toBeTrue();
-})->with('valid_usernames');
-
-
 test('user name automatically stripped whitespace', function() {
     $user = User::factory()->make(['name' => '  spaces  ']);
     expect($user->name)->toBe('spaces');

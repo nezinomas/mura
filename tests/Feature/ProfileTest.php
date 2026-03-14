@@ -16,11 +16,41 @@ test('profile page is displayed', function () {
     $response->assertOk();
 });
 
+
+test('profile has form fields email user_name display_name', function() {
+    $response = $this
+    ->actingAs($this->user)
+    ->get('/profile');
+
+    $response->assertOk();
+
+    $response->assertSee('name="name"', false);
+    $response->assertSee('name="email', false);
+    $response->assertSee('name="display_name', false);
+});
+
+
+test('profile update uses the custom username rule', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => 'Bad name',
+            'email' => 'test@test.com',
+        ]);
+
+    $response->assertSessionHasErrors('name');
+
+    $this->assertDatabaseMissing('users', [
+        'name' => 'Bad name'
+    ]);
+});
+
+
 test('profile information can be updated', function () {
     $response = $this
         ->actingAs($this->user)
         ->patch('/profile', [
-            'name' => 'Test User',
+            'name' => 'TestUser',
             'email' => 'test@example.com',
         ]);
 
@@ -30,16 +60,17 @@ test('profile information can be updated', function () {
 
     $this->user->refresh();
 
-    $this->assertSame('test user', $this->user->name);
+    $this->assertSame('testuser', $this->user->name);
     $this->assertSame('test@example.com', $this->user->email);
     $this->assertNull($this->user->email_verified_at);
 });
+
 
 test('email verification status is unchanged when the email address is unchanged', function () {
     $response = $this
         ->actingAs($this->user)
         ->patch('/profile', [
-            'name' => 'Test User',
+            'name' => 'Test_User',
             'email' => $this->user->email,
         ]);
 
