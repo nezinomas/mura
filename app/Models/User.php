@@ -38,7 +38,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The Name mutator
+     * The Display Name mutator
      * Automatically trim spaces and strip tags.
      */
     protected function displayName(): Attribute
