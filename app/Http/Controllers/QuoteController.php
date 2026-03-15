@@ -6,7 +6,7 @@ use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class ComposeController extends Controller
+class QuoteController extends Controller
 {
     public function index()
     {
