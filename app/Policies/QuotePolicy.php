@@ -37,7 +37,7 @@ class QuotePolicy
      */
     public function update(User $user, Quote $quote): bool
     {
-        return $user->id === $quote->user_id && $quote->isEditable();
+        return $user->id === $quote->user_id;
     }
 
     /**

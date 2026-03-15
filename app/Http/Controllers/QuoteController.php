@@ -69,7 +69,15 @@ class QuoteController extends Controller implements HasMiddleware
      */
     public function edit(Quote $quote)
     {
-        //
+        Gate::authorize('update', $quote);
+
+        if (! $quote->isEditable()) {
+            return redirect('/dashboard')->with('modal_error', __('This thought is locked and can no longer be modified.'));
+        }
+
+        return view('quotes.create', [
+            'quote' => $quote,
+        ]);
     }
 
 
@@ -78,7 +86,20 @@ class QuoteController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Quote $quote)
     {
-        //
+        Gate::authorize('update', $quote);
+
+        if (! $quote->isEditable()) {
+            return back()->with('modal_error', __('This thought is locked and can no longer be modified.'));
+        }
+
+        $validated = $request->validate([
+            'content' => ['sometimes', 'required', 'string', 'min:3', 'max:1000'],
+            'is_private' => ['boolean', 'nullable'],
+        ]);
+
+        $quote->update($validated);
+
+        return redirect('/dashboard');
     }
 
     /**
