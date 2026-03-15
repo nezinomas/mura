@@ -1,51 +1,68 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    <x-slot name="header">
+        <div class="text-center text-typewriter w-full">
+            Your Feed
+        </div>
+    </x-slot>
 
-        <div class="space-y-6">
-            @foreach ($feed as $post)
+    <div class="max-w-3xl mx-auto my-12 px-4 pb-24"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
+        
+        <div class="space-y-8">
+            @forelse ($feed as $post)
                 @php($isGrab = $post->isGrab())
 
-                <div class="card shadow-xl border {{ $isGrab ? 'bg-secondary text-secondary-content border-secondary mura-grab-card' : 'bg-base-100 border-base-300' }}">
-                    <div class="card-body p-6">
+                <div class="card w-full shadow-xl border {{ $isGrab ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
+                    <div class="card-body p-8">
 
-                        <div class="flex justify-between items-start mb-4">
+                        <div class="flex justify-between items-start mb-6 text-typewriter text-sm text-base-content/60">
                             <div>
-                                <span class="font-bold">{{ $post->user->display_name ?? 'Anonymous' }}</span>
-
-                                @if($isGrab)
-                                    <span class="badge badge-outline badge-sm ml-2">Grabbed</span>
-                                @else
-                                    @if($post->is_private)
-                                        <span class="badge badge-error badge-sm ml-2">Private</span>
-                                    @else
-                                        <span class="badge badge-success badge-sm ml-2">Public</span>
-                                    @endif
-                                @endif
+                                <span class="font-bold text-base-content tracking-wide">{{ $post->user->name ?? 'Anonymous' }}</span>
+                                <span class="italic ml-2">
+                                    @if($isGrab) — Grabbed @elseif($post->is_private) — Private @else — Public @endif
+                                </span>
                             </div>
-                            <span class="text-xs opacity-70">{{ $post->created_at->diffForHumans() }}</span>
+                            <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
                         </div>
 
-                        <div class="prose max-w-none">
+                        <div class="prose max-w-none text-typewriter text-lg leading-relaxed mb-4 text-base-content">
                             {!! $post->content_html !!} 
                         </div>
 
-                        <div class="card-actions justify-end mt-4 pt-4 border-t border-base-300/20">
+                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-typewriter text-sm">
                             @if($isGrab)
-                                <button class="btn btn-ghost btn-xs">Ungrab</button>
+                                <button class="hover:text-error transition-colors text-base-content/60">Ungrab</button>
                             @else
                                 @can('update', $post)
-                                    <a href="#" class="btn btn-ghost btn-xs">Edit</a>
+                                    @if($post->isEditable())
+                                        <a href="{{ route('quotes.edit', $post) }}" class="hover:text-base-content transition-colors text-base-content/60">Edit</a>
+                                    @endif
                                 @endcan
 
                                 @can('delete', $post)
-                                    <button class="btn btn-ghost btn-xs text-error">Delete</button>
+                                    <button class="hover:text-error transition-colors text-base-content/60">Delete</button>
                                 @endcan
                             @endif
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
+                    <p class="text-typewriter text-base-content/50 italic mb-6">
+                        The paper is blank. No thoughts have been carved yet.
+                    </p>
+                    
+                    <a href="{{ route('quotes.create') }}" 
+                    class="btn rounded-none font-normal text-typewriter border border-slate-200 bg-slate-50 hover:bg-slate-100 px-10 transition-all shadow-sm">
+                        Write your first thought
+                    </a>
+                </div>
+            @endforelse
         </div>
-
     </div>
+
+    <a href="{{ route('quotes.create') }}" 
+       class="fixed bottom-8 right-8 btn btn-circle btn-lg shadow-2xl border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all duration-300 group">
+        <span class="text-typewriter text-2xl group-hover:scale-110 transition-transform">+</span>
+    </a>
+
 </x-app-layout>
