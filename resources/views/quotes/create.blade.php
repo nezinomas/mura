@@ -1,41 +1,24 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        
-        <form method="POST" action="{{ route('quotes.store') }}" x-data="{ isPrivate: false }">
-            @csrf
+    <x-slot name="header">
+        <div class="text-center text-typewriter w-full">
+            {{ isset($quote) ? 'Edit Thought' : 'Compose Thought' }}
+        </div>
+    </x-slot>
 
-            <textarea
-                name="content"
-                placeholder="A beautifully quiet thought..."
-                class="block w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >{{ old('content') }}</textarea>
+    <div class="flex justify-center my-12 px-4">
+        <div class="card w-full max-w-3xl bg-base-100 shadow-xl border border-base-300 flex flex-col h-[75vh]">
+            <div class="card-body p-8 flex flex-col flex-1 h-full">
+                @if(isset($quote))
+                    <form method="POST" action="{{ route('quotes.update', $quote) }}" class="flex flex-col flex-1 h-full w-full">
+                        @method('PUT')
+                @else
+                    <form method="POST" action="{{ route('quotes.store') }}" class="flex flex-col flex-1 h-full w-full">
+                @endif
+                    @csrf
+                    @include('quotes.partials.form', ['buttonText' => isset($quote) ? 'Update' : 'Publish'])
+                </form>
 
-            @error('content')
-                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-            @enderror
-
-            <div class="mt-4 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <input type="checkbox" name="is_private" x-model="isPrivate" class="hidden">
-
-                    <button 
-                        type="button" 
-                        @click="isPrivate = !isPrivate"
-                        class="btn btn-sm transition-colors duration-300"
-                        :class="isPrivate ? 'btn-error' : 'btn-success'"
-                    >
-                        <span x-text="isPrivate ? 'Private' : 'Public'"></span>
-                    </button>
-
-                    <span class="text-xs text-gray-500 italic">
-                        <span x-show="!isPrivate">Everyone can see this.</span>
-                        <span x-show="isPrivate">Only you can see this.</span>
-                    </span>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save Thought</button>
             </div>
-        </form>
-
+        </div>
     </div>
 </x-app-layout>
