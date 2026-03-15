@@ -89,6 +89,14 @@ class User extends Authenticatable
                 $user->display_name = $user->name;
             }
         });
+
+        static::deleting(function (User $user) {
+            // 1. Find all private quotes belonging to this user and delete them
+            $user->quotes()->where('is_private', true)->delete();
+
+            // 2. Find all public quotes belonging to this user and detach them
+            $user->quotes()->where('is_private', false)->update(['user_id' => null]);
+        });
     }
 
     public function quotes()

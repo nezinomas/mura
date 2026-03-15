@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Quote;
+
 
 beforeEach(function() {
     $this->user = User::factory()->create();
@@ -155,6 +157,46 @@ test('correct password must be provided to delete account', function () {
         ->assertRedirect('/profile');
 
     $this->assertNotNull($this->user->fresh());
+});
+
+
+test('user deletion removes private quotes but leaves public ones', function() {
+    $privateQuote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => true
+    ]);
+
+    $publicQuote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false
+    ]);
+
+    // User deletes their own account
+    $response = $this
+        ->actingAs($this->user)
+        ->delete('/profile', [
+            'password' => 'password',
+        ]);
+
+    // Assert: The user is gone
+    $this->assertDatabaseMissing('users', [
+        'id' => $this->user->id
+    ]);
+
+    // Assert: The private quote is permanently deleted
+    $this->assertDatabaseMissing('quotes', [
+        'id' => $privateQuote->id
+    ]);
+
+    // Assert: The public quote remains, but belongs to no one
+    $this->assertDatabaseHas('quotes', [
+        'id' => $publicQuote->id,
+        'user_id' => null
+    ]);
+
+    // Assert: The typography law kicks in
+    $publicQuote->refresh();
+    expect($publicQuote->authorDisplay)->toBe('(user lost in time)');
 });
 
 
