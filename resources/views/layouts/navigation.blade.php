@@ -7,6 +7,9 @@
         </a>
         
         <div class="hidden sm:flex items-center gap-6 mt-1">
+            <a href="{{ route('quotes.create') }}" class="text-typewriter hover:underline {{ request()->routeIs('quotes.create') ? 'underline' : 'opacity-100 font-medium' }}">
+                Compose
+            </a>
             <a href="{{ route('dashboard') }}" class="text-typewriter hover:underline {{ request()->routeIs('dashboard') ? 'underline' : 'opacity-70' }}">
                 Feed
             </a>
