@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quote;
-use App\Policies\QuotePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -34,7 +33,11 @@ class ComposeController extends Controller
     {
         Gate::authorize('delete', $quote);
 
-        $quote->delete();
+        if ($quote->is_private) {
+            $quote->delete();
+        } else {
+            $quote->update(['user_id' => null]);
+        }
 
         return redirect('/dashboard');
     }

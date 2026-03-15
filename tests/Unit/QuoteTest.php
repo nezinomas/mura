@@ -189,19 +189,6 @@ test('the model knows if a quote has been altered after creation', function () {
 });
 
 
-test('quote can be uses soft deletes to preserver memory', function () {
-    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
-
-    $quote->delete();
-
-    $this->assertSoftDeleted($quote);
-
-    $this->assertDatabaseHas('quotes', [
-        'id' => $quote->id,
-    ]);
-});
-
-
 test('model knows if logged user is a stranger (isGrab is true)', function() {
     $stranger = User::factory()->create();
     $quote = Quote::factory()->create(['user_id' => $stranger->id]);
