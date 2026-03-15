@@ -88,3 +88,11 @@ test('user does not see edit or delete buttons on grabbed thoughts', function ()
     $response->assertDontSee('Edit');
     $response->assertDontSee('Delete');
 });
+
+
+test('user should see change password link', function() {
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    $response->assertSee(route('password.change'));
+    $response->assertSeeText('Change Password');
+});
