@@ -3,7 +3,7 @@
 use App\Models\User;
 
 
-dataset('invalid_thoughts', [
+dataset('invalid_quotes', [
     'empty' => [''],
     'too short' => ['ab'],
     'too long' => [str_repeat('a', 1001)],
@@ -15,14 +15,14 @@ beforeEach(function () {
 });
 
 
-test('guest cannot see compose page', function() {
+test('guest cannot see quotes create', function() {
     $reponse = $this->get(route('quotes.create'));
 
     $reponse->assertRedirect('/login');
 });
 
 
-test('authenticated user can see create page', function() {
+test('authenticated user can see quotes create', function() {
     $response = $this->actingAs($this->user)->get(route('quotes.create'));
 
     $response->assertStatus(200);
@@ -31,7 +31,7 @@ test('authenticated user can see create page', function() {
 });
 
 
-test('compose page contains required html form elements', function () {
+test('quote create contains required html form elements', function () {
     $createPageUrl = route('quotes.create');
     $storeActionUrl = route('quotes.store');
 
@@ -47,24 +47,24 @@ test('compose page contains required html form elements', function () {
 });
 
 
-test('user can save valid public thought', function() {
+test('user can save valid public quote', function() {
     $response = $this->actingAs($this->user)->post(route('quotes.store'), [
-        'content' => 'This is a brand new thought for the mura feed.'
+        'content' => 'This is a brand new quote for the mura feed.'
     ]);
 
     $response->assertRedirect('/dashboard');
 
     $this->assertDatabaseHas('quotes', [
         'user_id' => $this->user->id,
-        'content' => 'This is a brand new thought for the mura feed.',
+        'content' => 'This is a brand new quote for the mura feed.',
         'is_private' => false,
     ]);
 });
 
 
-test('user can save valid private thought', function () {
+test('user can save valid private quote', function () {
     $response = $this->actingAs($this->user)->post(route('quotes.store'), [
-        'content' => 'This is a secret thought.',
+        'content' => 'This is a secret quote.',
         'is_private' => true,
     ]);
 
@@ -72,41 +72,41 @@ test('user can save valid private thought', function () {
 
     $this->assertDatabaseHas('quotes', [
         'user_id' => $this->user->id,
-        'content' => 'This is a secret thought.',
+        'content' => 'This is a secret quote.',
         'is_private' => true,
     ]);
 });
 
 
-test('reject invalid thoughts', function ($invalidContent) {
+test('reject invalid quotes', function ($invalidContent) {
     $response = $this->actingAs($this->user)->post(route('quotes.store'), [
         'content' => $invalidContent,
     ]);
 
     $response->assertSessionHasErrors('content');
-})->with('invalid_thoughts');
+})->with('invalid_quotes');
 
 
 test('reject an invalid privacy flag', function () {
     $response = $this->actingAs($this->user)->post(route('quotes.store'), [
-        'content' => 'This is a perfectly valid thought.',
+        'content' => 'This is a perfectly valid quote.',
         'is_private' => 'this-is-not-a-boolean',
     ]);
     $response->assertSessionHasErrors('is_private');
 });
 
 
-test('rate limits a user to 5 thoughts per minute', function () {
+test('rate limits a user to 5 quotes per minute', function () {
     // A bot successfully posts 5 times in a single second
     for ($i = 0; $i < 5; $i++) {
         $this->actingAs($this->user)->post(route('quotes.store'), [
-            'content' => "This is valid thought number {$i}.",
+            'content' => "This is valid quote number {$i}.",
         ])->assertRedirect('/dashboard');
     }
 
     // The bot aggressively tries to post a 6th time...
     $response = $this->actingAs($this->user)->post(route('quotes.store'), [
-        'content' => 'This is the spam thought.',
+        'content' => 'This is the spam quote.',
     ]);
 
     // Reject request with a "429 Too Many Requests" status code
