@@ -1,60 +1,137 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Quote;
+
+
+beforeEach(function() {
+    $this->user = User::factory()->create();
+});
+
 
 test('profile page is displayed', function () {
-    $user = User::factory()->create();
-
     $response = $this
-        ->actingAs($user)
+        ->actingAs($this->user)
         ->get('/profile');
 
     $response->assertOk();
 });
 
-test('profile information can be updated', function () {
-    $user = User::factory()->create();
 
+test('profile has form fields email user_name display_name', function() {
     $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+    ->actingAs($this->user)
+    ->get('/profile');
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
-    $user->refresh();
-
-    $this->assertSame('test user', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
+    $response->assertSee('name="name"', false);
+    $response->assertSee('name="email', false);
+    $response->assertSee('name="display_name', false);
 });
 
-test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
 
+test('profile update uses the custom username rule', function () {
     $response = $this
-        ->actingAs($user)
+        ->actingAs($this->user)
         ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => $user->email,
+            'name' => 'Bad name',
+            'email' => 'test@test.com',
+        ]);
+
+    $response->assertSessionHasErrors('name');
+
+    $this->assertDatabaseMissing('users', [
+        'name' => 'Bad name'
+    ]);
+});
+
+
+test('profile update requires a username of at least 3 characters', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => 'ab', 
+            'email' => $this->user->email,
+        ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+test('profile update rejects a username longer than 25 characters', function () {
+    $longName = str_repeat('a', 26);
+    
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => $longName, 
+            'email' => $this->user->email,
+        ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+
+test('profile information can be updated', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => 'TestUser',
+            'email' => 'test@example.com',
+            'display_name' => "Test User",
         ]);
 
     $response
         ->assertSessionHasNoErrors()
         ->assertRedirect('/profile');
 
-    $this->assertNotNull($user->refresh()->email_verified_at);
+    $this->user->refresh();
+
+    $this->assertSame('testuser', $this->user->name);
+    $this->assertSame('test@example.com', $this->user->email);
+    $this->assertNull($this->user->email_verified_at);
+});
+
+
+dataset('invalid_display_names', [
+    'more than 51' => [str_repeat('a', 51)],
+    'less than 3' => ['xz'],
+    'empty' => [''],
+]);
+
+test('profile fails update invalid display_name', function(string $name) {
+    $response = $this
+    ->actingAs($this->user)
+    ->patch('/profile', [
+        'name' => $this->user->name,
+        'email' => $this->user->email,
+        'display_name' => $name,
+    ]);
+
+    $response->assertSessionHasErrors('display_name');
+})->with('invalid_display_names');
+
+
+test('email verification status is unchanged when the email address is unchanged', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->patch('/profile', [
+            'name' => 'Test_User',
+            'email' => $this->user->email,
+            'display_name' => $this->user->display_name,
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/profile');
+
+    $this->assertNotNull($this->user->refresh()->email_verified_at);
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
-
     $response = $this
-        ->actingAs($user)
+        ->actingAs($this->user)
         ->delete('/profile', [
             'password' => 'password',
         ]);
@@ -64,14 +141,12 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    $this->assertNull($user->fresh());
+    $this->assertNull($this->user->fresh());
 });
 
 test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
-
     $response = $this
-        ->actingAs($user)
+        ->actingAs($this->user)
         ->from('/profile')
         ->delete('/profile', [
             'password' => 'wrong-password',
@@ -81,5 +156,106 @@ test('correct password must be provided to delete account', function () {
         ->assertSessionHasErrorsIn('userDeletion', 'password')
         ->assertRedirect('/profile');
 
-    $this->assertNotNull($user->fresh());
+    $this->assertNotNull($this->user->fresh());
+});
+
+
+test('user deletion removes private quotes but leaves public ones', function() {
+    $privateQuote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => true
+    ]);
+
+    $publicQuote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false
+    ]);
+
+    // User deletes their own account
+    $response = $this
+        ->actingAs($this->user)
+        ->delete('/profile', [
+            'password' => 'password',
+        ]);
+
+    // Assert: The user is gone
+    $this->assertDatabaseMissing('users', [
+        'id' => $this->user->id
+    ]);
+
+    // Assert: The private quote is permanently deleted
+    $this->assertDatabaseMissing('quotes', [
+        'id' => $privateQuote->id
+    ]);
+
+    // Assert: The public quote remains, but belongs to no one
+    $this->assertDatabaseHas('quotes', [
+        'id' => $publicQuote->id,
+        'user_id' => null
+    ]);
+
+    // Assert: The typography law kicks in
+    $publicQuote->refresh();
+    expect($publicQuote->authorDisplay)->toBe('(user lost in time)');
+});
+
+
+test('change password page is displayed', function() {
+    $response = $this
+        ->actingAs($this->user)
+        ->get('change-password');
+
+    $response->assertOk();
+});
+
+
+test('change password page contains the correct form inputs', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->get('/change-password');
+
+    $response->assertOk();
+
+    $response->assertSee('name="current_password"', false);
+    $response->assertSee('name="password"', false);
+    $response->assertSee('name="password_confirmation"', false);
+
+    $response->assertSee('name="_method" value="put"', false);
+});
+
+
+test('change password view displays validation errors to the user', function () {
+    $response = $this
+        ->actingAs($this->user)
+        ->from('/change-password') 
+        ->put('/password', [
+            'current_password' => '',
+            'password' => '',
+            'password_confirmation' => '',
+        ]);
+
+    $response->assertRedirect('/change-password');
+
+    $this->followRedirects($response)
+        ->assertSeeText('The current password field is required')
+        ->assertSeeText('The password field is required');
+});
+
+
+test('password was succesfully changed', function() {
+    $response = $this
+        ->actingAs($this->user)
+        ->from('/change-password')
+        ->put('/password', [
+            'current_password' => 'password',
+            'password' => '123-password',
+            'password_confirmation' => '123-password'
+        ]);
+
+    $this->user->refresh();
+
+    expect(Hash::check('123-password', $this->user->password))->toBeTrue();
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect('/change-password');
 });

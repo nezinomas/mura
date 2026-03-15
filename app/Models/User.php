@@ -33,7 +33,18 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => strtolower(trim($value)),
+            set: fn(string $value) => $value |> trim(...) |> strtolower(...),
+        );
+    }
+
+    /**
+     * The Display Name mutator
+     * Automatically trim spaces and strip tags.
+     */
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => $value |> strip_tags(...) |> trim(...),
         );
     }
 
@@ -77,6 +88,14 @@ class User extends Authenticatable
             if (empty($user->display_name)) {
                 $user->display_name = $user->name;
             }
+        });
+
+        static::deleting(function (User $user) {
+            // 1. Find all private quotes belonging to this user and delete them
+            $user->quotes()->where('is_private', true)->delete();
+
+            // 2. Find all public quotes belonging to this user and detach them
+            $user->quotes()->where('is_private', false)->update(['user_id' => null]);
         });
     }
 

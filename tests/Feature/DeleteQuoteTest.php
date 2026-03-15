@@ -8,15 +8,34 @@ beforeEach(function () {
 });
 
 
-test('author can sof-delete their own thought', function() {
+test('author can delete this own private thought', function() {
     $quote = Quote::factory()->create([
         'user_id' => $this->user->id,
+        'is_private' => true,
     ]);
 
     $response = $this->actingAs($this->user)->delete("/quotes/{$quote->id}");
     $response->assertRedirect('/dashboard');
 
-    $this->assertSoftDeleted($quote);
+    $this->assertDatabaseMissing('quotes', [
+        'id' => $quote->id,
+    ]);
+});
+
+
+test('author can not delete this own public thought', function() {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false,
+    ]);
+
+    $response = $this->actingAs($this->user)->delete("/quotes/{$quote->id}");
+    $response->assertRedirect('/dashboard');
+
+    $this->assertDatabaseHas('quotes', [
+            'id' => $quote->id,
+            'user_id' => null,
+        ]);
 });
 
 
@@ -27,5 +46,9 @@ test('user cannot delete someone else thought', function() {
     $response = $this->actingAs($this->user)->delete("/quotes/{$strangersQuote->id}");
 
     $response->assertStatus(403);
-    $this->assertNotSoftDeleted($strangersQuote);
+
+    $this->assertDatabaseHas('quotes', [
+            'id' => $strangersQuote->id,
+            'user_id' => $stranger->id,
+        ]);
 });
