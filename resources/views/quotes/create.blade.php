@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         
-        <form method="POST" action="/compose" x-data="{ isPrivate: false }">
+        <form method="POST" action="{{ route('quotes.store') }}" x-data="{ isPrivate: false }">
             @csrf
 
             <textarea
