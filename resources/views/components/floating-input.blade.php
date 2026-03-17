@@ -1,38 +1,32 @@
 @props(['id', 'name', 'type' => 'text', 'label', 'required' => false, 'autocomplete' => '', 'value' => '', 'bag' => 'default'])
 
 @php
-    $initialValue = old($name, $value);
+    // Check if there is a Laravel validation error on the server
+    $hasServerSideError = $errors->getBag($bag)->has($name);
 @endphp
 
-<div class="mb-6" x-data="{ 
-    hasError: {{ $errors->getBag($bag)->has($name) ? 'true' : 'false' }},
-    hasValue: {{ $initialValue ? 'true' : 'false' }}
-}">
+<div class="mb-6" x-data="{ hasError: {{ $hasServerSideError ? 'true' : 'false' }} }">
     <div class="relative">
         <input 
             type="{{ $type }}" 
             id="{{ $id }}" 
             name="{{ $name }}" 
-            value="{{ $initialValue }}" 
+            value="{{ old($name, $value) }}" 
             {{ $required ? 'required' : '' }} 
             {{ $autocomplete ? 'autocomplete='.$autocomplete : '' }}
-            class="peer input w-full h-auto pt-6 pb-2 focus:outline-none rounded-none transition-colors" 
-            :class="hasError ? 'input-error focus:border-error' : 'input-bordered'"
-
-            {{-- When the user types, remove the error AND update hasValue --}}
-            @input="hasError = false; hasValue = $el.value.length > 0" 
+            {{-- We use Blade to set the initial border, and Alpine (:class) to remove it dynamically --}}
+            class="peer input w-full h-auto pt-6 pb-2 focus:outline-none rounded-none transition-colors {{ $hasServerSideError ? 'input-error' : 'input-bordered' }}" 
+            :class="hasError ? 'input-error focus:border-error' : 'input-bordered focus:border-base-content/50'"
+            @input="hasError = false" 
             placeholder=" " 
         />
-
+        
         <label for="{{ $id }}" 
-            class="absolute left-4 uppercase tracking-widest transition-all duration-200 pointer-events-none"
-            :class="[
-                hasError ? 'text-error' : 'text-base-content/50',
-                /* If it has a value, OR the peer is focused: Shrink it to the top */
-                hasValue ? 'top-1 text-[10px]' : 'top-4 text-xs peer-focus:top-1 peer-focus:text-[10px]',
-                /* If it has no value AND it's not focused: Keep it normal size (handled by default classes above + peer-focus fallback) */
-                !hasValue ? 'peer-placeholder-shown:top-4 peer-placeholder-shown:text-xs' : ''
-            ]">
+            class="absolute left-4 uppercase tracking-widest transition-all duration-200 pointer-events-none
+                   top-1 text-[10px] peer-focus:top-1 peer-focus:text-[10px]
+                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
+                   {{ $hasServerSideError ? 'text-error' : 'text-base-content/50' }}"
+            :class="hasError ? 'text-error' : 'text-base-content/50 peer-focus:text-base-content'">
             {{ $label }}
         </label>
     </div>
