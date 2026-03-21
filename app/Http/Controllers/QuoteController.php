@@ -117,4 +117,16 @@ class QuoteController extends Controller implements HasMiddleware
 
         return redirect('/dashboard');
     }
+
+    /**
+     * Grab a public thought from another user
+     */
+    public function grab(Request $request, Quote $quote)
+    {
+        Gate::authorize('grab', $quote);
+
+        $request->user()->grabs()->syncWithoutDetaching([$quote->id]);
+
+        return back();
+    }
 }

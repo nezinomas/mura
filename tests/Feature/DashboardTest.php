@@ -31,7 +31,7 @@ test('the dashboard displays a complete mix of user content', function () {
         'user_id' => $otherUser->id,
         'content' => 'A brilliant thought I grabbed'
     ]);
-    $this->user->grabs()->attach($grabbedQuote); // This demands the relationship exists!
+    $this->user->grabs()->attach($grabbedQuote);
 
     $response = $this->actingAs($this->user)->get('/dashboard');
 
@@ -42,10 +42,10 @@ test('the dashboard displays a complete mix of user content', function () {
     $response->assertSee('This is a secret');
     $response->assertSee('A brilliant thought I grabbed');
 
-    // Assertions for UI Logic (DaisyUI classes or Alpine indicators)
+
     $response->assertSee('Public');
     $response->assertSee('Private');
-    $response->assertSee('mura-grab-card'); // Our custom grab style
+    $response->assertSee('mura-grab-card');
 });
 
 
@@ -57,7 +57,6 @@ test('author sees edit and delete buttons on their recent thoughts', function ()
 
     $response = $this->actingAs($this->user)->get('/dashboard');
 
-    // We check for the presence of the buttons (or the forms they trigger)
     $response->assertSee('Edit');
     $response->assertSee('Delete');
 });

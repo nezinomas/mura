@@ -6,19 +6,19 @@
     </x-slot>
 
     <div class="max-w-3xl mx-auto my-12 px-4 pb-24"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
-        
         <div class="space-y-8">
             @forelse ($feed as $post)
-                @php($isGrab = $post->isGrab())
+                @php($isMine = $post->isMine())
+                @php($isGrabbedByMe = $post->isGrabbedByMe())
 
-                <div class="card w-full shadow-xl border {{ $isGrab ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
+                <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
                     <div class="card-body p-8">
 
                         <div class="flex justify-between items-start mb-6 text-typewriter text-sm text-base-content/60">
                             <div>
                                 <span class="font-bold text-base-content tracking-wide">{{ $post->user->name ?? 'Anonymous' }}</span>
                                 <span class="italic ml-2">
-                                    @if($isGrab) — Grabbed @elseif($post->is_private) — Private @else — Public @endif
+                                    @if($isMine && $post->is_private) — Private @else — Public @endif
                                 </span>
                             </div>
                             <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-typewriter text-sm">
-                            @if($isGrab)
+                            @if($isGrabbedByMe)
                                 <button class="hover:text-error transition-colors text-base-content/60">Ungrab</button>
                             @else
                                 @can('update', $post)

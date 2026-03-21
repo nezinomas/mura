@@ -189,20 +189,72 @@ test('the model knows if a quote has been altered after creation', function () {
 });
 
 
-test('model knows if logged user is a stranger (isGrab is true)', function() {
+test('isMine returns true if logged user is author', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isMine())->toBeTrue();
+});
+
+
+test('isMine return false if logged user is stanger', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($stranger);
+
+    expect($quote->isMine())->toBeFalse();
+});
+
+
+test('isMine return false for an aunauthentiated guest', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    expect($quote->isMine())->toBeFalse();
+});
+
+
+test('isGrabbedByMe returns true if logged user grabbed quote', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $stranger->id]);
+
+    $this->user->grabs()->attach($quote->id);
+
+    $this->actingAs($this->user);
+    $quote->refresh();
+
+    expect($quote->isGrabbedByMe())->toBeTrue();
+});
+
+
+test('isGrabbedByMe returns false if logged user has not grabbed it', function() {
     $stranger = User::factory()->create();
     $quote = Quote::factory()->create(['user_id' => $stranger->id]);
 
     $this->actingAs($this->user);
 
-    expect($quote->isGrab())->toBeTrue();
+    expect($quote->isGrabbedByMe())->toBeFalse();
 });
 
 
-test('model knows if logged user is the author (isGrab is false)', function() {
-    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+test('isGrabbedByMe return false safely for unauthenticated guest', function() {
+    $quote = Quote::factory()->create();
 
-    $this->actingAs($this->user);
+    // Model's auth()->check() should catch this safely
+    expect($quote->isGrabbedByMe())->toBeFalse();
+});
 
-    expect($quote->isGrab())->toBeFalse();
+
+test('grabbedBy relationship accurately tracks multiple users', function() {
+    $quote = Quote::factory()->create();
+
+    $userA = User::factory()->create();
+    $userB = User::factory()->create();
+
+    $userA->grabs()->attach($quote->id);
+    $userB->grabs()->attach($quote->id);
+
+    expect($quote->grabbedBy)->toHaveCount(2);
+    expect($quote->grabbedBy->pluck('id')->toArray())->toContain($userA->id, $userB->id);
 });

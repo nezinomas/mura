@@ -88,14 +88,19 @@ class Quote extends Model
         return $this->updated_at->notEqualTo($this->created_at);
     }
 
-    public function isGrab(): bool
+    public function isMine(): bool
     {
-        return $this->user_id !== auth()->id();
+        return $this->user_id == auth()->id();
     }
 
     public function grabbedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'quote_user')->withTimestamps();
+    }
+
+    public function isGrabbedByMe(): bool
+    {
+        return auth()->check() && $this->grabbedBy->contains(auth()->id());
     }
 
     protected function casts(): array

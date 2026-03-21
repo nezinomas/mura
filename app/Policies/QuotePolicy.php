@@ -44,7 +44,7 @@ class QuotePolicy
 
         // 2. The mura Immutability Rule
         if ($wantsToMakePrivate && $quote->grabbedBy()->exists()) {
-            return Response::deny('This public thought has been grabbed and is now permanently visible.');
+            return Response::deny(__('This public thought has been grabbed and is now permanently visible.'));
         }
 
         return Response::allow();
@@ -72,5 +72,22 @@ class QuotePolicy
     public function forceDelete(User $user, Quote $quote): bool
     {
         return false;
+    }
+
+
+    /**
+     * Determine whether user can grab the thought
+     */
+    public function grab(User $user, Quote $quote): Response
+    {
+        if ($quote->isMine()) {
+            return Response::deny(__('You cannot grab your own thought.'));
+        }
+
+        if ($quote->is_private) {
+            return Response::deny(__('You cannot grab a private thought.'));
+        }
+
+        return Response::allow();
     }
 }
