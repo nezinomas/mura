@@ -13,6 +13,43 @@ beforeEach(function() {
 });
 
 
+test('quest cannot update quote', function() {
+    $this->patch(route('quotes.update', $this->quote->id), [
+        'content' => 'Hacked by a quest'
+    ])->assertRedirect(route('login'));
+});
+
+
+test('stanger cannot update another users quote', function() {
+    $stranger = User::factory()->create();
+
+    $reponse = $this->actingAs($stranger)->patch(route('quotes.update', $this->quote->id), [
+        'content' => 'I am rewriting your thought'
+    ]);
+
+    $reponse->assertStatus(403);
+
+    $this->assertDatabaseHas('quotes', [
+        'id' => $this->quote->id,
+        'content' => $this->quote->content,
+    ]);
+});
+
+
+test('refect invalid quote updates', function($invalidContent) {
+    $this->actingAs($this->user)
+        ->patch(
+            route('quotes.update', $this->quote->id), [
+                'content' => $invalidContent,
+            ])
+        ->assertSessionHasErrors('content');
+})->with([
+    'empty' => [''],
+    'too short' => ['ab'],
+    'too long' => [str_repeat('a', 1001)],
+]);
+
+
 test('author can make ungrabbed public quote private', function() {
     $this->actingAs($this->user)
         ->patch(
@@ -42,3 +79,4 @@ test('author can not make grabbed quote private', function() {
         'is_private' => false,
     ]);
 });
+

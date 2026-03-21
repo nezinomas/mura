@@ -13,6 +13,14 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
+
+test('guest cannot create quote', function() {
+    $this->post(route('quotes.store'), [
+        'content' => 'A ghost wrote this.',
+    ])->assertRedirect(route('login'));
+});
+
+
 test('user can save valid public quote', function() {
     $data = ['content' => 'This is a brand new quote for the mura feed.'];
 

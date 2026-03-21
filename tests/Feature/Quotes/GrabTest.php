@@ -9,6 +9,11 @@ beforeEach(function() {
 });
 
 
+test('guest cannot grab quote', function() {
+    $this->post(route('quotes.grab', $this->quote->id))->assertRedirect(route('login'));
+});
+
+
 test('user can grab public quote from a stranger', function() {
     $grabber = User::factory()->create();
 
@@ -27,8 +32,7 @@ test('user cannot grab a private quote', function() {
 
     $sneakyGrabber = User::factory()->create();
 
-    $this->quote->is_private = true;
-    $this->quote->refresh();
+    $this->quote->update(['is_private' => true]);
 
     $response = $this->actingAs($sneakyGrabber)->post(route('quotes.grab', $this->quote->id));
 
@@ -47,3 +51,19 @@ test('user cannot grab their own quote', function() {
     ]);
 });
 
+
+test('user can click grab multiple times without cashing databse', function() {
+    $grabber = User::factory()->create();
+
+    // Click 1: initial grab
+    $this->actingAs($grabber)
+        ->post(route('quotes.grab', $this->quote->id))
+        ->assertRedirect();
+
+    // Click 2: laggy double-click
+    $this->actingAs($grabber)
+        ->post(route('quotes.grab', $this->quote->id))
+        ->assertRedirect();
+
+    expect($grabber->grabs()->where('quote_id', $this->quote->id)->count())->toBe(1);
+});
