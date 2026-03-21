@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -90,6 +91,11 @@ class Quote extends Model
     public function isGrab(): bool
     {
         return $this->user_id !== auth()->id();
+    }
+
+    public function grabbedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'quote_user')->withTimestamps();
     }
 
     protected function casts(): array

@@ -35,9 +35,19 @@ class QuotePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Quote $quote): bool
+    public function update(User $user, Quote $quote, bool $wantsToMakePrivate = false): Response
     {
-        return $user->id === $quote->user_id;
+        // 1. Standard Ownership Check (You likely already have this)
+        if ($user->id !== $quote->user_id) {
+            return Response::deny('You do not own this thought.');
+        }
+
+        // 2. The mura Immutability Rule
+        if ($wantsToMakePrivate && $quote->grabbedBy()->exists()) {
+            return Response::deny('This public thought has been grabbed and is now permanently visible.');
+        }
+
+        return Response::allow();
     }
 
     /**
