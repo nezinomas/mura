@@ -75,34 +75,37 @@ class Quote extends Model
         );
     }
 
-    // Time Laws
+    // Thought can be edited 24 hours after create
     public function isEditable(): bool
     {
-        // Is the 24-hour expiration deadline still in the future?
         return $this->created_at->addHours(24)->isFuture();
     }
 
+    // Check if thought was edited
     public function isEdited(): bool
     {
-        // If timestamps no longer match exactly, the stone has been altered.
         return $this->updated_at->notEqualTo($this->created_at);
     }
 
+    // Check if thought is mine
     public function isMine(): bool
     {
         return $this->user_id == auth()->id();
     }
 
+    //
     public function grabbedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'quote_user')->withTimestamps();
     }
 
+    // Check if thought is grabbed by me
     public function isGrabbedByMe(): bool
     {
         return auth()->check() && $this->grabbedBy->contains(auth()->id());
     }
 
+    // 
     protected function casts(): array
     {
         return [
