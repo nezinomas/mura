@@ -18,6 +18,6 @@ class DashboardController extends Controller
 
         $feed = $quotes->concat($grabs)->sortByDesc('created_at');
 
-        return view('dashboard', ['feed' => $feed]);
+        return view('dashboard', ['quotes' => $feed]);
     }
 }

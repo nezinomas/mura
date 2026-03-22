@@ -7,7 +7,7 @@
 
     <div class="max-w-3xl mx-auto my-12 px-4 pb-24"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
         <div class="space-y-8">
-            @forelse ($feed as $post)
+            @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
                 @php($isGrabbedByMe = $post->isGrabbedByMe())
 
