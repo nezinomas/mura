@@ -102,7 +102,11 @@ class Quote extends Model
     // Check if thought is grabbed by me
     public function isGrabbedByMe(): bool
     {
-        return auth()->check() && $this->grabbedBy->contains(auth()->id());
+        if (! auth()->check()) {
+            return false;
+        }
+
+        return $this->grabbedBy()->where('quote_user.user_id', auth()->id())->exists();
     }
 
     // 

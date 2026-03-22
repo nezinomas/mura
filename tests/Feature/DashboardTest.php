@@ -2,6 +2,7 @@
 
 use App\Models\Quote;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 
@@ -94,4 +95,27 @@ test('user should see change password link', function() {
 
     $response->assertSee(route('password.change'));
     $response->assertSeeText('Change Password');
+});
+
+
+test('dashboard feed does not trigger N+1 lazy loading', function () {
+    // 1. Turn on the strict alarm
+    Model::preventLazyLoading(true);
+
+    // 2. Arrange: Create multiple quotes and grabs to force a collection loop
+    Quote::factory(3)->create(['user_id' => $this->user->id]);
+
+    $otherUser = User::factory()->create();
+    $grabbedQuotes = Quote::factory(2)->create(['user_id' => $otherUser->id]);
+    $this->user->grabs()->attach($grabbedQuotes->pluck('id'));
+
+    // 3. Act: Load the dashboard
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    // 4. Assert: If the controller or Blade view lazy loads the authors, 
+    // this will crash with a 500 error before it ever reaches this line
+    $response->assertStatus(200);
+
+    // Turn it off so it doesn't leak into other tests
+    Model::preventLazyLoading(false);
 });

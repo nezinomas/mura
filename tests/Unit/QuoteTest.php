@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Quote;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 
 dataset('empty_quotes', [
@@ -257,4 +258,25 @@ test('grabbedBy relationship accurately tracks multiple users', function() {
 
     expect($quote->grabbedBy)->toHaveCount(2);
     expect($quote->grabbedBy->pluck('id')->toArray())->toContain($userA->id, $userB->id);
+});
+
+
+test('isGrabbedByMe runs a lightweight exists query instead of hydrating models', function() {
+    $quote = Quote::factory()->create();
+
+    $users = User::factory(3)->create();
+    $quote->grabbedBy()->attach($users->pluck('id'));
+
+    $this->actingAs($this->user);
+
+    DB::enableQueryLog();
+    $quote->isGrabbedByMe();
+    $queries = DB::getQueryLog();
+
+    expect(count($queries))->toBe(1);
+
+    $executedSql = $queries[0]['query'];
+
+    expect($executedSql)->toContain('exists');
+    expect($executedSql)->not->toContain('select * from `users`');
 });
