@@ -22,19 +22,19 @@
             <button 
                 type="button" 
                 @click="isPrivate = !isPrivate"
-                class="btn btn-sm rounded-none transition-colors duration-300 text-typewriter border border-base-300 font-normal"
+                class="btn btn-sm rounded-none transition-colors duration-300 border border-base-300 font-normal"
                 :class="isPrivate ? 'bg-base-200' : 'bg-transparent hover:bg-base-100'"
             >
                 <span x-text="isPrivate ? 'Private' : 'Public'"></span>
             </button>
 
-            <span class="text-xs text-base-content/60 italic text-typewriter">
+            <span class="text-xs text-base-content/60 italic">
                 <span x-show="!isPrivate">Everyone can see this.</span>
                 <span x-show="isPrivate">Only you can see this.</span>
             </span>
         </div>
 
-        <button type="submit" class="btn rounded-none font-normal text-typewriter border border-slate-200 bg-slate-50 hover:bg-slate-100 w-full sm:w-auto px-8 transition-colors duration-300">
+        <button type="submit" class="btn rounded-none font-normal border border-slate-200 bg-slate-50 hover:bg-slate-100 w-full sm:w-auto px-8 transition-colors duration-300">
             {{ $buttonText ?? 'Save Thought' }}
         </button>
         

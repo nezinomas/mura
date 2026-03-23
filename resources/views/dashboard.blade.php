@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center text-typewriter w-full">
+        <div class="text-center text-ui-label w-full">
             Your Feed
         </div>
     </x-slot>
@@ -14,7 +14,7 @@
                 <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
                     <div class="card-body p-8">
 
-                        <div class="flex justify-between items-start mb-6 text-typewriter text-sm text-base-content/60">
+                        <div class="flex justify-between items-start mb-6 text-ui-label text-sm text-base-content/60">
                             <div>
                                 <span class="font-bold text-base-content tracking-wide">{{ $post->user->name ?? 'Anonymous' }}</span>
                                 <span class="italic ml-2">
@@ -24,22 +24,22 @@
                             <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
                         </div>
 
-                        <div class="prose max-w-none text-typewriter text-lg leading-relaxed mb-4 text-base-content">
+                        <div class="prose max-w-none leading-relaxed mb-4 text-base-content">
                             {!! $post->content_html !!} 
                         </div>
 
-                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-typewriter text-sm">
+                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-ui-label text-sm">
                             @if($isGrabbedByMe)
                                 <button class="hover:text-error transition-colors text-base-content/60">Ungrab</button>
                             @else
                                 @can('update', $post)
                                     @if($post->isEditable())
-                                        <a href="{{ route('quotes.edit', $post) }}" class="hover:text-base-content transition-colors text-base-content/60">Edit</a>
+                                        <a href="{{ route('quotes.edit', $post) }}" class="text-ui-label uppercase hover:text-base-content transition-colors text-base-content/60">Edit</a>
                                     @endif
                                 @endcan
 
                                 @can('delete', $post)
-                                    <button class="hover:text-error transition-colors text-base-content/60">Delete</button>
+                                    <button class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60">Delete</button>
                                 @endcan
                             @endif
                         </div>
@@ -47,12 +47,12 @@
                 </div>
             @empty
                 <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                    <p class="text-typewriter text-base-content/50 italic mb-6">
+                    <p class="text-ui-label text-base-content/50 italic mb-6">
                         The paper is blank. No thoughts have been carved yet.
                     </p>
                     
                     <a href="{{ route('quotes.create') }}" 
-                    class="btn rounded-none font-normal text-typewriter border border-slate-200 bg-slate-50 hover:bg-slate-100 px-10 transition-all shadow-sm">
+                    class="btn rounded-none font-normal text-ui-label border border-slate-200 bg-slate-50 hover:bg-slate-100 px-10 transition-all shadow-sm">
                         Write your first thought
                     </a>
                 </div>
@@ -62,7 +62,7 @@
 
     <a href="{{ route('quotes.create') }}" 
        class="fixed bottom-8 right-8 btn btn-circle btn-lg shadow-2xl border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all duration-300 group">
-        <span class="text-typewriter text-2xl group-hover:scale-110 transition-transform">+</span>
+        <span class="text-ui-label text-2xl group-hover:scale-110 transition-transform">+</span>
     </a>
 
 </x-app-layout>

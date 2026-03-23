@@ -1,6 +1,6 @@
 <x-app-layout>
         <x-slot name="header">
-        <div class="text-center text-typewriter w-full">
+        <div class="text-center w-full">
             Change Password
         </div>
     </x-slot>
@@ -24,7 +24,7 @@
                     
                     <x-floating-input id="update_password_password_confirmation" name="password_confirmation" type="password" label="Confirm Password" required="true" autocomplete="new-password" bag="updatePassword" />
 
-                    <button type="submit" class="btn btn-neutral w-full rounded-none text-typewriter mt-2">
+                    <button type="submit" class="btn btn-neutral w-full rounded-none mt-2">
                         Save Password
                     </button>
                 </form>

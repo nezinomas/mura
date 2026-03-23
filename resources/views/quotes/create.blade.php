@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center text-typewriter w-full">
+        <div class="text-center w-full">
             {{ isset($quote) ? 'Edit Thought' : 'Compose Thought' }}
         </div>
     </x-slot>

@@ -18,14 +18,14 @@
                 <div class="mt-4 flex items-center justify-between">
                     <form method="POST" action="{{ route('verification.send') }}" novalidate="">
                         @csrf
-                        <button type="submit" class="btn btn-neutral btn-sm rounded-none text-typewriter">
+                        <button type="submit" class="btn btn-neutral btn-sm rounded-none">
                             Resend Email
                         </button>
                     </form>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="link link-hover text-typewriter opacity-70">
+                        <button type="submit" class="link link-hover opacity-70">
                             Log Out
                         </button>
                     </form>
