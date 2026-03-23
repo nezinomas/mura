@@ -119,3 +119,39 @@ test('dashboard feed does not trigger N+1 lazy loading', function () {
     // Turn it off so it doesn't leak into other tests
     Model::preventLazyLoading(false);
 });
+
+test('author sees standard delete warning for private thought', function () {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => true
+    ]);
+
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    $response->assertSee('Are you sure you want to delete this thought?');
+});
+
+test('author sees standard delete warning for ungrabbed public thought', function () {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false
+    ]);
+
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    $response->assertSee('Are you sure you want to delete this thought?');
+});
+
+test('author sees global feed warning when deleting grabbed public thought', function () {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false
+    ]);
+
+    $otherUser = User::factory()->create();
+    $otherUser->grabs()->attach($quote);
+
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    $response->assertSee('This thought will remain visible on the global feed forever.');
+});

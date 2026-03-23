@@ -39,11 +39,28 @@
                                 @endcan
 
                                 @can('delete', $post)
-                                    <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60">Delete</button>
-                                    </form>
+                                    <label for="delete-modal-{{ $post->id }}" class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60 cursor-pointer">Delete</label>
+
+                                    <x-modal id="delete-modal-{{ $post->id }}">
+                                        <x-slot name="title">Confirm Deletion</x-slot>
+                                        
+                                        <p>
+                                            @if(!$post->is_private && $post->grabbedBy()->exists())
+                                                This thought will remain visible on the global feed forever.
+                                            @else
+                                                Are you sure you want to delete this thought?
+                                            @endif
+                                        </p>
+
+                                        <x-slot name="actions">
+                                            <label for="delete-modal-{{ $post->id }}" class="btn rounded-none font-normal text-ui-label border border-slate-200 bg-slate-50 hover:bg-slate-100 px-6 transition-all shadow-sm cursor-pointer">Cancel</label>
+                                            <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn rounded-none font-normal text-ui-label border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 px-6 transition-all shadow-sm">Delete</button>
+                                            </form>
+                                        </x-slot>
+                                    </x-modal>
                                 @endcan
                             @endif
                         </div>
