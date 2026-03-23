@@ -39,7 +39,11 @@
                                 @endcan
 
                                 @can('delete', $post)
-                                    <button class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60">Delete</button>
+                                    <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60">Delete</button>
+                                    </form>
                                 @endcan
                             @endif
                         </div>
