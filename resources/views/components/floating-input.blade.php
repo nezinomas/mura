@@ -14,8 +14,7 @@
             value="{{ old($name, $value) }}" 
             {{ $required ? 'required' : '' }} 
             {{ $autocomplete ? 'autocomplete='.$autocomplete : '' }}
-            {{-- We use Blade to set the initial border, and Alpine (:class) to remove it dynamically --}}
-            class="peer input w-full h-auto pt-6 pb-2 focus:outline-none rounded-none transition-colors {{ $hasServerSideError ? 'input-error' : 'input-bordered' }}" 
+            class="text-sm peer input w-full h-auto pt-6 pb-2 focus:outline-none rounded-none transition-colors {{ $hasServerSideError ? 'input-error' : 'input-bordered' }}" 
             :class="hasError ? 'input-error focus:border-error' : 'input-bordered focus:border-base-content/50'"
             @input="hasError = false" 
             placeholder=" " 
