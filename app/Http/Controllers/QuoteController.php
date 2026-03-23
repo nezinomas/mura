@@ -129,4 +129,16 @@ class QuoteController extends Controller implements HasMiddleware
 
         return back();
     }
+
+    /**
+     * Ungrab a thought from another user
+     */
+    public function ungrab(Request $request, Quote $quote)
+    {
+        Gate::authorize('ungrab', $quote);
+
+        $request->user()->grabs()->detach($quote->id);
+
+        return back();
+    }
 }

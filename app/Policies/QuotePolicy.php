@@ -90,4 +90,14 @@ class QuotePolicy
 
         return Response::allow();
     }
+
+    /**
+     * Determine whether user can ungrab the thought
+     */
+    public function ungrab(User $user, Quote $quote): Response
+    {
+        return $quote->isGrabbedBy($user)
+            ? Response::allow()
+            : Response::deny(__('You have not grabbed this thought.'));
+    }
 }
