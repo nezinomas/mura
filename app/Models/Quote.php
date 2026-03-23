@@ -96,17 +96,17 @@ class Quote extends Model
     //
     public function grabbedBy(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'quote_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'quote_user');
     }
 
-    // Check if thought is grabbed by me
-    public function isGrabbedByMe(): bool
+    // Check if thought is grabbed by a specific user
+    public function isGrabbedBy(?User $user = null): bool
     {
-        if (! auth()->check()) {
+        if (!$user) {
             return false;
         }
 
-        return $this->grabbedBy()->where('quote_user.user_id', auth()->id())->exists();
+        return $this->grabbedBy()->where('quote_user.user_id', $user->id)->exists();
     }
 
     // 

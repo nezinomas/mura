@@ -9,7 +9,7 @@
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
-                @php($isGrabbedByMe = $post->isGrabbedByMe())
+                @php($isGrabbedBy = $post->isGrabbedBy(auth()->user()))
 
                 <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
                     <div class="card-body p-8">
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-ui-label text-sm">
-                            @if($isGrabbedByMe)
+                            @if($isGrabbedBy)
                                 <button class="hover:text-error transition-colors text-base-content/60">Ungrab</button>
                             @else
                                 @can('update', $post)

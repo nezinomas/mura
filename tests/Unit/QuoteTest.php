@@ -216,7 +216,7 @@ test('isMine return false for an aunauthentiated guest', function() {
 });
 
 
-test('isGrabbedByMe returns true if logged user grabbed quote', function() {
+test('isGrabbedBy returns true if logged user grabbed quote', function() {
     $stranger = User::factory()->create();
     $quote = Quote::factory()->create(['user_id' => $stranger->id]);
 
@@ -225,25 +225,25 @@ test('isGrabbedByMe returns true if logged user grabbed quote', function() {
     $this->actingAs($this->user);
     $quote->refresh();
 
-    expect($quote->isGrabbedByMe())->toBeTrue();
+    expect($quote->isGrabbedBy($this->user))->toBeTrue();
 });
 
 
-test('isGrabbedByMe returns false if logged user has not grabbed it', function() {
+test('isGrabbedBy returns false if logged user has not grabbed it', function() {
     $stranger = User::factory()->create();
     $quote = Quote::factory()->create(['user_id' => $stranger->id]);
 
     $this->actingAs($this->user);
 
-    expect($quote->isGrabbedByMe())->toBeFalse();
+    expect($quote->isGrabbedBy($this->user))->toBeFalse();
 });
 
 
-test('isGrabbedByMe return false safely for unauthenticated guest', function() {
+test('isGrabbedBy return false safely for unauthenticated guest', function() {
     $quote = Quote::factory()->create();
 
     // Model's auth()->check() should catch this safely
-    expect($quote->isGrabbedByMe())->toBeFalse();
+    expect($quote->isGrabbedBy())->toBeFalse();
 });
 
 
@@ -261,7 +261,7 @@ test('grabbedBy relationship accurately tracks multiple users', function() {
 });
 
 
-test('isGrabbedByMe runs a lightweight exists query instead of hydrating models', function() {
+test('isGrabbedBy runs a lightweight exists query instead of hydrating models', function() {
     $quote = Quote::factory()->create();
 
     $users = User::factory(3)->create();
@@ -270,7 +270,7 @@ test('isGrabbedByMe runs a lightweight exists query instead of hydrating models'
     $this->actingAs($this->user);
 
     DB::enableQueryLog();
-    $quote->isGrabbedByMe();
+    $quote->isGrabbedBy($this->user);
     $queries = DB::getQueryLog();
 
     expect(count($queries))->toBe(1);
@@ -279,4 +279,22 @@ test('isGrabbedByMe runs a lightweight exists query instead of hydrating models'
 
     expect($executedSql)->toContain('exists');
     expect($executedSql)->not->toContain('select * from `users`');
+});
+
+
+test('isGrabbedBy returns true for a user who grabbed the quote', function() {
+    $quote = Quote::factory()->create();
+    $grabber = User::factory()->create();
+
+    $grabber->grabs()->attach($quote);
+
+    expect($quote->isGrabbedBy($grabber))->toBeTrue();
+});
+
+
+test('isGrabbedBy returns false for a user who has not grabbed the quote', function() {
+    $quote = Quote::factory()->create();
+    $nonGrabber = User::factory()->create();
+
+    expect($quote->isGrabbedBy($nonGrabber))->toBeFalse();
 });
