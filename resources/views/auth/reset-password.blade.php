@@ -17,9 +17,9 @@
                     <x-floating-input id="password_confirmation" name="password_confirmation" type="password" label="Confirm Password" required="true" />
 
                     <div class="form-control mt-4">
-                        <button type="submit" class="btn btn-neutral w-full rounded-none">
+                        <x-button type="submit" class="w-full">
                             Reset Password
-                        </button>
+                        </x-button>
                     </div>
                 </form>
 

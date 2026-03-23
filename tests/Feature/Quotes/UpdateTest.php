@@ -80,3 +80,43 @@ test('author can not make grabbed quote private', function() {
     ]);
 });
 
+test('user can update a private thought to public', function () {
+    $user = \App\Models\User::factory()->create();
+    $quote = \App\Models\Quote::factory()->create([
+        'user_id' => $user->id,
+        'is_private' => true,
+    ]);
+
+    // Thanks to the hidden input in our form, an unchecked checkbox sends '0'.
+    $response = $this->actingAs($user)->put(route('quotes.update', $quote), [
+        'content' => 'Updated content',
+        'is_private' => '0',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    
+    $this->assertDatabaseHas('quotes', [
+        'id' => $quote->id,
+        'is_private' => false,
+    ]);
+});
+
+test('user can update a public thought to private', function () {
+    $user = \App\Models\User::factory()->create();
+    $quote = \App\Models\Quote::factory()->create([
+        'user_id' => $user->id,
+        'is_private' => false,
+    ]);
+
+    $response = $this->actingAs($user)->put(route('quotes.update', $quote), [
+        'content' => 'Updated content',
+        'is_private' => '1',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    
+    $this->assertDatabaseHas('quotes', [
+        'id' => $quote->id,
+        'is_private' => true,
+    ]);
+});

@@ -30,16 +30,16 @@
 
                         <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-ui-label text-sm">
                             @if($isGrabbedBy)
-                                <button class="hover:text-error transition-colors text-base-content/60">Ungrab</button>
+                                <x-button variant="text-danger">Ungrab</x-button>
                             @else
                                 @can('update', $post)
                                     @if($post->isEditable())
-                                        <a href="{{ route('quotes.edit', $post) }}" class="text-ui-label uppercase hover:text-base-content transition-colors text-base-content/60">Edit</a>
+                                        <x-button as="a" href="{{ route('quotes.edit', $post) }}" variant="text">Edit</x-button>
                                     @endif
                                 @endcan
 
                                 @can('delete', $post)
-                                    <label for="delete-modal-{{ $post->id }}" class="text-ui-label uppercase hover:text-error transition-colors text-base-content/60 cursor-pointer">Delete</label>
+                                    <x-button as="label" for="delete-modal-{{ $post->id }}" variant="text-danger" class="cursor-pointer">Delete</x-button>
 
                                     <x-modal id="delete-modal-{{ $post->id }}">
                                         <x-slot name="title">Confirm Deletion</x-slot>
@@ -53,11 +53,11 @@
                                         </p>
 
                                         <x-slot name="actions">
-                                            <label for="delete-modal-{{ $post->id }}" class="btn rounded-none font-normal text-ui-label border border-slate-200 bg-slate-50 hover:bg-slate-100 px-6 transition-all shadow-sm cursor-pointer">Cancel</label>
+                                            <x-button as="label" for="delete-modal-{{ $post->id }}" class="cursor-pointer">Cancel</x-button>
                                             <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline m-0">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn rounded-none font-normal text-ui-label border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 px-6 transition-all shadow-sm">Delete</button>
+                                                <x-button type="submit" variant="danger">Delete</x-button>
                                             </form>
                                         </x-slot>
                                     </x-modal>
@@ -72,10 +72,9 @@
                         The paper is blank. No thoughts have been carved yet.
                     </p>
                     
-                    <a href="{{ route('quotes.create') }}" 
-                    class="btn rounded-none font-normal text-ui-label border border-slate-200 bg-slate-50 hover:bg-slate-100 px-10 transition-all shadow-sm">
+                    <x-button as="a" href="{{ route('quotes.create') }}" class="px-10">
                         Write your first thought
-                    </a>
+                    </x-button>
                 </div>
             @endforelse
         </div>

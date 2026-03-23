@@ -21,9 +21,9 @@
                     <x-floating-input id="email" name="email" type="email" label="Email" required="true" />
 
                     <div class="form-control mt-4">
-                        <button type="submit" class="btn btn-neutral w-full rounded-none">
+                        <x-button type="submit" class="w-full">
                             Email Reset Link
-                        </button>
+                        </x-button>
                     </div>
 
                     <div class="text-center mt-6">

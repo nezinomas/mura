@@ -24,9 +24,9 @@
                     
                     <x-floating-input id="update_password_password_confirmation" name="password_confirmation" type="password" label="Confirm Password" required="true" autocomplete="new-password" bag="updatePassword" />
 
-                    <button type="submit" class="btn btn-neutral w-full rounded-none mt-2">
+                    <x-button type="submit" class="w-full mt-2">
                         Save Password
-                    </button>
+                    </x-button>
                 </form>
 
             </div>

@@ -17,7 +17,7 @@
                     <x-floating-input id="password_confirmation" name="password_confirmation" type="password" label="Confirm Password" autocomplete="new-password" required="true" />
 
                     <div class="form-control mt-4">
-                        <button type="submit" class="btn btn-neutral w-full rounded-none uppercase tracking-widest">Register</button>
+                        <x-button type="submit" class="w-full">Register</x-button>
                     </div>
 
                     <div class="text-center mt-6">

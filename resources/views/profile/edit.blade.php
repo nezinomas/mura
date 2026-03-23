@@ -22,7 +22,7 @@
                     <x-floating-input id="display_name" name="display_name" type="text" label="Display name" :value="Auth::user()->display_name" required="true" />
                     <x-floating-input id="email" name="email" type="email" label="Email" :value="Auth::user()->email" required="true" />
 
-                    <x-button-auth class="btn-neutral">Save</x-button-auth>
+                    <x-button type="submit" class="w-full">Save</x-button>
 
                     @if (session('status') === 'profile-updated')
                         <p class="text-sm text-success text-center mt-4">Saved.</p>
@@ -48,7 +48,7 @@
 
                     <x-floating-input id="password" name="password" type="password" label="Confirm Password" required="true" />
 
-                    <x-button-auth class="btn-error">Delete Account</x-button-auth>
+                    <x-button type="submit" variant="danger" class="w-full">Delete Account</x-button>
                 </form>
             </div>
         </div>
