@@ -1,7 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="text-center w-full">
-            Your Feed
+            <div class="mb-3">Your Feed</div>
+
+            <div class="flex items-center justify-center gap-6 text-sm text-base-content/60 text-ui-label">
+                <a href="/dashboard" class="hover:text-base-content transition-colors {{ request('filter') === null ? 'text-base-content underline underline-offset-4' : '' }}">All</a>
+                <a href="/dashboard?filter=public" class="hover:text-base-content transition-colors {{ request('filter') === 'public' ? 'text-base-content underline underline-offset-4' : '' }}">Public</a>
+                <a href="/dashboard?filter=private" class="hover:text-base-content transition-colors {{ request('filter') === 'private' ? 'text-base-content underline underline-offset-4' : '' }}">Private</a>
+                <a href="/dashboard?filter=grabbed" class="hover:text-base-content transition-colors {{ request('filter') === 'grabbed' ? 'text-base-content underline underline-offset-4' : '' }}">Grabbed</a>
+            </div>
         </div>
     </x-slot>
 

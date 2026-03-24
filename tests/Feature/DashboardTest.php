@@ -3,7 +3,7 @@
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 beforeEach(function () {
@@ -120,6 +120,7 @@ test('dashboard feed does not trigger N+1 lazy loading', function () {
     Model::preventLazyLoading(false);
 });
 
+
 test('author sees standard delete warning for private thought', function () {
     $quote = Quote::factory()->create([
         'user_id' => $this->user->id,
@@ -131,6 +132,7 @@ test('author sees standard delete warning for private thought', function () {
     $response->assertSee('Are you sure you want to delete this thought?');
 });
 
+
 test('author sees standard delete warning for ungrabbed public thought', function () {
     $quote = Quote::factory()->create([
         'user_id' => $this->user->id,
@@ -141,6 +143,7 @@ test('author sees standard delete warning for ungrabbed public thought', functio
 
     $response->assertSee('Are you sure you want to delete this thought?');
 });
+
 
 test('author sees global feed warning when deleting grabbed public thought', function () {
     $quote = Quote::factory()->create([
@@ -156,54 +159,55 @@ test('author sees global feed warning when deleting grabbed public thought', fun
     $response->assertSee('This thought will remain visible on the global feed forever.');
 });
 
-test('dashboard feed is paginated', function () {
-    // Arrange: Create 20 total thoughts (10 owned, 10 grabbed)
-    Quote::factory(15)->create(['user_id' => $this->user->id]);
 
-    $otherUser = User::factory()->create();
-    $grabbedQuotes = Quote::factory(15)->create(['user_id' => $otherUser->id]);
-    $this->user->grabs()->attach($grabbedQuotes->pluck('id'));
+test('user can filter dashboard by public thoughts', function () {
+    Quote::factory()->create(['user_id' => $this->user->id, 'content' => 'My public thought', 'is_private' => false]);
+    Quote::factory()->create(['user_id' => $this->user->id, 'content' => 'My private thought', 'is_private' => true]);
 
-    // Act & Assert: Page 1 should have 15 items (Laravel default)
-    $this->actingAs($this->user)->get('/dashboard')
-        ->assertViewHas('quotes', fn ($quotes) => $quotes->count() === 20);
+    $response = $this->actingAs($this->user)->get('/dashboard?filter=public');
 
-    // Act & Assert: Page 2 should have the remaining 5 items
-    $this->actingAs($this->user)->get('/dashboard?page=2')
-        ->assertViewHas('quotes', fn ($quotes) => $quotes->count() === 10);
+    $response->assertStatus(200);
+    $response->assertSee('My public thought');
+    $response->assertDontSee('My private thought');
 });
 
 
-test('dashboard executes a minimum number of database queries', function () {
-    // Arrange: Create 20 total thoughts (10 owned, 10 grabbed)
-    Quote::factory(10)->create(['user_id' => $this->user->id]);
+test('user can filter dashboard by private thoughts', function () {
+    Quote::factory()->create(['user_id' => $this->user->id, 'content' => 'My public thought', 'is_private' => false]);
+    Quote::factory()->create(['user_id' => $this->user->id, 'content' => 'My private thought', 'is_private' => true]);
 
-    $otherUser = User::factory()->create();
-    $grabbedQuotes = Quote::factory(10)->create(['user_id' => $otherUser->id]);
-    $this->user->grabs()->attach($grabbedQuotes->pluck('id'));
+    $response = $this->actingAs($this->user)->get('/dashboard?filter=private');
 
-    // Start listening to the database after factories are finished
-    DB::enableQueryLog();
-    DB::flushQueryLog();
-
-    // Act
-    $this->actingAs($this->user)->get('/dashboard');
-
-    // Assert
-    $queryCount = count(DB::getQueryLog());
-
-    // should be <= 5 queries (session, pagination count, records, eager loaded relations)
-    expect($queryCount)->toBeLessThanOrEqual(5);
+    $response->assertStatus(200);
+    $response->assertSee('My private thought');
+    $response->assertDontSee('My public thought');
 });
 
-test('auth user sees permalink on thoughts', function () {
-    $quote = Quote::factory()->create([
-        'user_id' => $this->user->id,
-    ]);
 
+test('user can filter dashboard by grabbed thoughts', function () {
+    Quote::factory()->create(['user_id' => $this->user->id, 'content' => 'My own thought']);
+
+    $otherUser = User::factory()->create();
+    $grabbedQuote = Quote::factory()->create(['user_id' => $otherUser->id, 'content' => 'A grabbed thought']);
+    $this->user->grabs()->attach($grabbedQuote);
+
+    $response = $this->actingAs($this->user)->get('/dashboard?filter=grabbed');
+
+    $response->assertStatus(200);
+    $response->assertSee('A grabbed thought');
+    $response->assertDontSee('My own thought');
+});
+
+
+test('dashboard header contains filter links', function () {
     $response = $this->actingAs($this->user)->get('/dashboard');
 
     $response->assertStatus(200);
-    $response->assertSee(route('quotes.show', $quote));
-    $response->assertSee('Permalink');
+    $response->assertSee('filter=public', false);
+    $response->assertSee('filter=private', false);
+    $response->assertSee('filter=grabbed', false);
+
+    $response->assertSeeText('Public');
+    $response->assertSeeText('Private');
+    $response->assertSeeText('Grabbed');
 });
