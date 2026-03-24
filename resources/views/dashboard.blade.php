@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center text-ui-label w-full">
+        <div class="text-center w-full">
             Your Feed
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto my-12 px-4 pb-24"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
+    <div class="max-w-3xl mx-auto px-4"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
@@ -14,7 +14,7 @@
                 <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
                     <div class="card-body p-8">
 
-                        <div class="flex justify-between items-start mb-6 text-ui-label text-sm text-base-content/60">
+                        <div class="flex justify-between items-start mb-6 text-sm text-base-content/60">
                             <div>
                                 <span class="font-bold text-base-content tracking-wide">{{ $post->author_display }}</span>
                                 <span class="italic ml-2">
@@ -28,7 +28,7 @@
                             {!! $post->content_html !!} 
                         </div>
 
-                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-ui-label text-sm">
+                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-sm">
                             @if($isGrabbedBy)
                                 <x-button variant="text-danger">Ungrab</x-button>
                             @else
@@ -68,7 +68,7 @@
                 </div>
             @empty
                 <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                    <p class="text-ui-label text-base-content/50 italic mb-6">
+                    <p class="text-base-content/50 italic mb-6">
                         The paper is blank. No thoughts have been carved yet.
                     </p>
                     
@@ -82,7 +82,7 @@
 
     <a href="{{ route('quotes.create') }}" 
        class="fixed bottom-8 right-8 btn btn-circle btn-lg shadow-2xl border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all duration-300 group">
-        <span class="text-ui-label text-2xl group-hover:scale-110 transition-transform">+</span>
+        <span class="text-2xl group-hover:scale-110 transition-transform">+</span>
     </a>
 
 </x-app-layout>
