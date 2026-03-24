@@ -19,6 +19,8 @@
                     </x-slot>
 
                     <x-slot name="actions">
+                        <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
+
                         @if($isGrabbedBy)
                             <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
                                 @csrf

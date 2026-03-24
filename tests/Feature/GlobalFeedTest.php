@@ -63,6 +63,7 @@ test('global discover feed limits database queries', function () {
     expect($queryCount)->toBeLessThanOrEqual(3);
 });
 
+
 test('global discover feed links to user feed when user exists', function () {
     $user = User::factory()->create(['display_name' => 'Active Author']);
     Quote::factory()->create([
@@ -76,6 +77,7 @@ test('global discover feed links to user feed when user exists', function () {
     $response->assertSee("/users/{$user->id}");
     $response->assertSee('Active Author');
 });
+
 
 test('global discover feed does not link to user feed when user is deleted', function () {
     $user = User::factory()->create();
@@ -91,4 +93,17 @@ test('global discover feed does not link to user feed when user is deleted', fun
     $response->assertStatus(200);
     $response->assertSee('(user lost in time)');
     $response->assertDontSee("/users/"); // Ensure no user links are generated for this orphaned post
+});
+
+
+test('guests see permalink on thoughts', function () {
+    $quote = Quote::factory()->create([
+        'is_private' => false,
+    ]);
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee(route('quotes.show', $quote));
+    $response->assertSee('Permalink');
 });

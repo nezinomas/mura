@@ -8,7 +8,11 @@
     <div class="max-w-3xl mx-auto px-4 pb-24">
         <div class="space-y-8">
             @forelse ($quotes as $post)
-                <x-quote-card :post="$post" />
+                <x-quote-card :post="$post">
+                    <x-slot name="actions">
+                        <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
+                    </x-slot>
+                </x-quote-card>
             @empty
                 <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
                     <p class="text-base-content/50 italic">

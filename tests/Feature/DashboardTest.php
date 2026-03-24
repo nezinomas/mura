@@ -195,3 +195,15 @@ test('dashboard executes a minimum number of database queries', function () {
     // should be <= 5 queries (session, pagination count, records, eager loaded relations)
     expect($queryCount)->toBeLessThanOrEqual(5);
 });
+
+test('auth user sees permalink on thoughts', function () {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    $response->assertStatus(200);
+    $response->assertSee(route('quotes.show', $quote));
+    $response->assertSee('Permalink');
+});

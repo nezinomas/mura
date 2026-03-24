@@ -59,9 +59,13 @@ class QuoteController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Quote $quote)
     {
-        //
+        if ($quote->is_private && $quote->user_id !== request()->user()?->id) {
+            abort(404); // Pretend it doesn't exist if it's private and not theirs
+        }
+
+        return view('quotes.show', ['quote' => $quote]);
     }
 
     /**
