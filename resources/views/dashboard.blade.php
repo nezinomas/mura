@@ -30,7 +30,11 @@
 
                         <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-sm">
                             @if($isGrabbedBy)
-                                <x-button variant="text-danger">Ungrab</x-button>
+                                <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button type="submit" variant="text-danger">Ungrab</x-button>
+                                </form>
                             @else
                                 @can('update', $post)
                                     @if($post->isEditable())
