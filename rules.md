@@ -3,8 +3,7 @@
 ## 1. Project Identity & Aesthetic
 * **Name:** mura.
 * **Concept:** A quiet, analog writing space. Thoughts are treated like physical paper or pages in a published book.
-* **Typography:** * `Lora` (Serif) is the primary reading font for all main content.
-    * `monospace` is strictly reserved for small UI elements, buttons, and form labels (using the `.text-ui-label` class).
+* **Typography:** * `IBM+Plex+Mono` (Serif) is the primary reading font for all main content.
 * **Styling:** Tailwind CSS (v4 paradigm via `app.css`). DaisyUI is available but should be used minimally. Avoid loud colors; prefer muted pastels (e.g., `slate-50` for grabbed thoughts) and subtle UI interactions.
 
 ## 2. Core Engineering Principles
@@ -30,7 +29,9 @@
 * **Phase 1: Foundation & Auth** - Set up Pest, define the core architecture, and strip away unnecessary Breeze bloat. *(Completed)*
 * **Phase 2: The "Thought" Model** - Create the `Quote` model and database migration. *(Completed)*
 * **Phase 3: The "Compose" Feature** - TDD route, view, and save logic for creating new thoughts. *(Completed)*
-* **Phase 4: The "Home" Feed** - TDD dashboard feed displaying a mix of a user's own thoughts and thoughts they have "grabbed" from others. *(Completed)*
-* **Phase 5: The "Global" Discover** - TDD public feed allowing guests to view 20 random thoughts from the community. *(Current Phase)*
+* **Phase 4: The "Home" Feed** - TDD dashboard feed displaying a mix of a user's own thoughts and thoughts they have "grabbed" from others. *(Current Phase)*
+* **Phase 5: The "Global" Discover** - TDD public feed allowing guests to view 20 random thoughts from the community. *(Ongoing)*
 * **Phase 6: The "Grab" Logic** - Pivot table implementation linking users to other users' thoughts while preserving original author attribution. *(Completed)*
-* **Phase 7: The Aesthetic** - Continuous application of the analog, typewriter/book aesthetic across all components. *(Ongoing)*
+* **Phase 7: The Aesthetic** - Continuous application of the analog, typewriter/book aesthetic across all components. *(Current Phase)*
+* **Phase 8: RSS Feed** - Every user gets an RSS feed *(Ongoing)*
+* **Phase 9: Import** - Import from Tumbl *(Ongoing)*
