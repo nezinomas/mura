@@ -49,7 +49,7 @@
                                         <x-slot name="title">Confirm Deletion</x-slot>
                                         
                                         <p>
-                                            @if(!$post->is_private && $post->grabbedBy()->exists())
+                                            @if(!$post->is_private && $post->isGrabbedByAnyone())
                                                 This thought will remain visible on the global feed forever.
                                             @else
                                                 Are you sure you want to delete this thought?
@@ -75,13 +75,20 @@
                     <p class="text-base-content/50 italic mb-6">
                         The paper is blank. No thoughts have been carved yet.
                     </p>
-                    
+
                     <x-button as="a" href="{{ route('quotes.create') }}" class="px-10">
                         Write your first thought
                     </x-button>
                 </div>
             @endforelse
         </div>
+
+        @if($quotes->hasPages())
+            <div class="mt-8 mb-24">
+                {{ $quotes->links('layouts.pagination') }}
+            </div>
+        @endif
+
     </div>
 
     <a href="{{ route('quotes.create') }}" 

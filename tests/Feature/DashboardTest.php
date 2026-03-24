@@ -3,7 +3,7 @@
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 beforeEach(function () {
@@ -154,4 +154,44 @@ test('author sees global feed warning when deleting grabbed public thought', fun
     $response = $this->actingAs($this->user)->get('/dashboard');
 
     $response->assertSee('This thought will remain visible on the global feed forever.');
+});
+
+test('dashboard feed is paginated', function () {
+    // Arrange: Create 20 total thoughts (10 owned, 10 grabbed)
+    Quote::factory(15)->create(['user_id' => $this->user->id]);
+
+    $otherUser = User::factory()->create();
+    $grabbedQuotes = Quote::factory(15)->create(['user_id' => $otherUser->id]);
+    $this->user->grabs()->attach($grabbedQuotes->pluck('id'));
+
+    // Act & Assert: Page 1 should have 15 items (Laravel default)
+    $this->actingAs($this->user)->get('/dashboard')
+        ->assertViewHas('quotes', fn ($quotes) => $quotes->count() === 20);
+
+    // Act & Assert: Page 2 should have the remaining 5 items
+    $this->actingAs($this->user)->get('/dashboard?page=2')
+        ->assertViewHas('quotes', fn ($quotes) => $quotes->count() === 10);
+});
+
+
+test('dashboard executes a minimum number of database queries', function () {
+    // Arrange: Create 20 total thoughts (10 owned, 10 grabbed)
+    Quote::factory(10)->create(['user_id' => $this->user->id]);
+
+    $otherUser = User::factory()->create();
+    $grabbedQuotes = Quote::factory(10)->create(['user_id' => $otherUser->id]);
+    $this->user->grabs()->attach($grabbedQuotes->pluck('id'));
+
+    // Start listening to the database after factories are finished
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+
+    // Act
+    $this->actingAs($this->user)->get('/dashboard');
+
+    // Assert
+    $queryCount = count(DB::getQueryLog());
+
+    // should be <= 5 queries (session, pagination count, records, eager loaded relations)
+    expect($queryCount)->toBeLessThanOrEqual(5);
 });
