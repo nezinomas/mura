@@ -96,7 +96,7 @@ class Quote extends Model
     //
     public function grabbedBy(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'quote_user');
+        return $this->belongsToMany(User::class);
     }
 
     // Check if thought is grabbed by a specific user
@@ -106,7 +106,21 @@ class Quote extends Model
             return false;
         }
 
-        return $this->grabbedBy()->where('quote_user.user_id', $user->id)->exists();
+        if ($user->id === auth()->id() && $this->getAttribute('is_grabbed') !== null) {
+            return (bool) $this->getAttribute('is_grabbed');
+        }
+
+        return $this->grabbedBy()->wherePivot('user_id', $user->id)->exists();
+    }
+
+    // Check if thought is grabbed by anyone
+    public function isGrabbedByAnyone(): bool
+    {
+        if ($this->getAttribute('grabbed_by_exists') !== null) {
+            return (bool) $this->getAttribute('grabbed_by_exists');
+        }
+
+        return $this->grabbedBy()->exists();
     }
 
     // 

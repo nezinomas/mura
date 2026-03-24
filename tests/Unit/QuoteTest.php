@@ -298,3 +298,50 @@ test('isGrabbedBy returns false for a user who has not grabbed the quote', funct
 
     expect($quote->isGrabbedBy($nonGrabber))->toBeFalse();
 });
+
+
+test('isGrabbedByAnyone returns true when quote is grabbed by another user', function () {
+    $quote = Quote::factory()->create();
+    $user = User::factory()->create();
+
+    $user->grabs()->attach($quote);
+
+    expect($quote->isGrabbedByAnyone())->toBeTrue();
+});
+
+test('isGrabbedByAnyone returns false when quote is not grabbed', function () {
+    $quote = Quote::factory()->create();
+
+    expect($quote->isGrabbedByAnyone())->toBeFalse();
+});
+
+test('isGrabbedByAnyone uses grabbed_by_exists attribute without querying the database', function () {
+    $quote = Quote::factory()->create();
+    $user = User::factory()->create();
+    $user->grabs()->attach($quote);
+
+    $fetchedQuote = Quote::withExists('grabbedBy')->first();
+
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+    
+    expect($fetchedQuote->isGrabbedByAnyone())->toBeTrue();
+    expect(DB::getQueryLog())->toBeEmpty();
+});
+
+test('isGrabbedBy uses is_grabbed attribute without querying the database', function () {
+    $user = User::factory()->create();
+    $quote = Quote::factory()->create();
+    $user->grabs()->attach($quote);
+
+    $this->actingAs($user);
+
+    $fetchedQuote = Quote::withExists(['grabbedBy as is_grabbed' => function ($query) use ($user) {
+        $query->where('quote_user.user_id', $user->id);
+    }])->first();
+
+    DB::enableQueryLog();
+    
+    expect($fetchedQuote->isGrabbedBy($user))->toBeTrue();
+    expect(DB::getQueryLog())->toBeEmpty();
+});
