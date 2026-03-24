@@ -74,7 +74,7 @@ test('global discover feed links to user feed when user exists', function () {
     $response = $this->get('/');
 
     $response->assertStatus(200);
-    $response->assertSee("/users/{$user->id}");
+    $response->assertSee(route('users.show', $user));
     $response->assertSee('Active Author');
 });
 
@@ -92,7 +92,7 @@ test('global discover feed does not link to user feed when user is deleted', fun
 
     $response->assertStatus(200);
     $response->assertSee('(user lost in time)');
-    $response->assertDontSee("/users/"); // Ensure no user links are generated for this orphaned post
+    $response->assertDontSee(route('users.show', $user)); // Ensure no user links are generated for this orphaned post
 });
 
 

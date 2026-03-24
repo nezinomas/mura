@@ -8,7 +8,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -27,3 +26,5 @@ Route::middleware('auth')->group(function () {
 Route::get('/quotes/{quote}', [QuoteController::class, 'show'])->name('quotes.show');
 
 require __DIR__.'/auth.php';
+
+Route::get('/{user:name}', [UserController::class, 'show'])->name('users.show');

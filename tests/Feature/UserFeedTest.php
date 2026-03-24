@@ -10,7 +10,7 @@ test('guest can view a specific user public feed', function () {
     Quote::factory(5)->create(['user_id' => $user->id, 'is_private' => false]);
 
     // Act
-    $response = $this->get("/users/{$user->id}");
+    $response = $this->get("/{$user->name}");
 
     // Assert
     $response->assertStatus(200);
@@ -33,7 +33,7 @@ test('user feed only shows public quotes', function () {
         'is_private' => true,
     ]);
 
-    $response = $this->get("/users/{$user->id}");
+    $response = $this->get("/{$user->name}");
 
     $response->assertStatus(200);
     $response->assertSee('This is a public thought meant for the world.');
@@ -47,7 +47,7 @@ test('user feed limits database queries', function () {
     DB::enableQueryLog();
     DB::flushQueryLog();
 
-    $this->get("/users/{$user->id}");
+    $this->get("/{$user->name}");
 
     $queryCount = count(DB::getQueryLog());
 
