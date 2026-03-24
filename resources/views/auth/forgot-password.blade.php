@@ -21,13 +21,13 @@
                     <x-floating-input id="email" name="email" type="email" label="Email" required="true" />
 
                     <div class="form-control mt-4">
-                        <button type="submit" class="btn btn-neutral w-full rounded-none text-typewriter">
+                        <x-button type="submit" class="w-full">
                             Email Reset Link
-                        </button>
+                        </x-button>
                     </div>
 
                     <div class="text-center mt-6">
-                        <a href="{{ route('login') }}" class="link link-hover text-typewriter opacity-70">
+                        <a href="{{ route('login') }}" class="link link-hover opacity-70">
                             Back to login
                         </a>
                     </div>

@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="form-control">
-                        <button type="submit" class="btn btn-neutral w-full rounded-none uppercase tracking-widest">Log in</button>
+                        <x-button type="submit" class="w-full">Log in</x-button>
                     </div>
 
                     <div class="text-center mt-6">

@@ -17,7 +17,7 @@
 
         @isset($header)
             <header class="bg-base-100 border-b border-base-300">
-                <div class="max-w-4xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-typewriter">
+                <div class="max-w-4xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>

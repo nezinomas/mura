@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -74,24 +75,55 @@ class Quote extends Model
         );
     }
 
-    // Time Laws
+    // Thought can be edited 24 hours after create
     public function isEditable(): bool
     {
-        // Is the 24-hour expiration deadline still in the future?
         return $this->created_at->addHours(24)->isFuture();
     }
 
+    // Check if thought was edited
     public function isEdited(): bool
     {
-        // If timestamps no longer match exactly, the stone has been altered.
         return $this->updated_at->notEqualTo($this->created_at);
     }
 
-    public function isGrab(): bool
+    // Check if thought is mine
+    public function isMine(): bool
     {
-        return $this->user_id !== auth()->id();
+        return $this->user_id == auth()->id();
     }
 
+    //
+    public function grabbedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    // Check if thought is grabbed by a specific user
+    public function isGrabbedBy(?User $user = null): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->id === auth()->id() && $this->getAttribute('is_grabbed') !== null) {
+            return (bool) $this->getAttribute('is_grabbed');
+        }
+
+        return $this->grabbedBy()->wherePivot('user_id', $user->id)->exists();
+    }
+
+    // Check if thought is grabbed by anyone
+    public function isGrabbedByAnyone(): bool
+    {
+        if ($this->getAttribute('grabbed_by_exists') !== null) {
+            return (bool) $this->getAttribute('grabbed_by_exists');
+        }
+
+        return $this->grabbedBy()->exists();
+    }
+
+    // 
     protected function casts(): array
     {
         return [

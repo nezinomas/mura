@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center text-typewriter w-full">
+        <div class="text-center w-full">
             Profile Settings
         </div>
     </x-slot>
@@ -21,10 +21,8 @@
                     <x-floating-input id="name" name="name" type="text" label="Name" :value="Auth::user()->name" required="true" />
                     <x-floating-input id="display_name" name="display_name" type="text" label="Display name" :value="Auth::user()->display_name" required="true" />
                     <x-floating-input id="email" name="email" type="email" label="Email" :value="Auth::user()->email" required="true" />
-                    
-                    <button type="submit" class="btn btn-neutral w-full rounded-none text-typewriter mt-2">
-                        Save
-                    </button>
+
+                    <x-button type="submit" class="w-full">Save</x-button>
 
                     @if (session('status') === 'profile-updated')
                         <p class="text-sm text-success text-center mt-4">Saved.</p>
@@ -38,21 +36,19 @@
                 <h2 class="card-title text-xl font-bold mb-2 text-error">Delete Account</h2>
                 <div class="mb-6 text-sm text-base-content/70">
                     <p class="mb-5">When your account is deleted, your <strong>private thoughts</strong> will be permanently erased.</p>
-                        
+
                     <p class="bg-warning/10 border border-warning/50 rounded-md p-4 text-base-content">
                         However, your <strong>public thoughts</strong> will remain visible on the global feed forever.
                     </p>
                 </div>
-                
+
                 <form method="post" action="{{ route('profile.destroy') }}">
                     @csrf
                     @method('delete')
-                    
+
                     <x-floating-input id="password" name="password" type="password" label="Confirm Password" required="true" />
-                    
-                    <button type="submit" class="btn btn-error w-full rounded-none text-typewriter mt-2">
-                        Delete Account
-                    </button>
+
+                    <x-button type="submit" variant="danger" class="w-full">Delete Account</x-button>
                 </form>
             </div>
         </div>

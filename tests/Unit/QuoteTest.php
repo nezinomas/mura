@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Quote;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 
 dataset('empty_quotes', [
@@ -189,20 +190,158 @@ test('the model knows if a quote has been altered after creation', function () {
 });
 
 
-test('model knows if logged user is a stranger (isGrab is true)', function() {
+test('isMine returns true if logged user is author', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($this->user);
+
+    expect($quote->isMine())->toBeTrue();
+});
+
+
+test('isMine return false if logged user is stanger', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    $this->actingAs($stranger);
+
+    expect($quote->isMine())->toBeFalse();
+});
+
+
+test('isMine return false for an aunauthentiated guest', function() {
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+
+    expect($quote->isMine())->toBeFalse();
+});
+
+
+test('isGrabbedBy returns true if logged user grabbed quote', function() {
+    $stranger = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $stranger->id]);
+
+    $this->user->grabs()->attach($quote->id);
+
+    $this->actingAs($this->user);
+    $quote->refresh();
+
+    expect($quote->isGrabbedBy($this->user))->toBeTrue();
+});
+
+
+test('isGrabbedBy returns false if logged user has not grabbed it', function() {
     $stranger = User::factory()->create();
     $quote = Quote::factory()->create(['user_id' => $stranger->id]);
 
     $this->actingAs($this->user);
 
-    expect($quote->isGrab())->toBeTrue();
+    expect($quote->isGrabbedBy($this->user))->toBeFalse();
 });
 
 
-test('model knows if logged user is the author (isGrab is false)', function() {
-    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+test('isGrabbedBy return false safely for unauthenticated guest', function() {
+    $quote = Quote::factory()->create();
+
+    // Model's auth()->check() should catch this safely
+    expect($quote->isGrabbedBy())->toBeFalse();
+});
+
+
+test('grabbedBy relationship accurately tracks multiple users', function() {
+    $quote = Quote::factory()->create();
+
+    $userA = User::factory()->create();
+    $userB = User::factory()->create();
+
+    $userA->grabs()->attach($quote->id);
+    $userB->grabs()->attach($quote->id);
+
+    expect($quote->grabbedBy)->toHaveCount(2);
+    expect($quote->grabbedBy->pluck('id')->toArray())->toContain($userA->id, $userB->id);
+});
+
+
+test('isGrabbedBy runs a lightweight exists query instead of hydrating models', function() {
+    $quote = Quote::factory()->create();
+
+    $users = User::factory(3)->create();
+    $quote->grabbedBy()->attach($users->pluck('id'));
 
     $this->actingAs($this->user);
 
-    expect($quote->isGrab())->toBeFalse();
+    DB::enableQueryLog();
+    $quote->isGrabbedBy($this->user);
+    $queries = DB::getQueryLog();
+
+    expect(count($queries))->toBe(1);
+
+    $executedSql = $queries[0]['query'];
+
+    expect($executedSql)->toContain('exists');
+    expect($executedSql)->not->toContain('select * from `users`');
+});
+
+
+test('isGrabbedBy returns true for a user who grabbed the quote', function() {
+    $quote = Quote::factory()->create();
+    $grabber = User::factory()->create();
+
+    $grabber->grabs()->attach($quote);
+
+    expect($quote->isGrabbedBy($grabber))->toBeTrue();
+});
+
+
+test('isGrabbedBy returns false for a user who has not grabbed the quote', function() {
+    $quote = Quote::factory()->create();
+    $nonGrabber = User::factory()->create();
+
+    expect($quote->isGrabbedBy($nonGrabber))->toBeFalse();
+});
+
+
+test('isGrabbedByAnyone returns true when quote is grabbed by another user', function () {
+    $quote = Quote::factory()->create();
+    $user = User::factory()->create();
+
+    $user->grabs()->attach($quote);
+
+    expect($quote->isGrabbedByAnyone())->toBeTrue();
+});
+
+test('isGrabbedByAnyone returns false when quote is not grabbed', function () {
+    $quote = Quote::factory()->create();
+
+    expect($quote->isGrabbedByAnyone())->toBeFalse();
+});
+
+test('isGrabbedByAnyone uses grabbed_by_exists attribute without querying the database', function () {
+    $quote = Quote::factory()->create();
+    $user = User::factory()->create();
+    $user->grabs()->attach($quote);
+
+    $fetchedQuote = Quote::withExists('grabbedBy')->first();
+
+    DB::enableQueryLog();
+    DB::flushQueryLog();
+    
+    expect($fetchedQuote->isGrabbedByAnyone())->toBeTrue();
+    expect(DB::getQueryLog())->toBeEmpty();
+});
+
+test('isGrabbedBy uses is_grabbed attribute without querying the database', function () {
+    $user = User::factory()->create();
+    $quote = Quote::factory()->create();
+    $user->grabs()->attach($quote);
+
+    $this->actingAs($user);
+
+    $fetchedQuote = Quote::withExists(['grabbedBy as is_grabbed' => function ($query) use ($user) {
+        $query->where('quote_user.user_id', $user->id);
+    }])->first();
+
+    DB::enableQueryLog();
+    
+    expect($fetchedQuote->isGrabbedBy($user))->toBeTrue();
+    expect(DB::getQueryLog())->toBeEmpty();
 });

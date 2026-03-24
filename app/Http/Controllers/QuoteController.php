@@ -86,7 +86,7 @@ class QuoteController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Quote $quote)
     {
-        Gate::authorize('update', $quote);
+        Gate::authorize('update', [$quote, $request->boolean('is_private')]);
 
         if (! $quote->isEditable()) {
             return back()->with('modal_error', __('This thought is locked and can no longer be modified.'));
@@ -116,5 +116,29 @@ class QuoteController extends Controller implements HasMiddleware
         }
 
         return redirect('/dashboard');
+    }
+
+    /**
+     * Grab a public thought from another user
+     */
+    public function grab(Request $request, Quote $quote)
+    {
+        Gate::authorize('grab', $quote);
+
+        $request->user()->grabs()->syncWithoutDetaching([$quote->id]);
+
+        return back();
+    }
+
+    /**
+     * Ungrab a thought from another user
+     */
+    public function ungrab(Request $request, Quote $quote)
+    {
+        Gate::authorize('ungrab', $quote);
+
+        $request->user()->grabs()->detach($quote->id);
+
+        return back();
     }
 }
