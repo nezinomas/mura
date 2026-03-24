@@ -7,23 +7,26 @@
         </a>
         
         <div class="hidden sm:flex items-center gap-6 mt-1">
-            <a href="{{ route('quotes.create') }}" class="hover:underline {{ request()->routeIs('quotes.create') ? 'underline' : 'opacity-100 font-medium' }}">
-                Compose
-            </a>
-            <a href="{{ route('dashboard') }}" class="hover:underline {{ request()->routeIs('dashboard') ? 'underline' : 'opacity-70' }}">
-                Feed
-            </a>
-            <a href="#" class="hover:underline opacity-70">
+            @auth
+                <a href="{{ route('quotes.create') }}" class="hover:underline {{ request()->routeIs('quotes.create') ? 'underline' : 'opacity-100 font-medium' }}">
+                    Compose
+                </a>
+                <a href="{{ route('dashboard') }}" class="hover:underline {{ request()->routeIs('dashboard') ? 'underline' : 'opacity-70' }}">
+                    Feed
+                </a>
+            @endauth
+            <a href="{{ route('home') }}" class="hover:underline {{ request()->routeIs('home') ? 'underline' : 'opacity-70' }}">
                 Global Discover
             </a>
         </div>
         
     </div>
 
-    <div class="relative" x-data="{ open: false }">
-        
-        <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-2 focus:outline-none hover:opacity-70">
-            <span>{{ Auth::user()->name }}</span>
+    @auth
+        <div class="relative" x-data="{ open: false }">
+            
+            <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-2 focus:outline-none hover:opacity-70">
+                <span>{{ Auth::user()->name }}</span>
             <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -56,5 +59,11 @@
                 </form>
             </div>
         </div>
+    @else
+        <div class="flex items-center gap-4 text-sm font-medium">
+            <a href="{{ route('login') }}" class="hover:underline opacity-70 hover:opacity-100">Log in</a>
+            <a href="{{ route('register') }}" class="hover:underline opacity-70 hover:opacity-100">Register</a>
+        </div>
+    @endauth
     </div>
 </div>
