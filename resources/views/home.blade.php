@@ -24,7 +24,7 @@
                 @if($quotes->isNotEmpty())
                     <div class="flex items-center justify-center my-12">
                         <div class="h-px bg-slate-200 w-full max-w-xs"></div>
-                        <span class="px-4 text-slate-400 italic text-sm">Discover more</span>
+                        <span class="px-4 text-slate-400 italic text-sm text-center">Discover<br>more</span>
                         <div class="h-px bg-slate-200 w-full max-w-xs"></div>
                     </div>
                 @endif
