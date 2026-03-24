@@ -11,69 +11,54 @@
                 @php($isMine = $post->isMine())
                 @php($isGrabbedBy = $post->isGrabbedBy(auth()->user()))
 
-                <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
-                    <div class="card-body p-8">
+                <x-quote-card :post="$post" :isMine="$isMine">
+                    <x-slot name="meta">
+                        <span class="italic ml-2">
+                            @if($isMine && $post->is_private) — Private @else — Public @endif
+                        </span>
+                    </x-slot>
 
-                        <div class="flex justify-between items-start mb-6 text-sm text-base-content/60">
-                            <div>
-                                @if($post->user)
-                                    <a href="{{ route('users.show', $post->user) }}" class="font-bold text-base-content tracking-wide hover:underline">{{ $post->author_display }}</a>
-                                @else
-                                    <span class="font-bold text-base-content tracking-wide">{{ $post->author_display }}</span>
+                    <x-slot name="actions">
+                        @if($isGrabbedBy)
+                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
+                                @csrf
+                                @method('DELETE')
+                                <x-button type="submit" variant="text-danger">Ungrab</x-button>
+                            </form>
+                        @else
+                            @can('update', $post)
+                                @if($post->isEditable())
+                                    <x-button as="a" href="{{ route('quotes.edit', $post) }}" variant="text">Edit</x-button>
                                 @endif
-                                <span class="italic ml-2">
-                                    @if($isMine && $post->is_private) — Private @else — Public @endif
-                                </span>
-                            </div>
-                            <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
-                        </div>
+                            @endcan
 
-                        <div class="prose max-w-none leading-relaxed mb-4 text-base-content">
-                            {!! $post->content_html !!} 
-                        </div>
+                            @can('delete', $post)
+                                <x-button as="label" for="delete-modal-{{ $post->id }}" variant="text-danger" class="cursor-pointer">Delete</x-button>
 
-                        <div class="flex justify-end gap-4 mt-4 pt-4 border-t border-base-300/50 text-sm">
-                            @if($isGrabbedBy)
-                                <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-button type="submit" variant="text-danger">Ungrab</x-button>
-                                </form>
-                            @else
-                                @can('update', $post)
-                                    @if($post->isEditable())
-                                        <x-button as="a" href="{{ route('quotes.edit', $post) }}" variant="text">Edit</x-button>
-                                    @endif
-                                @endcan
+                                <x-modal id="delete-modal-{{ $post->id }}">
+                                    <x-slot name="title">Confirm Deletion</x-slot>
+                                    
+                                    <p>
+                                        @if(!$post->is_private && $post->isGrabbedByAnyone())
+                                            This thought will remain visible on the global feed forever.
+                                        @else
+                                            Are you sure you want to delete this thought?
+                                        @endif
+                                    </p>
 
-                                @can('delete', $post)
-                                    <x-button as="label" for="delete-modal-{{ $post->id }}" variant="text-danger" class="cursor-pointer">Delete</x-button>
-
-                                    <x-modal id="delete-modal-{{ $post->id }}">
-                                        <x-slot name="title">Confirm Deletion</x-slot>
-                                        
-                                        <p>
-                                            @if(!$post->is_private && $post->isGrabbedByAnyone())
-                                                This thought will remain visible on the global feed forever.
-                                            @else
-                                                Are you sure you want to delete this thought?
-                                            @endif
-                                        </p>
-
-                                        <x-slot name="actions">
-                                            <x-button as="label" for="delete-modal-{{ $post->id }}" class="cursor-pointer">Cancel</x-button>
-                                            <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline m-0">
-                                                @csrf
-                                                @method('DELETE')
-                                                <x-button type="submit" variant="danger">Delete</x-button>
-                                            </form>
-                                        </x-slot>
-                                    </x-modal>
-                                @endcan
-                            @endif
-                        </div>
-                    </div>
-                </div>
+                                    <x-slot name="actions">
+                                        <x-button as="label" for="delete-modal-{{ $post->id }}" class="cursor-pointer">Cancel</x-button>
+                                        <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline m-0">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit" variant="danger">Delete</x-button>
+                                        </form>
+                                    </x-slot>
+                                </x-modal>
+                            @endcan
+                        @endif
+                    </x-slot>
+                </x-quote-card>
             @empty
                 <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
                     <p class="text-base-content/50 italic mb-6">
