@@ -31,7 +31,8 @@
 * **Phase 3: The "Compose" Feature** - TDD route, view, and save logic for creating new thoughts. *(Completed)*
 * **Phase 4: The "Home" Feed** - TDD dashboard feed displaying a mix of a user's own thoughts and thoughts they have "grabbed" from others. *(Current Phase)*
 * **Phase 5: The "Global" Discover** - TDD public feed allowing guests to view 20 random thoughts from the community. *(Ongoing)*
-* **Phase 6: The "Grab" Logic** - Pivot table implementation linking users to other users' thoughts while preserving original author attribution. *(Completed)*
-* **Phase 7: The Aesthetic** - Continuous application of the analog, typewriter/book aesthetic across all components. *(Current Phase)*
-* **Phase 8: RSS Feed** - Every user gets an RSS feed *(Ongoing)*
-* **Phase 9: Import** - Import from Tumbl *(Ongoing)*
+* **Phase 6: Dashboard filterig** - User can filter his own feed - public, private or grabbed. Links in Hear div. *(Ongoing)*
+* **Phase 7: The "Grab" Logic** - Pivot table implementation linking users to other users' thoughts while preserving original author attribution. *(Completed)*
+* **Phase 8: The Aesthetic** - Continuous application of the analog, typewriter/book aesthetic across all components. *(Current Phase)*
+* **Phase 9: RSS Feed** - Every user gets an RSS feed *(Ongoing)*
+* **Phase 10: Import** - Import from Tumbl *(Ongoing)*
