@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="text-center w-full">
-            Global Discover
+            {{ $user->display_name }}
         </div>
     </x-slot>
 
@@ -35,5 +35,11 @@
                 </div>
             @endforelse
         </div>
+
+        @if($quotes->hasPages())
+            <div class="mt-8 mb-24">
+                {{ $quotes->links('layouts.pagination') }}
+            </div>
+        @endif
     </div>
 </x-app-layout>

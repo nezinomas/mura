@@ -16,7 +16,11 @@
 
                         <div class="flex justify-between items-start mb-6 text-sm text-base-content/60">
                             <div>
-                                <span class="font-bold text-base-content tracking-wide">{{ $post->author_display }}</span>
+                                @if($post->user)
+                                    <a href="{{ route('users.show', $post->user) }}" class="font-bold text-base-content tracking-wide hover:underline">{{ $post->author_display }}</a>
+                                @else
+                                    <span class="font-bold text-base-content tracking-wide">{{ $post->author_display }}</span>
+                                @endif
                                 <span class="italic ml-2">
                                     @if($isMine && $post->is_private) — Private @else — Public @endif
                                 </span>

@@ -62,3 +62,33 @@ test('global discover feed limits database queries', function () {
     // We should aim for <= 3 queries (session check, fetch 20 random IDs, eager load quotes + users)
     expect($queryCount)->toBeLessThanOrEqual(3);
 });
+
+test('global discover feed links to user feed when user exists', function () {
+    $user = User::factory()->create(['display_name' => 'Active Author']);
+    Quote::factory()->create([
+        'user_id' => $user->id,
+        'is_private' => false,
+    ]);
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee("/users/{$user->id}");
+    $response->assertSee('Active Author');
+});
+
+test('global discover feed does not link to user feed when user is deleted', function () {
+    $user = User::factory()->create();
+    Quote::factory()->create([
+        'user_id' => $user->id,
+        'is_private' => false,
+    ]);
+
+    $user->delete(); // simulates user lost in time
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('(user lost in time)');
+    $response->assertDontSee("/users/"); // Ensure no user links are generated for this orphaned post
+});
