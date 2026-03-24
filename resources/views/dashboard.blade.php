@@ -16,7 +16,7 @@
 
                         <div class="flex justify-between items-start mb-6 text-ui-label text-sm text-base-content/60">
                             <div>
-                                <span class="font-bold text-base-content tracking-wide">{{ $post->user->name ?? 'Anonymous' }}</span>
+                                <span class="font-bold text-base-content tracking-wide">{{ $post->author_display }}</span>
                                 <span class="italic ml-2">
                                     @if($isMine && $post->is_private) — Private @else — Public @endif
                                 </span>
