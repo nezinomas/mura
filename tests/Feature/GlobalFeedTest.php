@@ -59,8 +59,8 @@ test('global discover feed limits database queries', function () {
 
     $queryCount = count(DB::getQueryLog());
 
-    // We should aim for <= 3 queries (session check, fetch 20 random IDs, eager load quotes + users)
-    expect($queryCount)->toBeLessThanOrEqual(3);
+    // We should aim for <= 5 queries (session check, daily quote ID, daily quote fetch, fetch 20 random IDs, eager load quotes + users)
+    expect($queryCount)->toBeLessThanOrEqual(5);
 });
 
 
@@ -106,4 +106,31 @@ test('guests see permalink on thoughts', function () {
     $response->assertStatus(200);
     $response->assertSee(route('quotes.show', $quote));
     $response->assertSee('Permalink');
+});
+
+test('global feed displays a daily choice thought', function () {
+    $quote = Quote::factory()->create([
+        'is_private' => false,
+        'content' => 'Special daily thought',
+    ]);
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Thought of the Day');
+    $response->assertSee('Special daily thought');
+});
+
+test('daily choice thought changes each day', function () {
+    $quote1 = Quote::factory()->create(['is_private' => false, 'content' => 'Day 1 thought']);
+    
+    $this->get('/')->assertSee('Day 1 thought');
+    
+    // Time travel to tomorrow
+    $this->travel(1)->day();
+    
+    $quote2 = Quote::factory()->create(['is_private' => false, 'content' => 'Day 2 thought']);
+    $quote1->delete(); // Ensure it picks the new one
+    
+    $this->get('/')->assertSee('Day 2 thought');
 });
