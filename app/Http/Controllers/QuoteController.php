@@ -61,11 +61,11 @@ class QuoteController extends Controller implements HasMiddleware
      */
     public function show(Quote $quote)
     {
-        if ($quote->is_private && $quote->user_id !== request()->user()?->id) {
-            abort(404); // Pretend it doesn't exist if it's private and not theirs
+        if ($quote->is_private && $quote->user_id !== auth()->id()) {
+            abort(404);
         }
 
-        return view('quotes.show', ['quote' => $quote]);
+        return view('quotes.show', compact('quote'));
     }
 
     /**
@@ -109,7 +109,7 @@ class QuoteController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Quote $quote)
+    public function destroy(Request $request, Quote $quote)
     {
         Gate::authorize('delete', $quote);
 
