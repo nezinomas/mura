@@ -3,7 +3,7 @@
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Cache;
 
 test('guests can view the global discover feed on the home page', function () {
     // Arrange: Create 25 public thoughts
@@ -148,11 +148,16 @@ test('authenticated user does not see their own thoughts on global discover', fu
     ]);
 
     $otherUser = User::factory()->create();
-    Quote::factory()->create([
+    $otherQuote = Quote::factory()->create([
         'user_id' => $otherUser->id,
         'content' => 'Someone elses public thought',
         'is_private' => false
     ]);
+
+    // Ensure the daily quote is NOT the user's quote so we can properly test the standard feed logic
+    Cache::shouldReceive('remember')
+        ->with('daily_quote_id', Mockery::any(), Mockery::any())
+        ->andReturn($otherQuote->id);
 
     $response = $this->actingAs($user)->get('/');
 
@@ -192,4 +197,24 @@ test('authenticated user sees ungrab button for already grabbed thoughts on glob
 
     $response->assertStatus(200);
     $response->assertSee('Ungrab', false);
+});
+
+test('authenticated user sees their own thought if it is the daily quote', function () {
+    $user = User::factory()->create();
+    $myDailyQuote = Quote::factory()->create([
+        'user_id' => $user->id,
+        'content' => 'My very special daily thought',
+        'is_private' => false,
+    ]);
+
+    // Force this quote to be the daily quote
+    Cache::shouldReceive('remember')
+        ->with('daily_quote_id', Mockery::any(), Mockery::any())
+        ->andReturn($myDailyQuote->id);
+
+    $response = $this->actingAs($user)->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Thought of the Day');
+    $response->assertSee('My very special daily thought');
 });

@@ -26,9 +26,7 @@ class HomeController extends Controller
                 'grabbedBy as is_grabbed' => fn ($q) => $q->where('quote_user.user_id', $user->id)
             ]);
 
-            if ($dailyQuote && $dailyQuote->user_id === $user->id) {
-                $dailyQuote = null; // Hide the daily quote if it happens to belong to the active user
-            } elseif ($dailyQuote) {
+            if ($dailyQuote) {
                 $dailyQuote->loadExists([
                     'grabbedBy as is_grabbed' => fn ($q) => $q->where('quote_user.user_id', $user->id)
                 ]);
