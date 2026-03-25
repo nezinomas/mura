@@ -108,6 +108,7 @@ test('guests see permalink on thoughts', function () {
     $response->assertSee('Permalink');
 });
 
+
 test('global feed displays a daily choice thought', function () {
     $quote = Quote::factory()->create([
         'is_private' => false,
@@ -121,16 +122,74 @@ test('global feed displays a daily choice thought', function () {
     $response->assertSee('Special daily thought');
 });
 
+
 test('daily choice thought changes each day', function () {
     $quote1 = Quote::factory()->create(['is_private' => false, 'content' => 'Day 1 thought']);
-    
+
     $this->get('/')->assertSee('Day 1 thought');
-    
+
     // Time travel to tomorrow
     $this->travel(1)->day();
-    
+
     $quote2 = Quote::factory()->create(['is_private' => false, 'content' => 'Day 2 thought']);
     $quote1->delete(); // Ensure it picks the new one
-    
+
     $this->get('/')->assertSee('Day 2 thought');
+});
+
+
+test('authenticated user does not see their own thoughts on global discover', function () {
+    $user = User::factory()->create();
+
+    Quote::factory()->create([
+        'user_id' => $user->id,
+        'content' => 'My own public thought',
+        'is_private' => false
+    ]);
+
+    $otherUser = User::factory()->create();
+    Quote::factory()->create([
+        'user_id' => $otherUser->id,
+        'content' => 'Someone elses public thought',
+        'is_private' => false
+    ]);
+
+    $response = $this->actingAs($user)->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Someone elses public thought');
+    $response->assertDontSee('My own public thought');
+});
+
+test('authenticated user sees grab button for others thoughts on global discover', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+    Quote::factory()->create([
+        'user_id' => $otherUser->id,
+        'content' => 'A beautifully grabable thought',
+        'is_private' => false
+    ]);
+
+    $response = $this->actingAs($user)->get('/');
+
+    $response->assertStatus(200);
+    // We check for the form action or the button text
+    $response->assertSee('Grab', false); 
+});
+
+test('authenticated user sees ungrab button for already grabbed thoughts on global discover', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+    $quote = Quote::factory()->create([
+        'user_id' => $otherUser->id,
+        'content' => 'A beautifully grabbed thought',
+        'is_private' => false
+    ]);
+
+    $user->grabs()->attach($quote);
+
+    $response = $this->actingAs($user)->get('/');
+
+    $response->assertStatus(200);
+    $response->assertSee('Ungrab', false);
 });

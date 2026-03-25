@@ -16,11 +16,26 @@ class HomeController extends Controller
         
         $dailyQuote = $dailyQuoteId ? Quote::find($dailyQuoteId) : null;
 
-        $quotes = Quote::with('user')
-            ->where('is_private', false)
-            ->inRandomOrder()
-            ->limit(20)
-            ->get();
+        $query = Quote::with('user')->where('is_private', false);
+
+        if ($user = auth()->user()) {
+            $query->where(function ($q) use ($user) {
+                $q->where('user_id', '!=', $user->id)
+                  ->orWhereNull('user_id');
+            })->withExists([
+                'grabbedBy as is_grabbed' => fn ($q) => $q->where('quote_user.user_id', $user->id)
+            ]);
+
+            if ($dailyQuote && $dailyQuote->user_id === $user->id) {
+                $dailyQuote = null; // Hide the daily quote if it happens to belong to the active user
+            } elseif ($dailyQuote) {
+                $dailyQuote->loadExists([
+                    'grabbedBy as is_grabbed' => fn ($q) => $q->where('quote_user.user_id', $user->id)
+                ]);
+            }
+        }
+
+        $quotes = $query->inRandomOrder()->limit(20)->get();
 
         return view('home', [
             'quotes' => $quotes,
