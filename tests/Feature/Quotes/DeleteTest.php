@@ -26,7 +26,20 @@ test('author can delete this own private thought', function() {
 });
 
 
-test('author can not delete this own public thought', function() {
+test('author can delete this own public thought if it is not grabbed', function() {
+    $response = $this->actingAs($this->user)->delete(route('quotes.destroy', $this->quote->id));
+    $response->assertRedirect('/dashboard');
+
+    $this->assertDatabaseMissing('quotes', [
+            'id' => $this->quote->id,
+        ]);
+});
+
+
+test('author can not delete this own public thought if it is grabbed', function() {
+    $grabber = User::factory()->create();
+    $grabber->grabs()->attach($this->quote->id);
+
     $response = $this->actingAs($this->user)->delete(route('quotes.destroy', $this->quote->id));
     $response->assertRedirect('/dashboard');
 

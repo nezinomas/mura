@@ -123,6 +123,15 @@ class Quote extends Model
         return $this->grabbedBy()->exists();
     }
 
+    public function safeDelete(): void
+    {
+        if ($this->is_private || ! $this->isGrabbedByAnyone()) {
+            $this->delete();
+        } else {
+            $this->update(['user_id' => null]);
+        }
+    }
+
     // 
     protected function casts(): array
     {

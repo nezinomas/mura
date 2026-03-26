@@ -345,3 +345,49 @@ test('isGrabbedBy uses is_grabbed attribute without querying the database', func
     expect($fetchedQuote->isGrabbedBy($user))->toBeTrue();
     expect(DB::getQueryLog())->toBeEmpty();
 });
+
+
+test('safeDelete completely removes a private thought', function () {
+    // Arrange
+    $quote = Quote::factory()->create(['is_private' => true]);
+
+    // Act
+    $quote->safeDelete();
+
+    // Assert
+    $this->assertDatabaseMissing('quotes', ['id' => $quote->id]);
+});
+
+test('safeDelete completely removes a public thought if no one grabbed it', function () {
+    // Arrange
+    $quote = Quote::factory()->create(['is_private' => false]);
+
+    // Act
+    $quote->safeDelete();
+
+    // Assert
+    $this->assertDatabaseMissing('quotes', ['id' => $quote->id]);
+});
+
+test('safeDelete disowns a public thought if it has been grabbed', function () {
+    // Arrange
+    $author = User::factory()->create();
+    $grabber = User::factory()->create();
+
+    $quote = Quote::factory()->create([
+        'user_id' => $author->id,
+        'is_private' => false
+    ]);
+
+    // Simulate the grab
+    $grabber->grabs()->attach($quote);
+
+    // Act
+    $quote->safeDelete();
+
+    // Assert: It survives, but the author is wiped
+    $this->assertDatabaseHas('quotes', [
+        'id' => $quote->id,
+        'user_id' => null,
+    ]);
+});

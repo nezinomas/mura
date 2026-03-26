@@ -113,11 +113,7 @@ class QuoteController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $quote);
 
-        if ($quote->is_private) {
-            $quote->delete();
-        } else {
-            $quote->update(['user_id' => null]);
-        }
+        $quote->safeDelete();
 
         return redirect('/dashboard');
     }
