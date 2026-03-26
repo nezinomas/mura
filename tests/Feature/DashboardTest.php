@@ -200,3 +200,23 @@ test('dashboard header contains filter links', function () {
     $response->assertSeeText('Private');
     $response->assertSeeText('Grabbed');
 });
+
+
+test('grabbed quotes do not display the public visibility text on the dashboard', function () {
+    // Arrange: Create another user and a public quote
+    $otherUser = User::factory()->create();
+    $grabbedQuote = Quote::factory()->create([
+        'user_id' => $otherUser->id,
+        'is_private' => false,
+    ]);
+
+    // Act: The logged-in user grabs it
+    $this->user->grabs()->attach($grabbedQuote);
+
+    // Assert: The dashboard does not render the "- public" string for this quote
+    $response = $this->actingAs($this->user)->get('/dashboard');
+
+    // Check that the specific quote content exists, but the " - public" badge does not
+    $response->assertSee($grabbedQuote->content_html, false);
+    $response->assertDontSee('— Public');
+});

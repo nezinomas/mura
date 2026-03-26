@@ -21,7 +21,9 @@
                 <x-quote-card :post="$post" :isMine="$isMine">
                     <x-slot name="meta">
                         <span class="italic ml-2">
-                            @if($isMine && $post->is_private) — Private @else — Public @endif
+                            @if(! $isGrabbedBy)
+                                @if($isMine && $post->is_private) — Private @else — Public @endif
+                            @endif
                         </span>
                     </x-slot>
 
