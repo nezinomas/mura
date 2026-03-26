@@ -29,7 +29,7 @@ class DeleteQuoteModal extends Component
         }
 
         Gate::authorize('delete', $this->quote);
-        $this->quote->safeDelete();
+        $this->quote->disownOrDelete();
         $this->showModal = false;
 
         return redirect('/dashboard');

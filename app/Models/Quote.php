@@ -123,7 +123,7 @@ class Quote extends Model
         return $this->grabbedBy()->exists();
     }
 
-    public function safeDelete(): void
+    public function disownOrDelete(): void
     {
         if ($this->is_private || ! $this->isGrabbedByAnyone()) {
             $this->delete();

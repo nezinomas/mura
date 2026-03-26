@@ -113,7 +113,7 @@ class QuoteController extends Controller implements HasMiddleware
     {
         Gate::authorize('delete', $quote);
 
-        $quote->safeDelete();
+        $quote->disownOrDelete();
 
         return redirect('/dashboard');
     }
