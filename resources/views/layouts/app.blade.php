@@ -8,6 +8,7 @@
         <title>{{ config('app.name', 'mura.') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="text-base-content antialiased bg-base-200 min-h-screen">
         @include('layouts.navigation')
@@ -24,5 +25,6 @@
             {{ $slot }}
         </main>
 
+        @livewireScripts
     </body>
 </html>

@@ -41,30 +41,15 @@
                                 @endif
                             @endcan
 
-                            @can('delete', $post)
-                                <x-button as="label" for="delete-modal-{{ $post->id }}" variant="text-danger" class="cursor-pointer">Delete</x-button>
-
-                                <x-modal id="delete-modal-{{ $post->id }}">
-                                    <x-slot name="title">Confirm Deletion</x-slot>
-                                    
-                                    <p>
-                                        @if(!$post->is_private && $post->isGrabbedByAnyone())
-                                            This thought will remain visible on the global feed forever.
-                                        @else
-                                            Are you sure you want to delete this thought?
-                                        @endif
-                                    </p>
-
-                                    <x-slot name="actions">
-                                        <x-button as="label" for="delete-modal-{{ $post->id }}" class="cursor-pointer">Cancel</x-button>
-                                        <form method="POST" action="{{ route('quotes.destroy', $post) }}" class="inline m-0">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button type="submit" variant="danger">Delete</x-button>
-                                        </form>
-                                    </x-slot>
-                                </x-modal>
-                            @endcan
+@can('delete', $post)
+    <x-button as="button" 
+              x-data
+              @click="$dispatch('confirmDelete', { quoteId: {{ $post->id }} })" 
+              variant="text-danger" 
+              class="cursor-pointer">
+        Delete
+    </x-button>
+@endcan
                         @endif
                     </x-slot>
                 </x-quote-card>
@@ -88,6 +73,8 @@
         @endif
 
     </div>
+
+    <livewire:delete-quote-modal />
 
     <a href="{{ route('quotes.create') }}" 
        class="fixed bottom-8 right-8 btn btn-circle btn-lg shadow-2xl border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all duration-300 group">

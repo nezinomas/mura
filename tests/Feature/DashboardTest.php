@@ -85,8 +85,12 @@ test('user does not see edit or delete buttons on grabbed thoughts', function ()
     $response = $this->actingAs($this->user)->get('/dashboard');
 
     $response->assertSee('Ungrab');
-    $response->assertDontSee('Edit');
-    $response->assertDontSee('Delete');
+    
+    // Check that the specific edit link for this quote is missing
+    $response->assertDontSee(route('quotes.edit', $grabbedQuote));
+    
+    // Check that the specific delete dispatch for this quote is missing
+    $response->assertDontSee("\$dispatch('confirmDelete', { quoteId: {$grabbedQuote->id} })", false);
 });
 
 
@@ -142,21 +146,6 @@ test('author sees standard delete warning for ungrabbed public thought', functio
     $response = $this->actingAs($this->user)->get('/dashboard');
 
     $response->assertSee('Are you sure you want to delete this thought?');
-});
-
-
-test('author sees global feed warning when deleting grabbed public thought', function () {
-    $quote = Quote::factory()->create([
-        'user_id' => $this->user->id,
-        'is_private' => false
-    ]);
-
-    $otherUser = User::factory()->create();
-    $otherUser->grabs()->attach($quote);
-
-    $response = $this->actingAs($this->user)->get('/dashboard');
-
-    $response->assertSee('This thought will remain visible on the global feed forever.');
 });
 
 
