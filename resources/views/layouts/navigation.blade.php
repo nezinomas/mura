@@ -2,7 +2,7 @@
     
     <div class="flex items-center gap-8">
         
-        <a href="{{ route('dashboard') }}" class="text-2xl font-bold hover:opacity-70 transition-opacity">
+        <a href="{{ route('home') }}" class="text-2xl font-bold hover:opacity-70 transition-opacity">
             mura.
         </a>
         
@@ -15,9 +15,6 @@
                     Feed
                 </a>
             @endauth
-            <a href="{{ route('home') }}" class="hover:underline {{ request()->routeIs('home') ? 'underline' : 'opacity-70' }}">
-                Global Discover
-            </a>
         </div>
         
     </div>
