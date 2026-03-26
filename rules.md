@@ -31,10 +31,11 @@
 * **Phase 3: The "Compose" Feature** - TDD route, view, and save logic for creating new thoughts. *(Completed)*
 * **Phase 4: The "Home" Feed** - TDD dashboard feed displaying a mix of a user's own thoughts and thoughts they have "grabbed" from others. *(Completed)*
 * **Phase 5: The "Global" Discover** - TDD public feed allowing guests to view 20 random thoughts from the community. *(Completed)*
-* **Phase 6: Dashboard filterig** - User can filter his own feed - public, private or grabbed. Links in Header div. *(Completed)*
-* **Phase 7: Global Discover, part 2** - Auth user sees same random 20 thoughs, except his own. Grabbed button should be visible. *(Working)*
+* **Phase 6: Dashboard** - User can filter his own feed - public, private or grabbed. Links in Header div. *(Completed)*
+* **Phase 6.1: Dashboard** - Delete button should check if quote isGrabbedByAnyone with LiveWire. User should see confimation modal before deleting. If quote is grabbed, message: "This thought will remain visible on the global feed forever. Are you sure to disown it?". If quote is not grabbed, message: "Are you sure you want to delete this thought?" *(Working)*
+* **Phase 7: Global Discover, part 2** - Auth user sees same random 20 thoughs, except his own. Grabbed button should be visible. *(completed)*
 * **Phase 7.2: Global Discover, part 3** - Logged user should see grab or ungrab button in other users' feed (/mure/{user}). *(Ongoing)*
-* **Phase 7.3: Global Discover, part 3** - To brainstorm how user can select some users and see their thoughts. *(Ongoing)*
+* **Phase 7.3: Global Discover, part 3** - To brainstorm how user can select some users and see their thoughts in one feed. *(Ongoing)*
 * **Phase 8: The "Grab" Logic** - Pivot table implementation linking users to other users' thoughts while preserving original author attribution. *(Completed)*
 * **Phase 9: The Aesthetic** - Continuous application of the analog, typewriter/book aesthetic across all components. *(Ongoing)*
 * **Phase 10: RSS Feed** - Every user gets an RSS feed *(Ongoing)*
