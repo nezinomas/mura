@@ -85,10 +85,10 @@ test('user does not see edit or delete buttons on grabbed thoughts', function ()
     $response = $this->actingAs($this->user)->get('/dashboard');
 
     $response->assertSee('Ungrab');
-    
+
     // Check that the specific edit link for this quote is missing
     $response->assertDontSee(route('quotes.edit', $grabbedQuote));
-    
+
     // Check that the specific delete dispatch for this quote is missing
     $response->assertDontSee("\$dispatch('confirmDelete', { quoteId: {$grabbedQuote->id} })", false);
 });
