@@ -11,6 +11,12 @@
                 <x-quote-card :post="$post">
                     <x-slot name="actions">
                         <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
+
+                        @auth
+                            @if(auth()->id() !== $user->id)
+                                <livewire:grab-button :quote="$post" :key="'grab-'.$post->id" />
+                            @endif
+                        @endauth
                     </x-slot>
                 </x-quote-card>
             @empty
