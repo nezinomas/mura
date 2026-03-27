@@ -20,6 +20,7 @@ class Quote extends Model
         'user_id',
         'content',
         'is_private',
+        'created_at',
     ];
 
     protected $attributes = [
@@ -66,9 +67,12 @@ class Quote extends Model
             get: function () {
                 $html = Str::markdown($this->content ?? '', [
                     'html_input' => 'escape',
+                    // 'renderer' => [
+                    //     'soft_break' => "<br>",
+                    // ],
                 ]);
 
-                $allowedTags = '<p><strong><em><a><del>';
+                $allowedTags = '<p><br><strong><em><a><del>';
 
                 return strip_tags($html, $allowedTags);
             }
@@ -78,7 +82,8 @@ class Quote extends Model
     // Thought can be edited 24 hours after create
     public function isEditable(): bool
     {
-        return $this->created_at->addHours(24)->isFuture();
+        // return $this->created_at->addHours(24)->isFuture();
+        return true;
     }
 
     // Check if thought was edited

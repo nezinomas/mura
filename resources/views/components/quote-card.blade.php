@@ -3,7 +3,7 @@
 <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
     <div class="card-body p-8">
 
-        <div class="flex justify-between items-start mb-6 text-sm text-base-content/60">
+        <div class="flex justify-between items-start pb-4 text-sm text-base-content/60 border-b border-base-300/50">
             <div>
                 @if($post->user)
                     <a href="{{ route('users.show', $post->user) }}" class="font-bold text-base-content tracking-wide hover:underline">{{ $post->author_display }}</a>
@@ -17,7 +17,7 @@
             <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
         </div>
 
-        <div class="prose max-w-none leading-relaxed mb-4 text-base-content">
+        <div class="prose max-w-none leading-relaxed mb-3 text-base-content whitespace-pre-wrap">
             {!! $post->content_html !!} 
         </div>
 
