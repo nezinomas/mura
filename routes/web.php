@@ -27,4 +27,5 @@ Route::get('/quotes/{quote}', [QuoteController::class, 'show'])->name('quotes.sh
 
 require __DIR__.'/auth.php';
 
-Route::get('/{user:name}', [UserController::class, 'show'])->name('users.show');
+Route::get('/{user:name}/feed', [App\Http\Controllers\UserController::class, 'feed'])->name('users.feed');
+Route::get('/{user:name}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');

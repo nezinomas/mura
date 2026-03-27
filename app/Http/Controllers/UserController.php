@@ -24,4 +24,18 @@ class UserController extends Controller
             'quotes' => $quotes,
         ]);
     }
+
+    public function feed(User $user)
+    {
+        $quotes = $user->quotes()
+            ->where('is_private', false)
+            ->orderByDesc('created_at')
+            ->limit(20)
+            ->get();
+
+        return response()->view('users.feed', [
+            'user' => $user,
+            'quotes' => $quotes,
+        ])->header('Content-Type', 'application/xml');
+    }
 }
