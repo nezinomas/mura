@@ -91,11 +91,13 @@ class User extends Authenticatable
         });
 
         static::deleting(function (User $user) {
-            // 1. Find all private quotes belonging to this user and delete them
-            $user->quotes()->where('is_private', true)->delete();
+            // 1. Remove this user's grabs from the pivot table to prevent SQL errors
+            $user->grabs()->detach();
 
-            // 2. Find all public quotes belonging to this user and detach them
-            $user->quotes()->where('is_private', false)->update(['user_id' => null]);
+            // 2. Safely delete or disown every authored quote using our Model logic
+            $user->quotes->each(function (Quote $quote) {
+                $quote->disownOrDelete();
+            });
         });
     }
 
