@@ -80,19 +80,24 @@ test('global discover feed links to user feed when user exists', function () {
 
 
 test('global discover feed does not link to user feed when user is deleted', function () {
-    $user = User::factory()->create();
-    Quote::factory()->create([
-        'user_id' => $user->id,
+    $author = User::factory()->create();
+    $grabber = User::factory()->create(); // Introduce a second user
+
+    $quote = Quote::factory()->create([
+        'user_id' => $author->id,
         'is_private' => false,
     ]);
 
-    $user->delete(); // simulates user lost in time
+    // The grabber grabs the thought so it survives deletion
+    $quote->grabbedBy()->attach($grabber->id);
+
+    $author->delete(); // Simulates the author being lost in time
 
     $response = $this->get('/');
 
     $response->assertStatus(200);
     $response->assertSee('(user lost in time)');
-    $response->assertDontSee(route('users.show', $user)); // Ensure no user links are generated for this orphaned post
+    $response->assertDontSee(route('users.show', $author)); 
 });
 
 
