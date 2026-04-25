@@ -3,12 +3,11 @@
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -24,4 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/quotes/{quote}', [QuoteController::class, 'show'])->name('quotes.show');
+
 require __DIR__.'/auth.php';
+
+Route::get('/{user:name}/feed', [App\Http\Controllers\UserController::class, 'feed'])->name('users.feed');
+Route::get('/{user:name}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');

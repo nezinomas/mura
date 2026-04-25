@@ -38,7 +38,7 @@
                     <p class="mb-5">When your account is deleted, your <strong>private thoughts</strong> will be permanently erased.</p>
 
                     <p class="bg-warning/10 border border-warning/50 rounded-md p-4 text-base-content">
-                        However, your <strong>public thoughts</strong> will remain visible on the global feed forever.
+                        However, any of your thoughts that have been <strong>grabbed by other users</strong> will remain visible on the global feed anonymously.
                     </p>
                 </div>
 

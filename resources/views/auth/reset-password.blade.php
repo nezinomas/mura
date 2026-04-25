@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-app-layout>
     <div class="min-h-screen flex items-center justify-center bg-base-200">
         <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
             <div class="card-body p-8">
@@ -26,4 +26,4 @@
             </div>
         </div>
     </div>
-</x-guest-layout>
+</x-app-layout>
