@@ -33,7 +33,7 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => $value |> trim(...) |> strtolower(...),
+            set: fn(string $value) => strtolower(trim($value)),
         );
     }
 
@@ -44,7 +44,7 @@ class User extends Authenticatable
     protected function displayName(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => $value |> strip_tags(...) |> trim(...),
+            set: fn(string $value) => trim(strip_tags($value)),
         );
     }
 
