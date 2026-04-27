@@ -96,9 +96,19 @@ test('author_display shows user display_name if user is active', function() {
 });
 
 
-test('quote survives but becomes anonymous when user deletes their account', function() {
+test('ungrabbed quote is deleted when user deletes their account', function() {
     $quote = Quote::factory()->create(['user_id' => $this->user->id]);
 
+    $this->user->delete();
+
+    expect($quote->fresh())->toBeNull(); 
+});
+
+
+test('quote survives but becomes anonymous when user deletes their account', function() {
+    $grabber = User::factory()->create();
+    $quote = Quote::factory()->create(['user_id' => $this->user->id]);
+    $quote->grabbedBy()->attach($grabber->id);
     $this->user->delete();
 
     $quote->refresh();
