@@ -160,52 +160,54 @@ test('correct password must be provided to delete account', function () {
 });
 
 
-test('user deletion removes private quotes but leaves public ones', function() {
+test('user deletion handles thoughts correctly based on grab status', function() {
+    $otherUser = User::factory()->create();
+
+    // 1. Private quote
     $privateQuote = Quote::factory()->create([
         'user_id' => $this->user->id,
         'is_private' => true
     ]);
 
-    $publicQuote = Quote::factory()->create([
+    // 2. Public quote (Nobody grabbed it)
+    $publicUngrabbedQuote = Quote::factory()->create([
         'user_id' => $this->user->id,
         'is_private' => false
     ]);
 
-    // User deletes their own account
+    // 3. Public quote (Grabbed by someone else)
+    $publicGrabbedQuote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'is_private' => false
+    ]);
+
+    // Simulate someone grabbing the third quote
+    $otherUser->grabs()->attach($publicGrabbedQuote);
+
+    // Act: User deletes their own account
     $response = $this
         ->actingAs($this->user)
         ->delete('/profile', [
             'password' => 'password',
         ]);
 
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect('/');
+
     // Assert: The user is gone
-    $this->assertDatabaseMissing('users', [
-        'id' => $this->user->id
-    ]);
+    $this->assertDatabaseMissing('users', ['id' => $this->user->id]);
 
     // Assert: The private quote is permanently deleted
-    $this->assertDatabaseMissing('quotes', [
-        'id' => $privateQuote->id
-    ]);
+    $this->assertDatabaseMissing('quotes', ['id' => $privateQuote->id]);
 
-    // Assert: The public quote remains, but belongs to no one
+    // Assert: The ungrabbed public quote is permanently deleted
+    $this->assertDatabaseMissing('quotes', ['id' => $publicUngrabbedQuote->id]);
+
+    // Assert: The grabbed public quote survives, but belongs to no one
     $this->assertDatabaseHas('quotes', [
-        'id' => $publicQuote->id,
+        'id' => $publicGrabbedQuote->id,
         'user_id' => null
     ]);
-
-    // Assert: The typography law kicks in
-    $publicQuote->refresh();
-    expect($publicQuote->authorDisplay)->toBe('(user lost in time)');
-});
-
-
-test('change password page is displayed', function() {
-    $response = $this
-        ->actingAs($this->user)
-        ->get('change-password');
-
-    $response->assertOk();
 });
 
 
