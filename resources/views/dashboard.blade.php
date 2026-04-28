@@ -31,7 +31,7 @@
                         <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
 
                         @if($isGrabbedBy)
-                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
+                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0" novalidate="">
                                 @csrf
                                 @method('DELETE')
                                 <x-button type="submit" variant="text-danger">Ungrab</x-button>

@@ -23,7 +23,7 @@
                         </x-button>
                     </form>
 
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" novalidate="">
                         @csrf
                         <x-button type="submit" variant="text">
                             Log Out

@@ -14,7 +14,7 @@
                     Update your account's profile information and email address.
                 </div>
                 
-                <form method="post" action="{{ route('profile.update') }}">
+                <form method="post" action="{{ route('profile.update') }}" novalidate="">
                     @csrf
                     @method('patch')
                     
@@ -42,7 +42,7 @@
                     </p>
                 </div>
 
-                <form method="post" action="{{ route('profile.destroy') }}">
+                <form method="post" action="{{ route('profile.destroy') }}" novalidate="">
                     @csrf
                     @method('delete')
 

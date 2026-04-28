@@ -48,7 +48,7 @@
                     Change Password
                 </a>
                 
-                <form method="POST" action="{{ route('logout') }}" class="m-0 border-t border-base-300">
+                <form method="POST" action="{{ route('logout') }}" class="m-0 border-t border-base-300" novalidate="">
                     @csrf
                     <button type="submit" class="px-4 py-3 text-error hover:bg-base-200 w-full text-left">
                         Log Out

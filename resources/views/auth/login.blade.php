@@ -11,7 +11,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('login') }}" novalidate="">
                     @csrf
 
                     <x-floating-input id="email" name="email" type="email" label="Email" autocomplete="username" required="true" />
