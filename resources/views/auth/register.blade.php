@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col items-center justify-center mt-12 pb-24">
+    <div class="flex flex-col items-center justify-center mt-12 pb-12">
         <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
             <div class="card-body p-8">
                 

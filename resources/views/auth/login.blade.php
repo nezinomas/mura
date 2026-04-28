@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col items-center justify-center mt-12 pb-24">
+    <div class="flex flex-col items-center justify-center mt-12 pb-12">
         <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
             <div class="card-body p-8">
                 
@@ -11,7 +11,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('login') }}" novalidate="">
                     @csrf
 
                     <x-floating-input id="email" name="email" type="email" label="Email" autocomplete="username" required="true" />

@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
+    <div class="max-w-3xl mx-auto px-4">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
@@ -31,7 +31,7 @@
                         <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
 
                         @if($isGrabbedBy)
-                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0">
+                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0" novalidate="">
                                 @csrf
                                 @method('DELETE')
                                 <x-button type="submit" variant="text-danger">Ungrab</x-button>
