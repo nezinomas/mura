@@ -25,6 +25,12 @@
             {{ $slot }}
         </main>
 
+        <footer class="pb-12 pt-12 border-t border-base-300/30 text-center">
+            <a href="{{ route('rules') }}" class="text-sm font-mono opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
+                House Rules
+            </a>
+        </footer>
+
         @livewireScripts
     </body>
 </html>
