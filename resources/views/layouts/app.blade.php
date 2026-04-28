@@ -26,9 +26,14 @@
         </main>
 
         <footer class="pb-12 pt-12 border-t border-base-300/30 text-center">
-            <a href="{{ route('rules') }}" class="text-sm font-mono opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
-                House Rules
-            </a>
+            <div class="flex justify-center gap-12 pb-8">
+                <a href="{{ route('rules') }}" class="text-sm opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
+                    House Rules
+                </a>
+                <a href="{{ route('correspondence.create') }}" class="text-sm opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
+                    Correspondence
+                </a>
+            </div>
         </footer>
 
         @livewireScripts
