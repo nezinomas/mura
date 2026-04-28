@@ -5,13 +5,15 @@ use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\SearchController;
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/rules', 'rules')->name('rules');
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 // The Correspondence Routes
 Route::view('/correspondence', 'correspondence')->name('correspondence.create');
