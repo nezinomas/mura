@@ -1,8 +1,10 @@
-@props(['id', 'name', 'type' => 'text', 'label', 'required' => false, 'autocomplete' => '', 'value' => '', 'bag' => 'default'])
+@props(['id', 'name', 'type' => 'text', 'label', 'required' => false, 'autocomplete' => '', 'value' => '', 'bag' => 'default', 'uppercase' => true])
 
 @php
     // Check if there is a Laravel validation error on the server
     $hasServerSideError = $errors->getBag($bag)->has($name);
+    // Determine the case class
+    $caseClass = $uppercase ? 'uppercase' : '';
 @endphp
 
 <div class="mb-6" x-data="{ hasError: {{ $hasServerSideError ? 'true' : 'false' }} }">
@@ -21,7 +23,7 @@
         />
         
         <label for="{{ $id }}" 
-            class="absolute left-4 uppercase tracking-widest transition-all duration-200 pointer-events-none
+            class="absolute left-4 tracking-widest transition-all duration-200 pointer-events-none {{ $caseClass }}
                    top-1 text-[10px] peer-focus:top-1 peer-focus:text-[10px]
                    peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
                    {{ $hasServerSideError ? 'text-error' : 'text-base-content/50' }}"
@@ -31,7 +33,7 @@
     </div>
 
     @error($name, $bag)
-        <div x-show="hasError" class="text-error mt-1 text-sm">
+        <div x-show="hasError" class="text-error mt-1 text-sm font-mono">
             {{ $message }}
         </div>
     @enderror
