@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-24">
+    <div class="max-w-3xl mx-auto px-4 pb-12">
         <div class="space-y-8">
             @php($isMine = $quote->isMine())
             

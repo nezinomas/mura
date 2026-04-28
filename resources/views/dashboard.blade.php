@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4"> {{-- Added pb-24 to ensure content doesn't hide behind the button --}}
+    <div class="max-w-3xl mx-auto px-4">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
