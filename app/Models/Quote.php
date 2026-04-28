@@ -82,8 +82,7 @@ class Quote extends Model
     // Thought can be edited 24 hours after create
     public function isEditable(): bool
     {
-        // return $this->created_at->addHours(24)->isFuture();
-        return true;
+        return $this->created_at->addHours(24)->isFuture();
     }
 
     // Check if thought was edited
