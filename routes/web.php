@@ -1,12 +1,12 @@
 <?php
 
-use App\Mail\CorrespondenceLetter;
-use App\Http\Controllers\QuoteController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
-Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuoteController;
+use App\Mail\CorrespondenceLetter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
