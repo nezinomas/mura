@@ -5,7 +5,7 @@
                 
                 <h2 class="mura-card-title mb-6">mura.</h2>
 
-                <div class="mb-6 text-sm text-center text-base-content/70 leading-relaxed">
+                <div class="mura-card-note text-center leading-relaxed">
                     Enter your email to reset your password.
                 </div>
                 
@@ -20,13 +20,13 @@
 
                     <x-floating-input id="email" name="email" type="email" label="Email" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">
                             Email Reset Link
                         </x-button>
                     </div>
 
-                    <div class="text-center mt-6">
+                    <div class="mura-card-footer">
                         <a href="{{ route('login') }}" class="link link-hover opacity-70">
                             Back to login
                         </a>

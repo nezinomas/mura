@@ -16,12 +16,12 @@
 
                     <x-floating-input id="password_confirmation" name="password_confirmation" type="password" label="Confirm Password" autocomplete="new-password" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">Register</x-button>
                     </div>
 
-                    <div class="text-center mt-6">
-                        <a href="{{ route('login') }}" class="link link-hover text-xs uppercase tracking-wider opacity-70">Already registered?</a>
+                    <div class="mura-card-footer">
+                        <a href="{{ route('login') }}" class="mura-auth-link">Already registered?</a>
                     </div>
                 </form>
 

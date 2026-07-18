@@ -5,7 +5,7 @@
                 
                 <h2 class="mura-card-title mb-6">mura.</h2>
 
-                <div class="mb-6 text-sm text-base-content/70">
+                <div class="mura-card-note">
                     Secure area. Please confirm your password to continue.
                 </div>
 
@@ -14,7 +14,7 @@
 
                     <x-floating-input id="password" name="password" type="password" label="Password" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">
                             Confirm
                         </x-button>

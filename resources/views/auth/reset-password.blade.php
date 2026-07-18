@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="min-h-screen flex items-center justify-center bg-base-200">
+    <div class="mura-auth-screen">
         <div class="mura-card">
             <div class="mura-card-body">
                 
@@ -16,7 +16,7 @@
 
                     <x-floating-input id="password_confirmation" name="password_confirmation" type="password" label="Confirm Password" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">
                             Reset Password
                         </x-button>

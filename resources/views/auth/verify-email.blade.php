@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="min-h-screen flex items-center justify-center bg-base-200">
+    <div class="mura-auth-screen">
         <div class="mura-card">
             <div class="mura-card-body">
                 
                 <h2 class="mura-card-title mb-6">mura.</h2>
 
-                <div class="mb-6 text-sm text-base-content/70">
+                <div class="mura-card-note">
                     Please verify your email address by clicking the link we just sent you.
                 </div>
 

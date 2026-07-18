@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="mura-feed-page">
         <div class="space-y-8">
             @if($dailyQuote)
                 <div class="relative mt-4">
@@ -31,9 +31,9 @@
                 
                 @if($quotes->isNotEmpty())
                     <div class="flex items-center justify-center my-12">
-                        <div class="h-px bg-slate-200 w-full max-w-xs"></div>
+                        <div class="mura-divider-line"></div>
                         <span class="px-4 text-slate-400 italic text-sm text-center">Discover<br>more</span>
-                        <div class="h-px bg-slate-200 w-full max-w-xs"></div>
+                        <div class="mura-divider-line"></div>
                     </div>
                 @endif
             @endif

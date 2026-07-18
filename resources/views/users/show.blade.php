@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="mura-feed-page">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 <x-quote-card :post="$post">
@@ -40,7 +40,7 @@
         </div>
 
         @if($quotes->hasPages())
-            <div class="mt-8 mb-24">
+            <div class="mura-pagination-wrap">
                 {{ $quotes->links('layouts.pagination') }}
             </div>
         @endif

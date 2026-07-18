@@ -35,8 +35,8 @@
                         <x-button type="submit" class="w-full">Log in</x-button>
                     </div>
 
-                    <div class="text-center mt-6">
-                        <a href="{{ route('register') }}" class="link link-hover text-xs uppercase tracking-wider opacity-70">Need an account?</a>
+                    <div class="mura-card-footer">
+                        <a href="{{ route('register') }}" class="mura-auth-link">Need an account?</a>
                     </div>
                 </form>
 

@@ -28,6 +28,14 @@
     .mura-page-heading {
         @apply text-center w-full;
     }
+    /* Standard feed/detail page container. */
+    .mura-feed-page {
+        @apply max-w-3xl mx-auto px-4 pb-12;
+    }
+    /* Thin horizontal rule used in the "discover more" divider. */
+    .mura-divider-line {
+        @apply h-px bg-slate-200 w-full max-w-xs;
+    }
 
     /* --- Cards (auth / settings) ---------------------------------------- */
 
@@ -43,6 +51,10 @@
     .mura-card-title {
         @apply card-title text-2xl font-bold justify-center;
     }
+    /* Muted helper/description text under a card title. */
+    .mura-card-note {
+        @apply mb-6 text-sm text-base-content/70;
+    }
 
     /* --- Feedback / alerts ---------------------------------------------- */
 
@@ -54,6 +66,22 @@
 
     .mura-auth-wrap {
         @apply flex flex-col items-center justify-center mt-12 pb-12;
+    }
+    /* Full-screen centered auth wrapper (verify email / reset password). */
+    .mura-auth-screen {
+        @apply min-h-screen flex items-center justify-center bg-base-200;
+    }
+    /* Wrapper around a form's submit button. */
+    .mura-form-action {
+        @apply mt-4;
+    }
+    /* Centered footer row holding the auth "switch page" link. */
+    .mura-card-footer {
+        @apply text-center mt-6;
+    }
+    /* Small uppercase auth link (register / login switch). */
+    .mura-auth-link {
+        @apply link link-hover text-xs uppercase tracking-wider opacity-70;
     }
 
     /* --- Empty states --------------------------------------------------- */
@@ -107,6 +135,21 @@
     }
     .mura-pg-num {
         @apply px-3 py-2 text-base-content/70 hover:text-base-content hover:bg-slate-100 transition-colors;
+    }
+    /* Spacing wrapper around the pagination links on feed pages. */
+    .mura-pagination-wrap {
+        @apply mt-8 mb-24;
+    }
+
+    /* --- Forms --------------------------------------------------------- */
+
+    /* Full-height flex column for the compose/edit form. */
+    .mura-compose-form {
+        @apply flex flex-col flex-1 h-full w-full;
+    }
+    /* Inline form wrapper with no margin (grab / ungrab actions). */
+    .mura-inline-form {
+        @apply inline m-0;
     }
 
     /* --- Formerly-undefined classes (now given real styles) ------------- */
