@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="flex items-center justify-center mt-12 pb-12">
+    <div class="mura-auth-wrap">
         <div class="mura-card">
             <div class="mura-card-body">
                 @if (session('status') === 'password-updated')

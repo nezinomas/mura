@@ -64,12 +64,9 @@
 
     /* --- Auth pages ----------------------------------------------------- */
 
+    /* Outer wrapper for every auth / settings page (flows below the nav). */
     .mura-auth-wrap {
         @apply flex flex-col items-center justify-center mt-12 pb-12;
-    }
-    /* Full-screen centered auth wrapper (verify email / reset password). */
-    .mura-auth-screen {
-        @apply min-h-screen flex items-center justify-center bg-base-200;
     }
     /* Wrapper around a form's submit button. */
     .mura-form-action {

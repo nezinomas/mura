@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="flex flex-col items-center justify-center mt-12 space-y-8 pb-12">
+    <div class="mura-auth-wrap space-y-8">
         
         <div class="mura-card">
             <div class="mura-card-body">

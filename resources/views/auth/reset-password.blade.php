@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mura-auth-screen">
+    <div class="mura-auth-wrap">
         <div class="mura-card">
             <div class="mura-card-body">
                 
