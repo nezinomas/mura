@@ -42,7 +42,7 @@
                 >{{ old('message') }}</textarea>
 
                 @error('message')
-                    <div class="mt-2 font-mono text-sm text-red-500">{{ $message }}</div>
+                    <div class="mt-2 font-mura text-sm text-error">{{ $message }}</div>
                 @enderror
             </div>
 
