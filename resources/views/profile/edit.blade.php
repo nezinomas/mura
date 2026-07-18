@@ -9,7 +9,7 @@
         
         <div class="mura-card">
             <div class="mura-card-body">
-                <h2 class="card-title text-xl font-bold mb-2">Profile Information</h2>
+                <h2 class="mura-section-title">Profile Information</h2>
                 <div class="mura-card-note">
                     Update your account's profile information and email address.
                 </div>
@@ -33,7 +33,7 @@
 
         <div class="mura-card border-error/50">
             <div class="mura-card-body">
-                <h2 class="card-title text-xl font-bold mb-2 text-error">Delete Account</h2>
+                <h2 class="mura-section-title text-error">Delete Account</h2>
                 <div class="mura-card-note">
                     <p class="mb-5">When your account is deleted, your <strong>private thoughts</strong> will be permanently erased.</p>
 

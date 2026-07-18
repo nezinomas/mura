@@ -47,9 +47,13 @@
     .mura-card-body {
         @apply card-body p-8;
     }
-    /* Base card title. Append `mb-6` or `mb-8` per page for spacing. */
+    /* Auth card title (mura., Join mura., ...). */
     .mura-card-title {
-        @apply card-title text-2xl font-bold justify-center;
+        @apply card-title text-2xl font-bold justify-center mb-8;
+    }
+    /* Settings-card section title (profile, delete account). */
+    .mura-section-title {
+        @apply card-title text-xl font-bold mb-2;
     }
     /* Muted helper/description text under a card title. */
     .mura-card-note {

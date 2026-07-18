@@ -3,7 +3,7 @@
         <div class="mura-card">
             <div class="mura-card-body">
                 
-                <h2 class="mura-card-title mb-8">mura.</h2>
+                <h2 class="mura-card-title">mura.</h2>
 
                 <form method="POST" action="{{ route('password.store') }}" novalidate="">
                     @csrf
