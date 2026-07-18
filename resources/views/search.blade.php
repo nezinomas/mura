@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12 max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="mura-page">
 
 
         <div class="space-y-8">

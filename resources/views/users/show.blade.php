@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="mura-feed-page">
+    <div class="mura-page">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 <x-quote-card :post="$post">

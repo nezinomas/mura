@@ -28,8 +28,8 @@
     .mura-page-heading {
         @apply text-center w-full;
     }
-    /* Standard feed/detail page container. */
-    .mura-feed-page {
+    /* Standard content container for every page. */
+    .mura-page {
         @apply max-w-3xl mx-auto px-4 pb-12;
     }
     /* Thin horizontal rule used in the "discover more" divider. */

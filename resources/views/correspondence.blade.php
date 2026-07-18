@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12 max-w-2xl mx-auto sm:px-6 lg:px-8">
+    <div class="mura-page">
         
         @if (session('success'))
             <div class="mb-8 p-6 bg-slate-50 border border-slate-200 text-center font-mono text-sm text-base-content/70">

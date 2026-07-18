@@ -5,7 +5,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12 max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="mura-page">
         
         <div class="prose max-w-none leading-relaxed text-base-content prose-headings:font-mono prose-headings:font-normal prose-h3:text-lg prose-a:text-base-content hover:prose-a:opacity-70">
             
