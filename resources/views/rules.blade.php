@@ -7,7 +7,7 @@
 
     <div class="mura-page">
         
-        <div class="prose max-w-none leading-relaxed text-base-content prose-headings:font-mono prose-headings:font-normal prose-h3:text-lg prose-a:text-base-content hover:prose-a:opacity-70">
+        <div class="prose max-w-none leading-relaxed text-base-content prose-headings:font-mura prose-headings:font-normal prose-h3:text-lg prose-a:text-base-content hover:prose-a:opacity-70">
             
             <p class="italic opacity-70 mb-12">
                 This space is designed to be a quiet, analog reflection of thoughts. To maintain the integrity of this environment, we observe the following principles.

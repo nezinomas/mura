@@ -33,7 +33,7 @@
     </div>
 
     @error($name, $bag)
-        <div x-show="hasError" class="text-error mt-1 text-sm font-mono">
+        <div x-show="hasError" class="text-error mt-1 text-sm font-mura">
             {{ $message }}
         </div>
     @enderror

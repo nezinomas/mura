@@ -24,7 +24,7 @@
             @empty
                 @if($searchTerm)
                     <div class="mura-empty">
-                        <p class="mura-empty-text font-mono">
+                        <p class="mura-empty-text font-mura">
                             No thoughts found matching your search.
                         </p>
                     </div>

@@ -31,7 +31,7 @@
                 name="q" 
                 value="{{ request('q') }}"
                 placeholder="Search" 
-                class="bg-transparent border border-transparent focus:border-base-300 rounded pl-2 pr-8 py-1 m-0 w-48 sm:w-64 md:w-80 text-sm font-medium focus:font-mono opacity-70 hover:opacity-100 focus:opacity-100 transition-colors focus:outline-none focus:ring-0 shadow-none cursor-text text-base-content placeholder-base-content focus:placeholder-base-content/30"
+                class="bg-transparent border border-transparent focus:border-base-300 rounded pl-2 pr-8 py-1 m-0 w-48 sm:w-64 md:w-80 text-sm font-medium focus:font-mura opacity-70 hover:opacity-100 focus:opacity-100 transition-colors focus:outline-none focus:ring-0 shadow-none cursor-text text-base-content placeholder-base-content focus:placeholder-base-content/30"
             >
             
             <button 
@@ -68,7 +68,7 @@
                      x-transition:leave="transition ease-in duration-75"
                      x-transition:leave-start="transform opacity-100 scale-100"
                      x-transition:leave-end="transform opacity-0 scale-95"
-                     class="absolute right-0 mt-4 w-48 bg-base-100 border border-base-300 shadow-sm z-50 font-mono"
+                     class="absolute right-0 mt-4 w-48 bg-base-100 border border-base-300 shadow-sm z-50 font-mura"
                      style="display: none;">
                     
                     <div class="py-1 flex flex-col">

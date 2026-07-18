@@ -8,7 +8,7 @@
     <div class="mura-page">
         
         @if (session('success'))
-            <div class="mb-8 p-6 bg-slate-50 border border-slate-200 text-center font-mono text-sm text-base-content/70">
+            <div class="mb-8 p-6 bg-slate-50 border border-slate-200 text-center font-mura text-sm text-base-content/70">
                 {{ session('success') }}
             </div>
         @endif
@@ -50,7 +50,7 @@
                 <x-button 
                     type="submit" 
                     variant="text" 
-                    class="font-mono text-sm uppercase tracking-widest pb-1 border-b border-transparent hover:border-base-content px-0"
+                    class="font-mura text-sm uppercase tracking-widest pb-1 border-b border-transparent hover:border-base-content px-0"
                 >
                     Seal & Send
                 </x-button>
