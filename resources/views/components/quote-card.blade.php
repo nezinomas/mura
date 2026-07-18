@@ -1,7 +1,7 @@
 @props(['post', 'isMine' => false])
 
 <div class="card w-full shadow-xl border {{ $isMine ? 'bg-slate-50 border-slate-200 mura-grab-card' : 'bg-base-100 border-base-300' }}">
-    <div class="card-body p-8">
+    <div class="mura-card-body">
 
         <div class="flex justify-between items-start pb-6 text-sm text-base-content/60">
             <div>

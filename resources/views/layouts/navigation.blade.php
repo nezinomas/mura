@@ -72,17 +72,17 @@
                      style="display: none;">
                     
                     <div class="py-1 flex flex-col">
-                        <a href="{{ route('profile.edit') }}" class="px-4 py-3 hover:bg-base-200 w-full text-left">
+                        <a href="{{ route('profile.edit') }}" class="mura-menu-item">
                             Profile
                         </a>
                         
-                        <a href="{{ route('password.change') }}" class="px-4 py-3 hover:bg-base-200 w-full text-left">
+                        <a href="{{ route('password.change') }}" class="mura-menu-item">
                             Change Password
                         </a>
 
                         <form method="POST" action="{{ route('logout') }}" class="m-0 border-t border-base-300">
                             @csrf
-                            <button type="submit" class="px-4 py-3 text-error hover:bg-base-200 w-full text-left">
+                            <button type="submit" class="mura-menu-item text-error">
                                 Log Out
                             </button>
                         </form>
@@ -91,8 +91,8 @@
             </div>
         @else
             <div class="flex items-center gap-4 font-medium">
-                <a href="{{ route('login') }}" class="hover:underline opacity-70 hover:opacity-100">Log in</a>
-                <a href="{{ route('register') }}" class="hover:underline opacity-70 hover:opacity-100">Register</a>
+                <a href="{{ route('login') }}" class="mura-nav-guest-link">Log in</a>
+                <a href="{{ route('register') }}" class="mura-nav-guest-link">Register</a>
             </div>
         @endauth
     </div>

@@ -27,10 +27,10 @@
 
         <footer class="pb-12 pt-12 border-t border-base-300/30 text-center">
             <div class="flex justify-center gap-12 pb-8">
-                <a href="{{ route('rules') }}" class="text-sm opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
+                <a href="{{ route('rules') }}" class="mura-footer-link">
                     House Rules
                 </a>
-                <a href="{{ route('correspondence.create') }}" class="text-sm opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content">
+                <a href="{{ route('correspondence.create') }}" class="mura-footer-link">
                     Correspondence
                 </a>
             </div>

@@ -2,17 +2,17 @@
 
 <input type="checkbox" id="{{ $id }}" class="modal-toggle" />
 <div class="modal" role="dialog">
-    <div class="modal-box bg-slate-50 border-slate-200 rounded-none shadow-sm border p-8 text-left">
+    <div class="mura-modal-box">
         @if (isset($title))
-            <h3 class="font-bold text-base-content text-lg mb-4 capitalize">{{ $title }}</h3>
+            <h3 class="mura-modal-title">{{ $title }}</h3>
         @endif
 
-        <div class="text-base-content/80 leading-relaxed mb-8 text-base">
+        <div class="mura-modal-body">
             {{ $slot }}
         </div>
 
         @if (isset($actions))
-            <div class="modal-action flex justify-end gap-4 mt-0">
+            <div class="mura-modal-action">
                 {{ $actions }}
             </div>
         @endif

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <div class="mura-page-heading">
             <div class="flex items-center justify-center gap-6 text-sm text-base-content/60 text-ui-label">
                 <a href="/dashboard" class="hover:text-base-content transition-colors {{ request('filter') === null ? 'text-base-content underline underline-offset-4' : '' }}">All</a>
                 <a href="/dashboard?filter=public" class="hover:text-base-content transition-colors {{ request('filter') === 'public' ? 'text-base-content underline underline-offset-4' : '' }}">Public</a>
@@ -54,8 +54,8 @@
                     </x-slot>
                 </x-quote-card>
             @empty
-                <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                    <p class="text-base-content/50 italic mb-6">
+                <div class="mura-empty">
+                    <p class="mura-empty-text mb-6">
                         The paper is blank. No thoughts have been carved yet.
                     </p>
 

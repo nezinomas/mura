@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <div class="mura-page-heading">
             Correspondence
         </div>
     </x-slot>

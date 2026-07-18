@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <div class="mura-page-heading">
             Search
         </div>
     </x-slot>
@@ -23,8 +23,8 @@
                 </x-quote-card>
             @empty
                 @if($searchTerm)
-                    <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                        <p class="text-base-content/50 italic font-mono">
+                    <div class="mura-empty">
+                        <p class="mura-empty-text font-mono">
                             No thoughts found matching your search.
                         </p>
                     </div>

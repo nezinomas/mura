@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <div class="mura-page-heading">
             Global Discover
         </div>
     </x-slot>
@@ -54,8 +54,8 @@
                 </x-quote-card>
             @empty
                 @if(!$dailyQuote)
-                    <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                        <p class="text-base-content/50 italic">
+                    <div class="mura-empty">
+                        <p class="mura-empty-text">
                             The world is quiet. No thoughts have been shared yet.
                         </p>
                     </div>

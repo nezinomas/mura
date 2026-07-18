@@ -4,11 +4,11 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li>
-                    <span class="px-3 py-2 text-base-content/40 cursor-not-allowed" aria-hidden="true">&lsaquo;</span>
+                    <span class="mura-pg-disabled" aria-hidden="true">&lsaquo;</span>
                 </li>
             @else
                 <li>
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="px-3 py-2 text-base-content hover:bg-slate-100 transition-colors" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="mura-pg-link" aria-label="@lang('pagination.previous')">&lsaquo;</a>
                 </li>
             @endif
 
@@ -17,7 +17,7 @@
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
                     <li>
-                        <span class="px-3 py-2 text-base-content/40 cursor-not-allowed" aria-hidden="true">{{ $element }}</span>
+                        <span class="mura-pg-disabled" aria-hidden="true">{{ $element }}</span>
                     </li>
                 @endif
 
@@ -26,11 +26,11 @@
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
                             <li>
-                                <span class="px-3 py-2 text-base-content border-b-2 border-base-content" aria-current="page">{{ $page }}</span>
+                                <span class="mura-pg-current" aria-current="page">{{ $page }}</span>
                             </li>
                         @else
                             <li>
-                                <a href="{{ $url }}" class="px-3 py-2 text-base-content/70 hover:text-base-content hover:bg-slate-100 transition-colors">{{ $page }}</a>
+                                <a href="{{ $url }}" class="mura-pg-num">{{ $page }}</a>
                             </li>
                         @endif
                     @endforeach
@@ -40,11 +40,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li>
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="px-3 py-2 text-base-content hover:bg-slate-100 transition-colors" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="mura-pg-link" aria-label="@lang('pagination.next')">&rsaquo;</a>
                 </li>
             @else
                 <li>
-                    <span class="px-3 py-2 text-base-content/40 cursor-not-allowed" aria-hidden="true">&rsaquo;</span>
+                    <span class="mura-pg-disabled" aria-hidden="true">&rsaquo;</span>
                 </li>
             @endif
         </ul>
