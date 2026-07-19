@@ -42,7 +42,7 @@
     /* Narrow settings card shell. Add a border-* utility to recolor
        (e.g. `mura-card border-error/50` for the danger card). */
     .mura-card {
-        @apply card w-96 bg-base-100 shadow-xl border border-base-300;
+        @apply card w-full max-w-96 bg-base-100 shadow-xl border border-base-300;
     }
     .mura-card-body {
         @apply card-body p-8;
