@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <div class="prose max-w-none leading-relaxed text-base-content mb-8">
+        <div class="prose max-w-none leading-relaxed text-sm text-base-content mb-8">
             <p class="italic opacity-70">
                 Whether you have uncovered a broken mechanism, possess a suggestion for the space, or simply wish to leave a note for the publisher, your words are welcome here.
             </p>

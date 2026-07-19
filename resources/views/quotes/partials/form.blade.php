@@ -7,7 +7,7 @@
     <textarea
         name="content"
         placeholder="A beautifully quiet thought..."
-        class="textarea w-full rounded-none text-base mb-0 flex-1 resize-none border border-base-300 focus:border-base-content/40 focus:outline-none focus:ring-0 transition-colors duration-300 bg-transparent"
+        class="textarea w-full rounded-none text-sm mb-0 flex-1 resize-none border border-base-300 focus:border-base-content/40 focus:outline-none focus:ring-0 transition-colors duration-300 bg-transparent"
     >{{ old('content', $quote->content ?? '') }}</textarea>
 
     @error('content')
@@ -37,8 +37,8 @@
             class="mt-3 border border-base-300 bg-slate-50/50 px-4 py-3 sm:px-5 sm:py-4"
         >
             <div class="grid grid-cols-[1.4fr_1fr] gap-x-6 gap-y-2.5 text-xs sm:text-sm">
-                <span class="text-base-content/40 uppercase tracking-widest text-[0.65rem]">You type</span>
-                <span class="text-base-content/40 uppercase tracking-widest text-[0.65rem]">You get</span>
+                <span class="text-base-content/40 uppercase tracking-widest text-xs">You type</span>
+                <span class="text-base-content/40 uppercase tracking-widest text-xs">You get</span>
 
                 <span class="text-base-content/70">**bold**</span>
                 <span class="text-base-content/60"><strong class="text-base-content/90">bold</strong></span>

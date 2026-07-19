@@ -17,7 +17,7 @@
             <span class="opacity-70">{{ $post->created_at->diffForHumans() }}</span>
         </div>
 
-        <div class="leading-relaxed text-base-content whitespace-pre-wrap break-words pt-2 pb-6">{!! $post->content_html !!}</div>
+        <div class="mura-thought leading-relaxed text-base-content whitespace-pre-wrap break-words pt-2 pb-6">{!! $post->content_html !!}</div>
 
         @if(isset($actions))
             <div class="flex justify-end gap-4 pt-6 border-t border-base-300/50 text-sm">
