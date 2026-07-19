@@ -28,9 +28,10 @@
     .mura-page-heading {
         @apply text-center w-full;
     }
-    /* Standard content container for every page. */
+    /* Standard content container for every page. Vertical spacing is owned by
+       <main> in the layout, so pages stay uniform top-to-bottom. */
     .mura-page {
-        @apply max-w-3xl mx-auto px-4 pb-12;
+        @apply max-w-3xl mx-auto px-4;
     }
     /* Thin horizontal rule used in the "discover more" divider. */
     .mura-divider-line {
@@ -68,9 +69,10 @@
 
     /* --- Auth pages ----------------------------------------------------- */
 
-    /* Outer wrapper for every auth / settings page (flows below the nav). */
+    /* Outer wrapper for every auth / settings page (flows below the nav).
+       Vertical spacing is owned by <main> in the layout. */
     .mura-auth-wrap {
-        @apply flex flex-col items-center justify-center mt-12 pb-12;
+        @apply flex flex-col items-center justify-center;
     }
     /* Wrapper around a form's submit button. */
     .mura-form-action {
