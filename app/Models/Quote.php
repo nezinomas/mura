@@ -67,9 +67,7 @@ class Quote extends Model
             get: function () {
                 $html = Str::markdown($this->content ?? '', [
                     'html_input' => 'escape',
-                    // 'renderer' => [
-                    //     'soft_break' => "<br>",
-                    // ],
+                    'allow_unsafe_links' => false,
                 ]);
 
                 $allowedTags = '<p><br><strong><em><a><del>';

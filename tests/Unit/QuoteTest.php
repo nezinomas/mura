@@ -44,6 +44,9 @@ dataset('malicious_markdown_in_quoutes', [
     'script' => ['<script>alert("hacked")</script>', '<script'],
     'h1' => ['# Loud HEADER', '<h1'],
     'img' => ['![image](https://bad.com/img.jpg)', '<img'],
+    'javascript link' => ['[click](javascript:alert(document.cookie))', 'javascript:'],
+    'javascript link mixed case' => ['[click](JavaScript:alert(1))', 'JavaScript:'],
+    'data uri link' => ['[click](data:text/html,<script>alert(1)</script>)', 'data:'],
 ]);
 
 
