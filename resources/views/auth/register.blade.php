@@ -3,7 +3,7 @@
         <div class="mura-card">
             <div class="mura-card-body">
                 
-                <h1 class="mura-card-title">Join mura.</h1>
+                <h1 class="mura-card-title">Join {{ config('app.name', 'mura.') }}</h1>
 
                 <form method="POST" action="{{ route('register') }}" novalidate="">
                     @csrf

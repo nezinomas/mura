@@ -3,7 +3,7 @@
         <div class="mura-card">
             <div class="mura-card-body">
                 
-                <h1 class="mura-card-title">mura.</h1>
+                <h1 class="mura-card-title">{{ config('app.name', 'mura.') }}</h1>
 
                 <div class="mura-card-note">
                     Secure area. Please confirm your password to continue.
