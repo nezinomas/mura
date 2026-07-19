@@ -1,9 +1,9 @@
 <x-app-layout>
-    <div class="min-h-screen flex items-center justify-center bg-base-200">
-        <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
-            <div class="card-body p-8">
+    <div class="mura-auth-wrap">
+        <div class="mura-card">
+            <div class="mura-card-body">
                 
-                <h2 class="card-title text-2xl font-bold mb-8 justify-center">mura.</h2>
+                <h1 class="mura-card-title">mura.</h1>
 
                 <form method="POST" action="{{ route('password.store') }}" novalidate="">
                     @csrf
@@ -16,7 +16,7 @@
 
                     <x-floating-input id="password_confirmation" name="password_confirmation" type="password" label="Confirm Password" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">
                             Reset Password
                         </x-button>

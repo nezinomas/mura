@@ -4,13 +4,13 @@
          :class="{ 'modal-open': show }"
          x-cloak>
 
-        <div class="modal-box bg-slate-50 border-slate-200 rounded-none shadow-sm border p-8 text-left max-w-lg w-full"
+        <div class="mura-modal-box max-w-lg w-full"
              @click.outside="show = false"
              @keydown.escape.window="show = false">
             
-            <h3 class="font-bold text-base-content text-lg mb-4 capitalize">Confirm Deletion</h3>
+            <h3 class="mura-modal-title">Confirm Deletion</h3>
 
-            <div class="text-base-content/80 leading-relaxed mb-8 text-base">
+            <div class="mura-modal-body">
                 @if($isGrabbed)
                     This thought will remain visible on the global feed forever. Are you sure to disown it?
                 @else
@@ -18,7 +18,7 @@
                 @endif
             </div>
 
-            <div class="modal-action flex justify-end gap-4 mt-0">
+            <div class="mura-modal-action">
                 <x-button @click="show = false" type="button" class="cursor-pointer">
                     Cancel
                 </x-button>

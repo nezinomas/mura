@@ -1,15 +1,15 @@
 <x-app-layout>
         <x-slot name="header">
-        <div class="text-center w-full">
+        <h1 class="mura-page-heading">
             Change Password
-        </div>
+        </h1>
     </x-slot>
 
-    <div class="flex items-center justify-center mt-12 pb-12">
-        <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
-            <div class="card-body p-8">
+    <div class="mura-auth-wrap">
+        <div class="mura-card">
+            <div class="mura-card-body">
                 @if (session('status') === 'password-updated')
-                    <div class="alert alert-success mb-6 text-sm rounded-none border-l-4 border-success">
+                    <div class="mura-alert-success">
                         Password updated successfully.
                     </div>
                 @endif

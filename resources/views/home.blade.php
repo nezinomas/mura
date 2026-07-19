@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <h1 class="mura-page-heading">
             Global Discover
-        </div>
+        </h1>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="mura-page">
         <div class="space-y-8">
             @if($dailyQuote)
                 <div class="relative mt-4">
@@ -31,9 +31,9 @@
                 
                 @if($quotes->isNotEmpty())
                     <div class="flex items-center justify-center my-12">
-                        <div class="h-px bg-slate-200 w-full max-w-xs"></div>
+                        <div class="mura-divider-line"></div>
                         <span class="px-4 text-slate-400 italic text-sm text-center">Discover<br>more</span>
-                        <div class="h-px bg-slate-200 w-full max-w-xs"></div>
+                        <div class="mura-divider-line"></div>
                     </div>
                 @endif
             @endif
@@ -54,8 +54,8 @@
                 </x-quote-card>
             @empty
                 @if(!$dailyQuote)
-                    <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                        <p class="text-base-content/50 italic">
+                    <div class="mura-empty">
+                        <p class="mura-empty-text">
                             The world is quiet. No thoughts have been shared yet.
                         </p>
                     </div>

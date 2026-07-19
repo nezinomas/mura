@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <h1 class="mura-page-heading">
             Profile Settings
-        </div>
+        </h1>
     </x-slot>
 
-    <div class="flex flex-col items-center justify-center mt-12 space-y-8 pb-12">
+    <div class="mura-auth-wrap space-y-8">
         
-        <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
-            <div class="card-body p-8">
-                <h2 class="card-title text-xl font-bold mb-2">Profile Information</h2>
-                <div class="mb-6 text-sm text-base-content/70">
+        <div class="mura-card">
+            <div class="mura-card-body">
+                <h2 class="mura-section-title">Profile Information</h2>
+                <div class="mura-card-note">
                     Update your account's profile information and email address.
                 </div>
                 
@@ -31,10 +31,10 @@
             </div>
         </div>
 
-        <div class="card w-96 bg-base-100 shadow-xl border border-error/50">
-            <div class="card-body p-8">
-                <h2 class="card-title text-xl font-bold mb-2 text-error">Delete Account</h2>
-                <div class="mb-6 text-sm text-base-content/70">
+        <div class="mura-card border-error/50">
+            <div class="mura-card-body">
+                <h2 class="mura-section-title text-error">Delete Account</h2>
+                <div class="mura-card-note">
                     <p class="mb-5">When your account is deleted, your <strong>private thoughts</strong> will be permanently erased.</p>
 
                     <p class="bg-warning/10 border border-warning/50 rounded-md p-4 text-base-content">

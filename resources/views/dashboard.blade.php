@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <div class="mura-page-heading">
+            <h1 class="sr-only">Feed</h1>
             <div class="flex items-center justify-center gap-6 text-sm text-base-content/60 text-ui-label">
                 <a href="/dashboard" class="hover:text-base-content transition-colors {{ request('filter') === null ? 'text-base-content underline underline-offset-4' : '' }}">All</a>
                 <a href="/dashboard?filter=public" class="hover:text-base-content transition-colors {{ request('filter') === 'public' ? 'text-base-content underline underline-offset-4' : '' }}">Public</a>
@@ -10,7 +11,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4">
+    <div class="mura-page">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 @php($isMine = $post->isMine())
@@ -29,7 +30,7 @@
                         <x-button as="a" href="{{ route('quotes.show', $post) }}" variant="text" class="mr-auto">Permalink</x-button>
 
                         @if($isGrabbedBy)
-                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="inline m-0" novalidate="">
+                            <form method="POST" action="{{ route('quotes.ungrab', $post) }}" class="mura-inline-form" novalidate="">
                                 @csrf
                                 @method('DELETE')
                                 <x-button type="submit" variant="text-danger">Ungrab</x-button>
@@ -54,8 +55,8 @@
                     </x-slot>
                 </x-quote-card>
             @empty
-                <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                    <p class="text-base-content/50 italic mb-6">
+                <div class="mura-empty">
+                    <p class="mura-empty-text mb-6">
                         The paper is blank. No thoughts have been carved yet.
                     </p>
 
@@ -67,7 +68,7 @@
         </div>
 
         @if($quotes->hasPages())
-            <div class="mt-8 mb-24">
+            <div class="mura-pagination-wrap">
                 {{ $quotes->links('layouts.pagination') }}
             </div>
         @endif

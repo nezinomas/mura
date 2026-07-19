@@ -47,6 +47,19 @@ dataset('malicious_markdown_in_quoutes', [
 ]);
 
 
+// Markdown links whose URL uses a dangerous scheme must never become a real href.
+dataset('unsafe_link_markdown', [
+    'lowercase javascript'  => '[x](javascript:alert(1))',
+    'mixed case javascript' => '[x](JavaScript:alert(1))',
+    'vbscript'              => '[x](vbscript:msgbox(1))',
+    'data uri'              => '[x](data:text/html,<script>alert(1)</script>)',
+    'file uri'              => '[x](file:///etc/passwd)',
+    'entity encoded'        => '[x](java&#115;cript:alert(1))',
+    'autolink'              => '<javascript:alert(1)>',
+    'reference style'       => "[x][1]\n\n[1]: javascript:alert(1)",
+]);
+
+
 beforeEach(function() {
     $this->user = User::factory()->create();
 });
@@ -164,6 +177,33 @@ test('strip malicious markdown in qoutes', function($content, $tag) {
     ]);
     expect($quote->content_html)->not->toContain($tag);
 })->with('malicious_markdown_in_quoutes');
+
+
+test('never renders a link pointing at a dangerous url scheme', function(string $content) {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'content' => $content,
+    ]);
+
+    $html = $quote->content_html;
+
+    // A neutralised link keeps its text but must carry no dangerous href.
+    foreach (['javascript:', 'vbscript:', 'data:', 'file:'] as $scheme) {
+        expect($html)
+            ->not->toContain('href="' . $scheme)
+            ->not->toContain("href='" . $scheme);
+    }
+})->with('unsafe_link_markdown');
+
+
+test('keeps a safe http link intact', function() {
+    $quote = Quote::factory()->create([
+        'user_id' => $this->user->id,
+        'content' => '[good](https://example.com)',
+    ]);
+
+    expect($quote->content_html)->toContain('href="https://example.com"');
+});
 
 
 test('quote can be edited within 24 hours of creation', function () {

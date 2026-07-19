@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <h1 class="mura-page-heading">
             Thought
-        </div>
+        </h1>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="mura-page">
         <div class="space-y-8">
             @php($isMine = $quote->isMine())
             

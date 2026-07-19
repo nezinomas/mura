@@ -1,16 +1,16 @@
 <x-app-layout>
-    <div class="flex flex-col items-center justify-center mt-12 pb-12">
-        <div class="card w-96 bg-base-100 shadow-xl border border-base-300">
-            <div class="card-body p-8">
+    <div class="mura-auth-wrap">
+        <div class="mura-card">
+            <div class="mura-card-body">
                 
-                <h2 class="card-title text-2xl font-bold mb-6 justify-center">mura.</h2>
+                <h1 class="mura-card-title">mura.</h1>
 
-                <div class="mb-6 text-sm text-center text-base-content/70 leading-relaxed">
+                <div class="mura-card-note text-center leading-relaxed">
                     Enter your email to reset your password.
                 </div>
                 
                 @if (session('status'))
-                    <div class="alert alert-success mb-6 text-sm rounded-none border-l-4 border-success">
+                    <div class="mura-alert-success">
                         {{ session('status') }}
                     </div>
                 @endif
@@ -20,13 +20,13 @@
 
                     <x-floating-input id="email" name="email" type="email" label="Email" required="true" />
 
-                    <div class="form-control mt-4">
+                    <div class="mura-form-action">
                         <x-button type="submit" class="w-full">
                             Email Reset Link
                         </x-button>
                     </div>
 
-                    <div class="text-center mt-6">
+                    <div class="mura-card-footer">
                         <a href="{{ route('login') }}" class="link link-hover opacity-70">
                             Back to login
                         </a>

@@ -1,7 +1,7 @@
-<div class="bg-base-100 border-b border-base-300 px-4 sm:px-8 py-3 flex items-center justify-between">
+<nav aria-label="Primary" class="bg-base-100 border-b border-base-300 px-4 sm:px-8 py-3 flex items-center justify-between gap-2">
     
-    <div class="flex items-baseline">
-        
+    <div class="flex items-baseline min-w-0">
+
         <a href="{{ route('home') }}" class="text-2xl font-bold hover:opacity-70 transition-opacity mr-6 sm:mr-8">
             mura.
         </a>
@@ -20,7 +20,7 @@
         <form 
             action="{{ route('search.index') }}" 
             method="GET" 
-            class="relative flex items-center"
+            class="relative flex items-center min-w-0"
             x-data="{ query: '' }" 
             x-init="query = $refs.searchInput.value"
         >
@@ -30,8 +30,9 @@
                 type="text" 
                 name="q" 
                 value="{{ request('q') }}"
-                placeholder="Search" 
-                class="bg-transparent border border-transparent focus:border-base-300 rounded pl-2 pr-8 py-1 m-0 w-48 sm:w-64 md:w-80 text-sm font-medium focus:font-mono opacity-70 hover:opacity-100 focus:opacity-100 transition-colors focus:outline-none focus:ring-0 shadow-none cursor-text text-base-content placeholder-base-content focus:placeholder-base-content/30"
+                placeholder="Search"
+                aria-label="Search"
+                class="bg-transparent border border-transparent focus:border-base-300 rounded pl-2 pr-8 py-1 m-0 w-48 sm:w-64 md:w-80 min-w-0 max-w-full text-sm font-medium focus:font-mura opacity-70 hover:opacity-100 focus:opacity-100 transition-colors focus:outline-none focus:ring-0 shadow-none cursor-text text-base-content placeholder-base-content focus:placeholder-base-content/30"
             >
             
             <button 
@@ -50,12 +51,12 @@
         </form>
     </div>
 
-    <div class="flex items-center gap-4 sm:gap-6 text-sm">
+    <div class="flex items-center gap-4 sm:gap-6 text-sm min-w-0">
         @auth
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative min-w-0" x-data="{ open: false }">
                 
-                <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-2 focus:outline-none hover:opacity-70 font-medium opacity-70 hover:opacity-100 transition-opacity">
-                    <span>{{ Auth::user()->name }}</span>
+                <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-2 focus:outline-none hover:opacity-70 font-medium opacity-70 hover:opacity-100 transition-opacity min-w-0 max-w-full">
+                    <span class="truncate">{{ Auth::user()->name }}</span>
                     <svg class="h-4 w-4 fill-current opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -68,21 +69,21 @@
                      x-transition:leave="transition ease-in duration-75"
                      x-transition:leave-start="transform opacity-100 scale-100"
                      x-transition:leave-end="transform opacity-0 scale-95"
-                     class="absolute right-0 mt-4 w-48 bg-base-100 border border-base-300 shadow-sm z-50 font-mono"
+                     class="absolute right-0 mt-4 w-48 bg-base-100 border border-base-300 shadow-sm z-50 font-mura"
                      style="display: none;">
                     
                     <div class="py-1 flex flex-col">
-                        <a href="{{ route('profile.edit') }}" class="px-4 py-3 hover:bg-base-200 w-full text-left">
+                        <a href="{{ route('profile.edit') }}" class="mura-menu-item">
                             Profile
                         </a>
                         
-                        <a href="{{ route('password.change') }}" class="px-4 py-3 hover:bg-base-200 w-full text-left">
+                        <a href="{{ route('password.change') }}" class="mura-menu-item">
                             Change Password
                         </a>
 
                         <form method="POST" action="{{ route('logout') }}" class="m-0 border-t border-base-300">
                             @csrf
-                            <button type="submit" class="px-4 py-3 text-error hover:bg-base-200 w-full text-left">
+                            <button type="submit" class="mura-menu-item text-error">
                                 Log Out
                             </button>
                         </form>
@@ -91,9 +92,9 @@
             </div>
         @else
             <div class="flex items-center gap-4 font-medium">
-                <a href="{{ route('login') }}" class="hover:underline opacity-70 hover:opacity-100">Log in</a>
-                <a href="{{ route('register') }}" class="hover:underline opacity-70 hover:opacity-100">Register</a>
+                <a href="{{ route('login') }}" class="mura-nav-guest-link">Log in</a>
+                <a href="{{ route('register') }}" class="mura-nav-guest-link">Register</a>
             </div>
         @endauth
     </div>
-</div>
+</nav>

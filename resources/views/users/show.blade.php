@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-center gap-3 w-full text-center">
-            <span>{{ $user->display_name }}</span>
+            <h1>{{ $user->display_name }}</h1>
             
             <a href="{{ route('users.feed', $user) }}" 
                class="text-slate-400 hover:text-slate-700 transition-colors" 
@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="mura-page">
         <div class="space-y-8">
             @forelse ($quotes as $post)
                 <x-quote-card :post="$post">
@@ -31,8 +31,8 @@
                     </x-slot>
                 </x-quote-card>
             @empty
-                <div class="flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30">
-                    <p class="text-base-content/50 italic">
+                <div class="mura-empty">
+                    <p class="mura-empty-text">
                         The world is quiet. No thoughts have been shared yet.
                     </p>
                 </div>
@@ -40,7 +40,7 @@
         </div>
 
         @if($quotes->hasPages())
-            <div class="mt-8 mb-24">
+            <div class="mura-pagination-wrap">
                 {{ $quotes->links('layouts.pagination') }}
             </div>
         @endif

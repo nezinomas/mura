@@ -14,3 +14,153 @@
         @apply font-mura;
     }
 }
+
+/*
+ * All shared/repeated styling lives here. Each class below replaces a utility
+ * string that was duplicated across several Blade templates. One-off utilities
+ * are still written inline in the templates on purpose.
+ */
+@layer components {
+
+    /* --- Page structure ------------------------------------------------- */
+
+    /* Centered title used inside every <x-slot name="header">. */
+    .mura-page-heading {
+        @apply text-center w-full;
+    }
+    /* Standard content container for every page. */
+    .mura-page {
+        @apply max-w-3xl mx-auto px-4 pb-12;
+    }
+    /* Thin horizontal rule used in the "discover more" divider. */
+    .mura-divider-line {
+        @apply h-px bg-slate-200 w-full max-w-xs;
+    }
+
+    /* --- Cards (auth / settings) ---------------------------------------- */
+
+    /* Narrow settings card shell. Add a border-* utility to recolor
+       (e.g. `mura-card border-error/50` for the danger card). */
+    .mura-card {
+        @apply card w-full max-w-96 bg-base-100 shadow-xl border border-base-300;
+    }
+    .mura-card-body {
+        @apply card-body p-8;
+    }
+    /* Auth card title (mura., Join mura., ...). */
+    .mura-card-title {
+        @apply card-title text-2xl font-bold justify-center mb-8;
+    }
+    /* Settings-card section title (profile, delete account). */
+    .mura-section-title {
+        @apply card-title text-xl font-bold mb-2;
+    }
+    /* Muted helper/description text under a card title. */
+    .mura-card-note {
+        @apply mb-6 text-sm text-base-content/70;
+    }
+
+    /* --- Feedback / alerts ---------------------------------------------- */
+
+    .mura-alert-success {
+        @apply alert alert-success mb-6 text-sm rounded-none border-l-4 border-success;
+    }
+
+    /* --- Auth pages ----------------------------------------------------- */
+
+    /* Outer wrapper for every auth / settings page (flows below the nav). */
+    .mura-auth-wrap {
+        @apply flex flex-col items-center justify-center mt-12 pb-12;
+    }
+    /* Wrapper around a form's submit button. */
+    .mura-form-action {
+        @apply mt-4;
+    }
+    /* Centered footer row holding the auth "switch page" link. */
+    .mura-card-footer {
+        @apply text-center mt-6;
+    }
+    /* Small uppercase auth link (register / login switch). */
+    .mura-auth-link {
+        @apply link link-hover text-xs uppercase tracking-wider opacity-70;
+    }
+
+    /* --- Empty states --------------------------------------------------- */
+
+    .mura-empty {
+        @apply flex flex-col items-center justify-center py-24 border border-dashed border-base-300 bg-slate-50/30;
+    }
+    /* Base empty-state message. Some pages append `mb-6` or `font-mono`. */
+    .mura-empty-text {
+        @apply text-base-content/50 italic;
+    }
+
+    /* --- Modals (livewire/delete-quote-modal) --------------------------- */
+
+    .mura-modal-box {
+        @apply modal-box bg-slate-50 border-slate-200 rounded-none shadow-sm border p-8 text-left;
+    }
+    .mura-modal-title {
+        @apply font-bold text-base-content text-lg mb-4 capitalize;
+    }
+    .mura-modal-body {
+        @apply text-base-content/80 leading-relaxed mb-8 text-base;
+    }
+    .mura-modal-action {
+        @apply modal-action flex justify-end gap-4 mt-0;
+    }
+
+    /* --- Navigation & footer -------------------------------------------- */
+
+    .mura-footer-link {
+        @apply text-sm opacity-40 hover:opacity-100 hover:underline transition-opacity text-base-content;
+    }
+    /* User dropdown row. Logout appends `text-error`. */
+    .mura-menu-item {
+        @apply px-4 py-3 hover:bg-base-200 w-full text-left;
+    }
+    .mura-nav-guest-link {
+        @apply hover:underline opacity-70 hover:opacity-100;
+    }
+
+    /* --- Pagination (layouts/pagination.blade.php) ---------------------- */
+
+    .mura-pg-disabled {
+        @apply px-3 py-2 text-base-content/40 cursor-not-allowed;
+    }
+    .mura-pg-link {
+        @apply px-3 py-2 text-base-content hover:bg-slate-100 transition-colors;
+    }
+    .mura-pg-current {
+        @apply px-3 py-2 text-base-content border-b-2 border-base-content;
+    }
+    .mura-pg-num {
+        @apply px-3 py-2 text-base-content/70 hover:text-base-content hover:bg-slate-100 transition-colors;
+    }
+    /* Spacing wrapper around the pagination links on feed pages. */
+    .mura-pagination-wrap {
+        @apply mt-8 mb-24;
+    }
+
+    /* --- Forms --------------------------------------------------------- */
+
+    /* Full-height flex column for the compose/edit form. */
+    .mura-compose-form {
+        @apply flex flex-col flex-1 h-full w-full;
+    }
+    /* Inline form wrapper with no margin (grab / ungrab actions). */
+    .mura-inline-form {
+        @apply inline m-0;
+    }
+
+    /* --- Formerly-undefined classes (now given real styles) ------------- */
+
+    /* Marker on a quote card the current user owns. */
+    .mura-grab-card {
+        @apply ring-1 ring-slate-200;
+    }
+    /* Small UI label treatment (dashboard feed filters). */
+    .text-ui-label {
+        @apply uppercase tracking-widest;
+    }
+}

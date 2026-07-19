@@ -2,7 +2,7 @@
     $isPrivateState = old('is_private', $quote->is_private ?? false) ? 'true' : 'false'; 
 @endphp
 
-<div x-data="{ isPrivate: {{ $isPrivateState }} }" class="flex flex-col flex-1 h-full w-full">
+<div x-data="{ isPrivate: {{ $isPrivateState }} }" class="mura-compose-form">
     
     <textarea
         name="content"

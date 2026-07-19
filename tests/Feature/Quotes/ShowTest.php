@@ -78,3 +78,16 @@ test('logged user cannot see another users private thought', function () {
         ->get(route('quotes.show', $quote))
         ->assertStatus(404);
 });
+
+test('renders a malicious link in a thought without a dangerous href', function () {
+    $quote = Quote::factory()->create([
+        'is_private' => false,
+        'content' => 'Nasty [click me](javascript:alert(document.cookie)) link',
+    ]);
+
+    $this->get(route('quotes.show', $quote))
+        ->assertStatus(200)
+        ->assertSee('click me')                     // link text still shown
+        ->assertDontSee('href="javascript:', false) // but not clickable
+        ->assertDontSee("href='javascript:", false);
+});

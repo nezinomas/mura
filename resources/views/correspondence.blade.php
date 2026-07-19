@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-center w-full">
+        <h1 class="mura-page-heading">
             Correspondence
-        </div>
+        </h1>
     </x-slot>
 
-    <div class="py-12 max-w-2xl mx-auto sm:px-6 lg:px-8">
+    <div class="mura-page">
         
         @if (session('success'))
-            <div class="mb-8 p-6 bg-slate-50 border border-slate-200 text-center font-mono text-sm text-base-content/70">
+            <div class="mb-8 p-6 bg-slate-50 border border-slate-200 text-center font-mura text-sm text-base-content/70">
                 {{ session('success') }}
             </div>
         @endif
@@ -42,7 +42,7 @@
                 >{{ old('message') }}</textarea>
 
                 @error('message')
-                    <div class="mt-2 font-mono text-sm text-red-500">{{ $message }}</div>
+                    <div class="mt-2 font-mura text-sm text-error">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -50,7 +50,7 @@
                 <x-button 
                     type="submit" 
                     variant="text" 
-                    class="font-mono text-sm uppercase tracking-widest pb-1 border-b border-transparent hover:border-base-content px-0"
+                    class="font-mura text-sm uppercase tracking-widest pb-1 border-b border-transparent hover:border-base-content px-0"
                 >
                     Seal & Send
                 </x-button>

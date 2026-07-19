@@ -1,4 +1,4 @@
-<div class="inline m-0">
+<div class="mura-inline-form">
     @if($isGrabbed)
         <x-button wire:click="toggle" variant="text-danger" class="cursor-pointer">
             Ungrab
