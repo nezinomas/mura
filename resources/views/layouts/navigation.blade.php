@@ -3,7 +3,7 @@
     <div class="flex items-baseline min-w-0">
 
         <a href="{{ route('home') }}" class="text-2xl font-bold hover:opacity-70 transition-opacity mr-6 sm:mr-8">
-            mura.
+            {{ config('app.name', 'mura.') }}
         </a>
         
         @auth

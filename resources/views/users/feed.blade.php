@@ -1,7 +1,7 @@
 {!! '<?xml version="1.0" encoding="UTF-8"?>' !!}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>{{ $user->display_name }} on mura.</title>
+        <title>{{ $user->display_name }} on {{ config('app.name', 'mura.') }}</title>
         <link>{{ route('users.show', $user) }}</link>
         <description>Latest thoughts from {{ $user->display_name }}</description>
         <atom:link href="{{ route('users.feed', $user) }}" rel="self" type="application/rss+xml" />
