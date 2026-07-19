@@ -165,4 +165,12 @@
     .text-ui-label {
         @apply uppercase tracking-widest;
     }
+
+    /* --- House Rules --------------------------------------------------- */
+
+    /* Rule titles sit in a soft highlighter band, set apart from the body text.
+       (The page's prose-* classes are inert — no Typography plugin installed.) */
+    .mura-rule-heading {
+        @apply inline-block bg-slate-100 px-3 py-1 rounded mb-3;
+    }
 }
