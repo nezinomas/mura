@@ -95,7 +95,7 @@
         @apply text-base-content/50 italic;
     }
 
-    /* --- Modals (shared by <x-modal> and the Livewire delete modal) ----- */
+    /* --- Modals (livewire/delete-quote-modal) --------------------------- */
 
     .mura-modal-box {
         @apply modal-box bg-slate-50 border-slate-200 rounded-none shadow-sm border p-8 text-left;
