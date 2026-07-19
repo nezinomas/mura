@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="mura-page-heading">
+        <h1 class="mura-page-heading">
             House Rules
-        </div>
+        </h1>
     </x-slot>
 
     <div class="mura-page">

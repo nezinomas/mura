@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="mura-page-heading">
+        <h1 class="mura-page-heading">
             {{ isset($quote) ? 'Edit Thought' : 'Compose Thought' }}
-        </div>
+        </h1>
     </x-slot>
 
     <div class="flex justify-center my-12 px-4">

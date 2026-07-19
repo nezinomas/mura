@@ -3,7 +3,7 @@
         <div class="mura-card">
             <div class="mura-card-body">
                 
-                <h2 class="mura-card-title">mura.</h2>
+                <h1 class="mura-card-title">mura.</h1>
 
                 <div class="mura-card-note text-center leading-relaxed">
                     Enter your email to reset your password.

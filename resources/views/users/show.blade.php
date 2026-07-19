@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-center gap-3 w-full text-center">
-            <span>{{ $user->display_name }}</span>
+            <h1>{{ $user->display_name }}</h1>
             
             <a href="{{ route('users.feed', $user) }}" 
                class="text-slate-400 hover:text-slate-700 transition-colors" 

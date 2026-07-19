@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="mura-page-heading">
+            <h1 class="sr-only">Feed</h1>
             <div class="flex items-center justify-center gap-6 text-sm text-base-content/60 text-ui-label">
                 <a href="/dashboard" class="hover:text-base-content transition-colors {{ request('filter') === null ? 'text-base-content underline underline-offset-4' : '' }}">All</a>
                 <a href="/dashboard?filter=public" class="hover:text-base-content transition-colors {{ request('filter') === 'public' ? 'text-base-content underline underline-offset-4' : '' }}">Public</a>
